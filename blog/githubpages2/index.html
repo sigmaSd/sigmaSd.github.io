@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <style>
         p {
-            font-size: 22px;
+            font-size: 20px;
         }
 
         code {
@@ -27,7 +27,7 @@
 <h1 class="title">
     Github Pages (Part 2)
 </h1>
-<p class="subtitle"><strong>03&#x2F;22&#x2F;21 </strong></p>
+<p class="subtitle"><strong>03&#x2F;22&#x2F;21</strong></p>
 <h1 id="9-8-1942"><em><strong>9/8/1942</strong></em></h1>
 <hr />
 <p>Now this page uses <a href="https://www.getzola.org/">zola</a></p>
@@ -35,8 +35,15 @@
 <p>It was pretty straight forward to set up, simply following <a href="https://www.getzola.org/documentation/getting-started/overview/">getting-started</a>
 should get you up and running.</p>
 <hr />
-<p>The only thing I had to look for was formatting dates, here is how to do it:
-<code>{{ page.date | date(format=&quot;%D &quot;) }}</code></p>
+<p><em>Couple of things I had to look for:</em></p>
+<ul>
+<li><strong>Formatting dates:</strong> </li>
+</ul>
+<p><code>{{ page.date | date(format=$chrono_format_string) }}</code> example: <code>{{ page.date | date(format=&quot;%D&quot;) }}</code></p>
+<ul>
+<li><strong>Using the correct relative url in the template:</strong></li>
+</ul>
+<p><code>{ get_url(path=$path)}</code> example: <code>{ get_url(path=&quot;/&quot;)}</code></p>
 <hr />
 
 
