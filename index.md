@@ -18,7 +18,6 @@ syntax highlight
  }
  p {
   font-size: 19px;
-  font-family: 
  }
  code {
   font-weight: bold;
@@ -38,52 +37,11 @@ ______
 ______
 
 
-## Blogging with github pages
+<h2><a href="./githubPages.html">Blogging with github pages</a></h2>
 <div class="date"><em>23/03/2021 9/8/1442</em></div>
 
-Github allows you to have your own site [pages.github](https://pages.github.com/)
-
-Currently I'm using a markdown file to write the page then I can convert it to html with [python-markdown](https://python-markdown.github.io/)
-
-`markdown_py  index.md 1>index.html`
-
-The nice thing is the ability to add html/css code directly inside the markdown file and it will still work correctly. (useful for css styles)
-
-Checkout this page source [sigmaSd.github.io](https://github.com/sigmaSd/sigmaSd.github.io)
-
 ______
 ______
 
-## Flutter + neovim 
+<h2><a href="./flutter+nvim.html">Flutter + neovim</a></h2>
 <div class="date"><em>23/03/2021 9/8/1442</em></div>
-
-Setup neovim + flutter:
-
-______
-
-1.  Install [vim-plug](https://github.com/junegunn/vim-plug) for managing plugins and [Coc](https://github.com/neoclide/coc.nvim) as lsp client
-
-2. Edit neovim config
-		
-		call plug#begin()
-		Plug 'neoclide/coc.nvim', {'branch': 'release'}
-		Plug 'dart-lang/dart-vim-plugin'
-		call plug#end()
-		
-
-3. Run these commands:
-
-    - `:PlugInstall`
-    - `:CocInstall coc-flutter`
-
-***
-
-Everything should work by default, checkout [coc-flutter](https://github.com/iamcco/coc-flutter) for the available commands.
-
-One thing to add is formatting on save, for that run `:CocConfig` then add
-
-`
-{
-    "coc.preferences.formatOnSaveFiletypes": ["dart"]
-}
-`
