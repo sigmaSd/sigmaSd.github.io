@@ -9,14 +9,17 @@
         p {
             font-size: 20px;
         }
-
         code {
             color: darkviolet;
         }
+		hr {
+            background-color: grey;
+		}
     </style>
     <navbar style="margin-left: 1%;">
         <a href='https:&#x2F;&#x2F;sigmasd.github.io'>Main Page</a> |
-        <a href='https:&#x2F;&#x2F;sigmasd.github.io&#x2F;blog'>Blog posts</a>
+        <a href='https:&#x2F;&#x2F;sigmasd.github.io&#x2F;blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/BuildGithubPage'>Source Code</a>
     </navbar>
 </head>
 
@@ -31,7 +34,7 @@
 <h1 id="9-8-1942"><em><strong>9/8/1942</strong></em></h1>
 <hr />
 <p><strong>Setup neovim + flutter:</strong></p>
-<hr />
+<br/>
 <ol>
 <li>
 <p>Install <a href="https://github.com/junegunn/vim-plug">vim-plug</a> for managing plugins and <a href="https://github.com/neoclide/coc.nvim">Coc</a> as lsp client</p>
@@ -55,9 +58,15 @@ call plug#end()
 </ul>
 </li>
 </ol>
-<hr />
+<br/>
 <p>Everything should work by default, checkout <a href="https://github.com/iamcco/coc-flutter">coc-flutter</a> for the available commands.</p>
-<hr />
+<p>Most frequent commands:</p>
+<ul>
+<li><code>:CocCommand flutter.run</code></li>
+<li><code>:CocCommand flutter.dev.openDevLog</code></li>
+<li><code>:CocCommand flutter.dev.hotRestart</code></li>
+</ul>
+<br/>
 <p>One thing to add is formatting on save, for that run <code>:CocConfig</code> then add</p>
 <p><code>{ &quot;coc.preferences.formatOnSaveFiletypes&quot;: [&quot;dart&quot;] }</code></p>
 
