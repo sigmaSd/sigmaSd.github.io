@@ -4,4 +4,4 @@
 
 [sigmaSd.github.io](https://sigmasd.github.io/)
 
-made with [zola](https://www.getzola.org/)
+Made with [zola](https://www.getzola.org/)
