@@ -26,3 +26,12 @@ should get you up and running.
 - **Adding new lines in markdown:**
 
 `<br/>`
+
+
+---
+**Update1:** \
+Turns out that css matters in markdown spacing. The above `<br/>` trick is not needed if the css stylesheet used have a good enough spacing between paragraphs.\
+Line breaks if needed can be added with `\`
+
+Currently I have switched to [sakura css framework](https://github.com/oxalorg/sakura).\
+So far it looks quite nice and it adapts automatically to smaller screens.
