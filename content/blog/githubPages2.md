@@ -2,7 +2,8 @@
 title = "Github Pages (Part 2)"
 date = 2021-03-22 17:00:00
 +++
-# ***9/8/1942***
+**9/8/1942**
+
 ---
 
 This page now uses [zola](https://www.getzola.org/).

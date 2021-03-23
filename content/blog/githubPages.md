@@ -2,7 +2,8 @@
 title = "Github Pages"
 date = 2021-03-22 11:00:00
 +++
-# ***9/8/1942***
+**9/8/1942**
+
 ---
 
 Github allows you to have your own page [pages.github](https://pages.github.com/)
