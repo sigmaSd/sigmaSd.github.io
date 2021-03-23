@@ -12,6 +12,9 @@ It was pretty straight forward to set up, simply following [getting-started](htt
 should get you up and running.
 
 
+Deploying to GithubPages is also fairly simple [deployment](https://www.getzola.org/documentation/deployment/github-pages/).
+
+
 *Couple of things I had to look for:*
 
 - **Formatting dates:** 
