@@ -8,12 +8,9 @@ date = 2021-03-22 17:00:00
 
 This page now uses [zola](https://www.getzola.org/).
 
-<br/>
-
 It was pretty straight forward to set up, simply following [getting-started](https://www.getzola.org/documentation/getting-started/overview/)
 should get you up and running.
 
-<br/>
 
 *Couple of things I had to look for:*
 

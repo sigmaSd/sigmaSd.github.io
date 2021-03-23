@@ -8,21 +8,17 @@ date = 2021-03-22 11:00:00
 
 Github allows you to have your own page [pages.github](https://pages.github.com/)
 
-<br/>
 
 Currently I'm using a markdown file to write the page then I can convert it to html with [python-markdown](https://python-markdown.github.io/)
 
 `markdown_py  index.md 1>index.html`
 
-<br/>
 
 The nice thing is the ability to add html/css code directly inside the markdown file and it will still work correctly. (useful for css styles)
 
-<br/>
 
 Checkout this page source code [sigmaSd.github.io](https://github.com/sigmaSd/sigmaSd.github.io)
 
-<br/>
 
 *Update1*: Now that I use multiple pages, the new command is (*fish sell*):
 
