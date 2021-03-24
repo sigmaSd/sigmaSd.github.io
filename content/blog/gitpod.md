@@ -18,7 +18,7 @@ I even have a script (invoked by a launcher) that runs `wl-copy "gitpod.io/#"`
 Obviously you can just use the browser extension.
 
 
-Currently I'm using gitpod to build an android apk from a flutter project [https://github.com/sigmaSd/APOD/tree/gitpod](https://github.com/sigmaSd/APOD/tree/gitpod) (success!) and also building vscode with wayland support (work in progress).
+Currently I'm using gitpod to build an android apk from a flutter project [https://github.com/sigmaSd/APOD/tree/gitpod](https://github.com/sigmaSd/APOD/tree/gitpod) (success!) and also building vscode with wayland support (success!(checkout *update1*)).
 
 
 Couple of tips and tricks:
@@ -30,3 +30,6 @@ Couple of tips and tricks:
 
 - Downloading a file from gitpod sometimes freeze the ui.\
 Using `python -m http.server` seems to work better.
+
+
+*Update1:* To build vscode with wayland support here are the steps [https://github.com/microsoft/vscode/issues/109176#issuecomment-806067083](https://github.com/microsoft/vscode/issues/109176#issuecomment-806067083)
