@@ -28,3 +28,5 @@ Couple of tips and tricks:
 
 - Building an android apk is a little bit tricky, I wrote a simple guide here [https://github.com/sigmaSd/flutter_gitpod](https://github.com/sigmaSd/flutter_gitpod)
 
+- Downloading a file from gitpod sometimes freeze the ui.\
+Using `python -m http.server` seems to work better.
