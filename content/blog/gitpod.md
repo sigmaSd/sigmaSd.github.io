@@ -26,4 +26,5 @@ Couple of tips and tricks:
 
 - Do *not* use the vscode vim extension, currently it makes everything slow, but that might change soon! [https://github.com/gitpod-io/gitpod/issues/1212](https://github.com/gitpod-io/gitpod/issues/1212)
 
+- Building an android apk is a little bit tricky, I wrote a simple guide here [https://github.com/sigmaSd/flutter_gitpod](https://github.com/sigmaSd/flutter_gitpod)
 
