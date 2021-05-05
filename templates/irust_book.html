@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+    {{ section.title }}
+</h1>
+Document some tips and tricks about IRust
+<br/>
+<br/>
+
+<ul>
+    {% for page in section.pages %}
+    <li><a style="font-size: 24px;" href="{{ page.permalink | safe }}">{{ page.title }}</a> {{page.date}}</li>
+    {% endfor %}
+</ul>
+{% endblock content %}
