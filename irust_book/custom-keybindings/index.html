@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+    <link rel="icon" href='https:&#x2F;&#x2F;sigmasd.github.io&#x2F;favicon.svg'>
+    <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura-earthly.css" type="text/css">
+    <navbar style="margin-left: 1%;">
+        <a href='https:&#x2F;&#x2F;sigmasd.github.io'>Main Page</a> |
+        <a href='https:&#x2F;&#x2F;sigmasd.github.io&#x2F;blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Custom keybindings
+</h1>
+<p class="subtitle"><strong>06&#x2F;02&#x2F;21</strong></p>
+<p><strong>21/10/1442</strong></p>
+<p>Custom keybindings are possible via scripts.</p>
+<p>Scripts come in diffrent versions in Irust, the latest version is the most supported one.</p>
+<p>Lets see how can we add vim mode support using scripts.<br />
+The next example uses linux commands but the same can be done on any platform.</p>
+<p><strong>1 - Activate scripting feature:</strong></p>
+<ul>
+<li>Edit <code>$config/irust/config</code> and set <code>activate_scripting3 = true</code> (<code>$config</code> location depends on the platform see <a href="https://docs.rs/dirs-next/2.0.0/dirs_next/fn.config_dir.html">dirs_next</a>)</li>
+<li>Create a script directory to hold the scirpts
+<code>mkdir -p $config/irust/script3</code></li>
+</ul>
+<p><strong>2 - Download vim-mode script and install it</strong></p>
+<pre style="background-color:#2b303b;">
+<code class="language-shell" data-lang="shell"><span style="color:#c0c5ce;">git clone https://github.com/sigmaSd/IRust irust
+cd irust/scripts_examples
+cargo b --release
+cp target/release/irust_vim $config/irust/script3/
+</span></code></pre>
+<p>Thats it now vim-mode can be enabled with <code>:vim on</code> command.</p>
+<p>To see the list of the detected scripts we can use <code>:scripts</code> command.</p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

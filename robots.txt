@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sigmasd.github.io/sitemap.xml
