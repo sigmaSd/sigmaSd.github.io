@@ -9,15 +9,19 @@ date = 2022-11-18 19:00:00
 Turns out you can do inline benchmarks in rust with a not that bad user experience.
  
 ```sh
-cargo new bench-inline --lib
+cargo new bench-inline
 ```
 
-In `lib.rs`:
+In `main.rs`:
 
 ```rs
 #![feature(test)]
 
 extern crate test;
+
+fn main() {
+    
+}
 
 pub fn add_two(a: i32) -> i32 {
     a + 2
@@ -57,10 +61,14 @@ Turns out there is a way!
 nightly = []
 ```
 
-2- change our `lib.rs` to:
+2- change our `main.rs` to:
 
 ```rs
 #![cfg_attr(feature = "nightly", feature(test))]
+
+fn main() {
+    
+}
 
 pub fn add_two(a: i32) -> i32 {
     a + 2
