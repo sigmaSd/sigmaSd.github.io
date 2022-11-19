@@ -87,3 +87,5 @@ mod tests {
 ```
 
 That's it! Now rust analyzer is not confused, you can run tests with `cargo test` and benchmarks with `cargo +nightly bench --features nightly`
+
+And for a real word example I used this idea to benchmark a PR change in irust and it was really useful [irust-syntect-pr](https://github.com/sigmaSd/IRust/pull/99#issuecomment-1304842421)
