@@ -21,8 +21,10 @@ This example uses fish, other shell have similar abilities
 
 ```fish
 function hx
+    set PATH_TMP $PATH
     set PATH ~/dev/helix/scripts/ $PATH
     helix $argv
+    set PATH $PATH_TMP
 end
 
 funcsave hx
