@@ -18,7 +18,7 @@ We can use this for interactive usage:
 
 - Now in IRust run: 
 
-  - `:add .` to add current path as dependency
+  - `:add --path .` to add current path as dependency
   - `use demo::*;`
 
 - Now any public function written in `lib.rs` will be immediately usable in IRust after saving the file!
