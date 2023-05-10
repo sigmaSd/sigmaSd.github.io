@@ -14,7 +14,7 @@ We can use this for interactive usage:
 
 - Create a new project to test: `cargo new --lib demo`
 
-- `cd demo; irust`
+- `cd demo; irust `
 
 - Now in IRust run: 
 
