@@ -39,7 +39,7 @@ I'm going to use *deno* here, but any compiled program can work
 The advantage of *deno*, is the programs have 0 permissions by default which works actually very well as a plugin
 
 But realisticly you want a compiled language, for the fastest cold startup time.
-I prefer *Zig* for this since it makes 0 syscalls by default in linux for example. 
+I prefer *Zig* for this since it makes the lowest amount of syscalls possible by default in linux for example. 
 
 `cd ~/dev/helix/scripts`
 
