@@ -8,7 +8,8 @@ date = 2024-05-26 12:00:00
 Turns out when someone send you a bunch of pictures in facebook, there is no way
 to download them at once.
 
-![bunch of pictures](sentImgs.png)
+![bunch of pictures](https://github.com/sigmaSd/sigmaSd.github.io/assets/22427111/b9cecd5f-11ca-488d-aae1-1b5a6034fff3)
+
 
 So here is what I tried in order to download them all (the working method is
 last, so you can skip to it if you want)
@@ -18,7 +19,8 @@ In all the next methods the idea is simple: automate the next steps
 - click on the download button
 - click on the next button
 
-![download Interface](downloadInterface.png)
+![download Interface](https://github.com/sigmaSd/sigmaSd.github.io/assets/22427111/3debebd4-a77b-4def-8ab5-fbb99a74d106)
+
 
 # Javascript injection
 
