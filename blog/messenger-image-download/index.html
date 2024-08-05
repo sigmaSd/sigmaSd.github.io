@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Download messenger images
+</h1>
+<p class="subtitle"><strong>05&#x2F;26&#x2F;24</strong></p>
+<p><strong>18/11/1445</strong></p>
+<hr />
+<p>Turns out when someone send you a bunch of pictures in facebook, there is no way
+to download them at once.</p>
+<p><img src="https://github.com/sigmaSd/sigmaSd.github.io/assets/22427111/b9cecd5f-11ca-488d-aae1-1b5a6034fff3" alt="bunch of pictures" /></p>
+<p>So here is what I tried in order to download them all (the working method is
+last, so you can skip to it if you want)</p>
+<p>In all the next methods the idea is simple: automate the next steps</p>
+<ul>
+<li>click on the download button</li>
+<li>click on the next button</li>
+</ul>
+<p><img src="https://github.com/sigmaSd/sigmaSd.github.io/assets/22427111/3debebd4-a77b-4def-8ab5-fbb99a74d106" alt="download Interface" /></p>
+<h1 id="javascript-injection">Javascript injection</h1>
+<ul>
+<li>Right click on the button we need (the download button, then the next button)</li>
+<li>Click inspect</li>
+<li>Right click on the dom element in the inspector</li>
+<li>Copy -&gt; Css selector</li>
+<li>Go to the console</li>
+<li>Type: <code>document.querySelector('&lt;your css selector&gt;').click()</code></li>
+</ul>
+<p>This works initially, but soon the page freezes and I get this error on the
+console: <code>ErrorUtils caught an error:  too much recursion</code></p>
+<p>Maybe its a facebook security protection.</p>
+<p>I also tried sending right arrow keyboard click as an alternative but the same
+error happens.</p>
+<p>Here is the code in case you're interested (I just asked chatgpt for it)</p>
+<pre data-lang="js" style="background-color:#2b303b;color:#c0c5ce;" class="language-js "><code class="language-js" data-lang="js"><span>(</span><span style="color:#b48ead;">function </span><span>() {
+</span><span>  </span><span style="color:#65737e;">// Create the event
+</span><span>  </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">rightArrowEvent </span><span>= new KeyboardEvent(&quot;</span><span style="color:#a3be8c;">keydown</span><span>&quot;, {
+</span><span>    key: &quot;</span><span style="color:#a3be8c;">ArrowRight</span><span>&quot;,
+</span><span>    code: &quot;</span><span style="color:#a3be8c;">ArrowRight</span><span>&quot;,
+</span><span>    keyCode: </span><span style="color:#d08770;">39</span><span>, </span><span style="color:#65737e;">// The keyCode for the right arrow key
+</span><span>    which: </span><span style="color:#d08770;">39</span><span>, </span><span style="color:#65737e;">// The same value as keyCode
+</span><span>    shiftKey: </span><span style="color:#d08770;">false</span><span>, </span><span style="color:#65737e;">// No shift key
+</span><span>    ctrlKey: </span><span style="color:#d08770;">false</span><span>, </span><span style="color:#65737e;">// No ctrl key
+</span><span>    metaKey: </span><span style="color:#d08770;">false</span><span>, </span><span style="color:#65737e;">// No meta key
+</span><span>    altKey: </span><span style="color:#d08770;">false</span><span>, </span><span style="color:#65737e;">// No alt key
+</span><span>    bubbles: </span><span style="color:#d08770;">true</span><span>, </span><span style="color:#65737e;">// Bubbles up through the DOM
+</span><span>    cancelable: </span><span style="color:#d08770;">true</span><span>, </span><span style="color:#65737e;">// The event can be canceled
+</span><span>  });
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// Dispatch the event to the target element or document
+</span><span>  document.</span><span style="color:#96b5b4;">dispatchEvent</span><span>(</span><span style="color:#bf616a;">rightArrowEvent</span><span>);
+</span><span>})();
+</span></code></pre>
+<p>So this didn't work time to go to next idea</p>
+<h1 id="ydotool">Ydotool</h1>
+<p>Javascirpt injection didn't work, so the next idea that came to mind is to use
+good old botting.</p>
+<p>I'm using wayland so there is no xdotool here, but you can use
+<a href="https://github.com/ReimuNotMoe/ydotool">ydotool</a>.</p>
+<p>Its even already available in fedora official packages.</p>
+<p><strong>The steps are:</strong></p>
+<ul>
+<li><code>sudo dnf install ydotool</code></li>
+<li><code>sudo ydotoold&amp; # so it runs in the background</code></li>
+<li><code>sudo ydotool &lt;commands here&gt;</code></li>
+</ul>
+<p>Unfortunately it works partially, in particular
+<code>ydotool mousemove --absolute -x $xpos -y $ypos</code> only moves the x in my testing,
+the mouse is always stuck on the top.</p>
+<h2 id="xdotool">Xdotool</h2>
+<p>So whats left, of course the battle tested <a href="https://github.com/jordansissel/xdotool">xdotool</a>, the good thing is fedora
+still have gnome on xorg installed by default, so I can simply logout and switch to
+it to be able to use xdotool.</p>
+<p><strong>The steps are:</strong></p>
+<ul>
+<li>make sure your on xorg</li>
+<li><code>sudo dnf install xdotool</code></li>
+<li>put the mouse on the exact location of the download button</li>
+<li><code>xdotool getmouselocation #note the location somewhere</code></li>
+<li>put the mouse on the exact location of the next button</li>
+<li><code>xdotool getmouselocation #note the location somewhere</code></li>
+<li>and now simply we click on the buttons on a loop</li>
+</ul>
+<pre data-lang="fish" style="background-color:#2b303b;color:#c0c5ce;" class="language-fish "><code class="language-fish" data-lang="fish"><span style="color:#bf616a;">sleep </span><span style="color:#d08770;">0.5 </span><span style="color:#65737e;"># wait for me to tab switch to the page;
+</span><span style="color:#b48ead;">while </span><span style="color:#bf616a;">true
+</span><span>    </span><span style="color:#bf616a;">xdotool </span><span>mousemove </span><span style="color:#d08770;">1075 178 </span><span style="color:#65737e;"># move to download button position
+</span><span>    </span><span style="color:#bf616a;">xdotool </span><span>click </span><span style="color:#d08770;">1 </span><span style="color:#65737e;"># mouse left click
+</span><span>    </span><span style="color:#bf616a;">sleep </span><span style="color:#d08770;">2
+</span><span>    </span><span style="color:#bf616a;">xdotool </span><span>mousemove </span><span style="color:#d08770;">1328 431 </span><span style="color:#65737e;"># move to next button position
+</span><span>    </span><span style="color:#bf616a;">xdotool </span><span>click </span><span style="color:#d08770;">1 </span><span style="color:#65737e;"># mouse left click
+</span><span>    </span><span style="color:#bf616a;">sleep </span><span style="color:#d08770;">0.1
+</span><span style="color:#b48ead;">end
+</span></code></pre>
+<p>And that actually works, In a couple of seconds I have downloaded all the
+pictures sent to me.</p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

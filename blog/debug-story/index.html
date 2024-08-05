@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    A debugging story
+</h1>
+<p class="subtitle"><strong>07&#x2F;17&#x2F;24</strong></p>
+<p><strong>11/1/1446</strong></p>
+<hr />
+<p>For some reason I wanted to &quot;port&quot; Jupyter Echo Kernel to Deno using
+<a href="https://github.com/denosaurs/deno_python">deno-python</a>. It shouldn't be too
+hard I already have relatively complex projects using it:
+<a href="https://flathub.org/apps/io.github.sigmasd.stimulator">Stimulator</a>
+<a href="https://flathub.org/apps/io.github.sigmasd.share">Share</a></p>
+<p>Here is the python kernel</p>
+<pre data-lang="py" style="background-color:#2b303b;color:#c0c5ce;" class="language-py "><code class="language-py" data-lang="py"><span style="color:#b48ead;">from </span><span>ipykernel.kernelbase </span><span style="color:#b48ead;">import </span><span>Kernel
+</span><span>
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">EchoKernel</span><span style="color:#eff1f5;">(</span><span style="color:#a3be8c;">Kernel</span><span style="color:#eff1f5;">):
+</span><span>    implementation = &#39;</span><span style="color:#a3be8c;">Echo</span><span>&#39;
+</span><span>    implementation_version = &#39;</span><span style="color:#a3be8c;">1.0</span><span>&#39;
+</span><span>    language = &#39;</span><span style="color:#a3be8c;">no-op</span><span>&#39;
+</span><span>    language_version = &#39;</span><span style="color:#a3be8c;">0.1</span><span>&#39;
+</span><span>    language_info = {
+</span><span>        &#39;</span><span style="color:#a3be8c;">name</span><span>&#39;: &#39;</span><span style="color:#a3be8c;">Any text</span><span>&#39;,
+</span><span>        &#39;</span><span style="color:#a3be8c;">mimetype</span><span>&#39;: &#39;</span><span style="color:#a3be8c;">text/plain</span><span>&#39;,
+</span><span>        &#39;</span><span style="color:#a3be8c;">file_extension</span><span>&#39;: &#39;</span><span style="color:#a3be8c;">.txt</span><span>&#39;,
+</span><span>    }
+</span><span>    banner = &quot;</span><span style="color:#a3be8c;">Echo kernel - as useful as a parrot</span><span>&quot;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">do_execute</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">code</span><span>, </span><span style="color:#bf616a;">silent</span><span>, </span><span style="color:#bf616a;">store_history</span><span>=</span><span style="color:#d08770;">True</span><span>, </span><span style="color:#bf616a;">user_expressions</span><span>=</span><span style="color:#d08770;">None</span><span>,
+</span><span>                   </span><span style="color:#bf616a;">allow_stdin</span><span>=</span><span style="color:#d08770;">False</span><span>):
+</span><span>        </span><span style="color:#b48ead;">if </span><span>not silent:
+</span><span>            stream_content = {&#39;</span><span style="color:#a3be8c;">name</span><span>&#39;: &#39;</span><span style="color:#a3be8c;">stdout</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">text</span><span>&#39;: code}
+</span><span>            </span><span style="color:#bf616a;">self</span><span>.</span><span style="color:#bf616a;">send_response</span><span>(</span><span style="color:#bf616a;">self</span><span>.iopub_socket, &#39;</span><span style="color:#a3be8c;">stream</span><span>&#39;, stream_content)
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">return </span><span>{&#39;</span><span style="color:#a3be8c;">status</span><span>&#39;: &#39;</span><span style="color:#a3be8c;">ok</span><span>&#39;,
+</span><span>                </span><span style="color:#65737e;"># The base class increments the execution count
+</span><span>                &#39;</span><span style="color:#a3be8c;">execution_count</span><span>&#39;: </span><span style="color:#bf616a;">self</span><span>.execution_count,
+</span><span>                &#39;</span><span style="color:#a3be8c;">payload</span><span>&#39;: [],
+</span><span>                &#39;</span><span style="color:#a3be8c;">user_expressions</span><span>&#39;: {},
+</span><span>               }
+</span><span>
+</span><span style="color:#b48ead;">if </span><span>__name__ == &#39;</span><span style="color:#a3be8c;">__main__</span><span>&#39;:
+</span><span>    </span><span style="color:#b48ead;">from </span><span>ipykernel.kernelapp </span><span style="color:#b48ead;">import </span><span>IPKernelApp
+</span><span>    IPKernelApp.</span><span style="color:#bf616a;">launch_instance</span><span>(</span><span style="color:#bf616a;">kernel_class</span><span>=EchoKernel)
+</span></code></pre>
+<p>Here is a start at porting (file is called a.ts)</p>
+<pre data-lang="ts" style="background-color:#2b303b;color:#c0c5ce;" class="language-ts "><code class="language-ts" data-lang="ts"><span style="color:#65737e;">#!/usr/bin/env -S deno run --allow-all --unstable-ffi
+</span><span style="color:#b48ead;">import </span><span>{ </span><span style="color:#bf616a;">NamedArgument</span><span>, </span><span style="color:#bf616a;">PyObject</span><span>, </span><span style="color:#bf616a;">python </span><span>} </span><span style="color:#b48ead;">from </span><span>&quot;</span><span style="color:#a3be8c;">jsr:@denosaurs/python</span><span>&quot;;
+</span><span>
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">m </span><span>= </span><span style="color:#bf616a;">python</span><span>.</span><span style="color:#8fa1b3;">runModule</span><span>(`
+</span><span style="color:#a3be8c;">from ipykernel.kernelbase import Kernel
+</span><span style="color:#a3be8c;">
+</span><span style="color:#a3be8c;">class EchoKernel(Kernel):
+</span><span style="color:#a3be8c;">  implementation = &#39;Echo&#39;
+</span><span style="color:#a3be8c;">  implementation_version = &#39;1.0&#39;
+</span><span style="color:#a3be8c;">  language = &#39;no-op&#39;
+</span><span style="color:#a3be8c;">  language_version = &#39;0.1&#39;
+</span><span style="color:#a3be8c;">  language_info = {
+</span><span style="color:#a3be8c;">      &#39;name&#39;: &#39;Any text&#39;,
+</span><span style="color:#a3be8c;">      &#39;mimetype&#39;: &#39;text/plain&#39;,
+</span><span style="color:#a3be8c;">      &#39;file_extension&#39;: &#39;.txt&#39;,
+</span><span style="color:#a3be8c;">  }
+</span><span style="color:#a3be8c;">  banner = &quot;Echo kernel - as useful as a parrot&quot;
+</span><span>`);
+</span><span>
+</span><span style="color:#65737e;">// NOTE: this also modifies m.EchoKernel
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">kernel </span><span>= </span><span style="color:#bf616a;">PyObject</span><span>.</span><span style="color:#8fa1b3;">from</span><span>(</span><span style="color:#bf616a;">m</span><span>.</span><span style="color:#bf616a;">EchoKernel</span><span>);
+</span><span style="color:#bf616a;">kernel</span><span>.</span><span style="color:#8fa1b3;">setAttr</span><span>(
+</span><span>    &quot;</span><span style="color:#a3be8c;">do_execute</span><span>&quot;,
+</span><span>    </span><span style="color:#bf616a;">python</span><span>.</span><span style="color:#8fa1b3;">callback</span><span>(() </span><span style="color:#b48ead;">=&gt; </span><span>{
+</span><span>        </span><span style="color:#65737e;">//TODO: implement this
+</span><span>        </span><span style="color:#b48ead;">return </span><span>{
+</span><span>            status: &quot;</span><span style="color:#a3be8c;">ok</span><span>&quot;,
+</span><span>            execution_count: </span><span style="color:#d08770;">0</span><span>,
+</span><span>            payload: [],
+</span><span>            user_expressions: {},
+</span><span>        };
+</span><span>    }),
+</span><span>);
+</span><span>
+</span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#b48ead;">import</span><span>.meta.</span><span style="color:#bf616a;">main</span><span>) {
+</span><span>    </span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">IPKernelApp </span><span>= </span><span style="color:#bf616a;">python</span><span>.</span><span style="color:#8fa1b3;">import</span><span>(&quot;</span><span style="color:#a3be8c;">ipykernel.kernelapp</span><span>&quot;).</span><span style="color:#bf616a;">IPKernelApp</span><span>;
+</span><span>    </span><span style="color:#bf616a;">IPKernelApp</span><span>.</span><span style="color:#8fa1b3;">launch_instance</span><span>(new NamedArgument(&quot;</span><span style="color:#a3be8c;">kernel_class</span><span>&quot;, </span><span style="color:#bf616a;">kernel</span><span>));
+</span><span>}
+</span></code></pre>
+<p>Ok wasn't that hard, <code>chmod +x ./a.ts &amp;&amp; ./a.ts</code></p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>NOTE: When using the `ipython kernel` entry point, Ctrl-C will not work.
+</span><span>
+</span><span>To exit, you will have to explicitly quit this process, by either sending
+</span><span>&quot;quit&quot; from a client, or using Ctrl-\ in UNIX-like environments.
+</span><span>
+</span><span>To read more about this, see https://github.com/ipython/ipython/issues/2049
+</span><span>
+</span><span>
+</span><span>To connect another client to this kernel, use:
+</span><span>    --existing kernel-15074.json
+</span><span>fish: Job 1, &#39;deno run -A a.ts&#39; terminated by signal SIGSEGV (Address boundary error)
+</span></code></pre>
+<p>Hmm, it worked but then segfaulted, so gdb to the rescue</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gdb --args deno run -A --unstable-ffi a.ts
+</span></code></pre>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>(gdb) r
+</span><span>
+</span><span>Thread 1 &quot;deno&quot; received sig``nal SIGSEGV, Segmentation fault.
+</span><span>0x00007ffff7e1dfb0 in __strncmp_sse42 () from /lib64/libc.so.6
+</span></code></pre>
+<p>Ok we're comparing something, lets check what it is, arguments are passed in
+linux x86 in rdi then rsi</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>info registers
+</span></code></pre>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>rsi            0x55555c25b900      93825106557184
+</span><span>rdi            0x5555              21845
+</span></code></pre>
+<p><code>rsi</code> seems like a valid pointer, but <code>rdi</code> is definitely not, lets just check
+<code>rsi</code> first and try to print it as a cstring</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>(gdb) x/s $rsi
+</span><span>0x55555c25b900: &quot;JSCallback:anonymous&quot;
+</span></code></pre>
+<p>Where are we doing this?</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>(gdb) bt
+</span><span>
+</span><span>#0  0x00007ffff7e1dfb0 in __strncmp_sse42 () from /lib64/libc.so.6
+</span><span>#1  0x00007ffff4bf79f1 in find_signature
+</span></code></pre>
+<p>Ok so whats <code>find_signature</code>, lets check <a href="https://github.com/python/cpython/blob/69c68de43aef03dd52fabd21f99cb3b0f9329201/Objects/typeobject.c#L664">cpython</a></p>
+<pre data-lang="py" style="background-color:#2b303b;color:#c0c5ce;" class="language-py "><code class="language-py" data-lang="py"><span>/*
+</span><span> * finds the beginning of the docstring&#39;</span><span style="color:#a3be8c;">s introspection signature.</span><span style="background-color:#bf616a;color:#2b303b;">
+</span><span> * </span><span style="color:#b48ead;">if </span><span>present, returns a pointer pointing to the first &#39;</span><span style="color:#a3be8c;">(</span><span>&#39;.
+</span><span> * otherwise returns </span><span style="color:#bf616a;">NULL</span><span>.
+</span><span> *
+</span><span> * doesn&#39;</span><span style="color:#a3be8c;">t guarantee that the signature is valid, only that it</span><span style="background-color:#bf616a;color:#2b303b;">
+</span><span> * has a valid prefix.  (the signature must also </span><span style="background-color:#bf616a;color:#2b303b;">pass</span><span> skip_signature.</span><span style="background-color:#bf616a;color:#2b303b;">)</span><span>
+</span><span> */
+</span><span>static const char *
+</span><span style="color:#bf616a;">find_signature</span><span>(const char *name, const char *doc)
+</span></code></pre>
+<p>We're getting an invalid pointer for doc.</p>
+<p>Lets look at <code>deno-python</code> to see how we're creating <code>name</code>, and <code>doc</code>. <code>doc</code>
+is created <a href="https://github.com/denosaurs/deno_python/blob/8bd35566b07a43746b7abd8cd1cc7730abe2b4bd/src/python.ts#L473">here</a></p>
+<pre data-lang="ts" style="background-color:#2b303b;color:#c0c5ce;" class="language-ts "><code class="language-ts" data-lang="ts"><span style="color:#b48ead;">const </span><span style="color:#bf616a;">pyMethodDef </span><span>= new Uint8Array(</span><span style="color:#d08770;">8 </span><span>+ </span><span style="color:#d08770;">8 </span><span>+ </span><span style="color:#d08770;">4 </span><span>+ </span><span style="color:#d08770;">8</span><span>);
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">view </span><span>= new DataView(</span><span style="color:#bf616a;">pyMethodDef</span><span>.</span><span style="color:#bf616a;">buffer</span><span>);
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">LE </span><span>=
+</span><span>  new Uint8Array(new Uint32Array([</span><span style="color:#d08770;">0x12345678</span><span>]).</span><span style="color:#bf616a;">buffer</span><span>)[</span><span style="color:#d08770;">0</span><span>] !== </span><span style="color:#d08770;">0x7</span><span>;
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">nameBuf </span><span>= new TextEncoder().</span><span style="color:#8fa1b3;">encode</span><span>(
+</span><span>  &quot;</span><span style="color:#a3be8c;">JSCallback:</span><span>&quot; + (</span><span style="color:#bf616a;">v</span><span>.</span><span style="color:#bf616a;">callback</span><span>.name || &quot;</span><span style="color:#a3be8c;">anonymous</span><span>&quot;) + &quot;</span><span style="color:#96b5b4;">\0</span><span>&quot;,
+</span><span>);
+</span><span style="color:#bf616a;">view</span><span>.</span><span style="color:#8fa1b3;">setBigUint64</span><span>(
+</span><span>  </span><span style="color:#d08770;">0</span><span>,
+</span><span>  </span><span style="color:#ebcb8b;">BigInt</span><span>(</span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#bf616a;">UnsafePointer</span><span>.</span><span style="color:#8fa1b3;">value</span><span>(</span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#bf616a;">UnsafePointer</span><span>.</span><span style="color:#8fa1b3;">of</span><span>(</span><span style="color:#bf616a;">nameBuf</span><span>)!)),
+</span><span>  </span><span style="color:#bf616a;">LE</span><span>,
+</span><span>);
+</span><span style="color:#bf616a;">view</span><span>.</span><span style="color:#8fa1b3;">setBigUint64</span><span>(
+</span><span>  </span><span style="color:#d08770;">8</span><span>,
+</span><span>  </span><span style="color:#ebcb8b;">BigInt</span><span>(</span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#bf616a;">UnsafePointer</span><span>.</span><span style="color:#8fa1b3;">value</span><span>(</span><span style="color:#bf616a;">v</span><span>.</span><span style="color:#bf616a;">unsafe</span><span>.</span><span style="color:#bf616a;">pointer</span><span>)),
+</span><span>  </span><span style="color:#bf616a;">LE</span><span>,
+</span><span>);
+</span><span style="color:#bf616a;">view</span><span>.</span><span style="color:#8fa1b3;">setInt32</span><span>(</span><span style="color:#d08770;">16</span><span>, </span><span style="color:#d08770;">0x1 </span><span>| </span><span style="color:#d08770;">0x2</span><span>, </span><span style="color:#bf616a;">LE</span><span>);
+</span><span style="color:#bf616a;">view</span><span>.</span><span style="color:#8fa1b3;">setBigUint64</span><span>(
+</span><span>  </span><span style="color:#d08770;">20</span><span>,
+</span><span>  </span><span style="color:#ebcb8b;">BigInt</span><span>(</span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#bf616a;">UnsafePointer</span><span>.</span><span style="color:#8fa1b3;">value</span><span>(</span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#bf616a;">UnsafePointer</span><span>.</span><span style="color:#8fa1b3;">of</span><span>(</span><span style="color:#bf616a;">nameBuf</span><span>)!)),
+</span><span>  </span><span style="color:#bf616a;">LE</span><span>,
+</span><span>);
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">fn </span><span>= </span><span style="color:#bf616a;">py</span><span>.</span><span style="color:#8fa1b3;">PyCFunction_NewEx</span><span>(
+</span><span>  </span><span style="color:#bf616a;">pyMet hodDef</span><span>,
+</span><span>  </span><span style="color:#bf616a;">PyObject</span><span>.</span><span style="color:#8fa1b3;">from</span><span>(</span><span style="color:#d08770;">null</span><span>).</span><span style="color:#bf616a;">handle</span><span>,
+</span><span>  </span><span style="color:#d08770;">null</span><span>,
+</span><span>);
+</span></code></pre>
+<p>We're suspecting that something is wrong with pyMethodDef buffer creation.
+Looking at the <a href="https://docs.python.org/3/c-api/structures.html#c.PyMethodDef">docs</a> the fields seems
+correct to me</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>const char *ml_name -&gt; 8 bytes
+</span><span>PyCFunction ml_meth -&gt; 8 bytes
+</span><span>int ml_flags -&gt; 4 bytes 
+</span><span>const char *ml_doc -&gt; 8bytes
+</span></code></pre>
+<p>The bug is there though, can you spot it .... After I asked around (deno
+discord have a couple of ffi magicians there) I have my answer:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>from AapoAlas
+</span><span>    Yeah, the last pointer is not correctly aligned. Pointers should be 8 byte aligned (regardless of architecture), but it&#39;s at byte index 20: 20/8 does not an integer make.
+</span><span>    So 24 is the correct place for it
+</span></code></pre>
+<p>The 4th field is a pointer so it needs to be 8 byte aligned, but since the 3rd
+field is only 4 bytes, there are 4 bytes of padding that are automatically
+inserted</p>
+<p>The fix turns out to be simple <a href="https://github.com/denosaurs/deno_python/pull/65/files">https://github.com/denosaurs/deno_python/pull/65/files</a></p>
+<pre data-lang="diff" style="background-color:#2b303b;color:#c0c5ce;" class="language-diff "><code class="language-diff" data-lang="diff"><span>diff --git a/src/python.ts b/src/python.ts
+</span><span>index e09b821..9c41ea1 100644
+</span><span>--- a/src/python.ts
+</span><span>+++ b/src/python.ts
+</span><span>@@ -452,7 +452,9 @@ </span><span style="color:#8fa1b3;">export class PyObject {
+</span><span>           }
+</span><span>           return new PyObject(list);
+</span><span>         } else if (v instanceof Callback) {
+</span><span style="color:#bf616a;">-          const pyMethodDef = new Uint8Array(8 + 8 + 4 + 8);
+</span><span style="color:#a3be8c;">+          // https://docs.python.org/3/c-api/structures.html#c.PyMethodDef
+</span><span style="color:#a3be8c;">+          // there are extra 4 bytes of padding after ml_flags field
+</span><span style="color:#a3be8c;">+          const pyMethodDef = new Uint8Array(8 + 8 + 4 + 4 + 8);
+</span><span>           const view = new DataView(pyMethodDef.buffer);
+</span><span>           const LE =
+</span><span>             new Uint8Array(new Uint32Array([0x12345678]).buffer)[0] !== 0x7;
+</span><span>@@ -471,7 +473,7 @@ </span><span style="color:#8fa1b3;">export class PyObject {
+</span><span>           );
+</span><span>           view.setInt32(16, 0x1 | 0x2, LE);
+</span><span>           view.setBigUint64(
+</span><span style="color:#bf616a;">-            20,
+</span><span style="color:#a3be8c;">+            24,
+</span><span>             BigInt(Deno.UnsafePointer.value(Deno.UnsafePointer.of(nameBuf)!)),
+</span><span>             LE,
+</span><span>           );
+</span></code></pre>
+<p>Running the kernel, it doesn't segfault anymore, but unfortunately it just
+exits.</p>
+<p>Debugging that is another part of the story, in the meantime you can jump to the
+pr where I fixed it <a href="https://github.com/denosaurs/deno_python/pull/67">https://github.com/denosaurs/deno_python/pull/67</a>
+<a href="https://github.com/denosaurs/deno_python/pull/68">https://github.com/denosaurs/deno_python/pull/68</a></p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

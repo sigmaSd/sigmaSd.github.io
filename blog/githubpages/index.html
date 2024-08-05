@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Github Pages
+</h1>
+<p class="subtitle"><strong>03&#x2F;22&#x2F;21</strong></p>
+<p><strong>9/8/1442</strong></p>
+<hr />
+<p>Github allows you to have your own page <a href="https://pages.github.com/">pages.github</a></p>
+<p>Currently I'm using a markdown file to write the page then I can convert it to html with <a href="https://python-markdown.github.io/">python-markdown</a></p>
+<p><code>markdown_py  index.md 1&gt;index.html</code></p>
+<p>The nice thing is the ability to add html/css code directly inside the markdown file and it will still work correctly. (useful for css styles)</p>
+<p>Checkout this page source code <a href="https://github.com/sigmaSd/sigmaSd.github.io">sigmaSd.github.io</a></p>
+<p><em>Update1</em>: Now that I use multiple pages, the new command is (<em>fish sell</em>):</p>
+<pre data-lang="fish" style="background-color:#2b303b;color:#c0c5ce;" class="language-fish "><code class="language-fish" data-lang="fish"><span style="color:#b48ead;">for </span><span>i </span><span style="color:#b48ead;">in </span><span>(</span><span style="color:#bf616a;">ls </span><span>| </span><span style="color:#bf616a;">rg </span><span>&#39;</span><span style="color:#a3be8c;">\.md</span><span>&#39;)
+</span><span>	</span><span style="color:#bf616a;">set </span><span>h (</span><span style="color:#bf616a;">echo </span><span>$</span><span style="color:#bf616a;">i </span><span>| </span><span style="color:#bf616a;">sd </span><span>&#39;</span><span style="color:#a3be8c;">..$</span><span>&#39; &#39;</span><span style="color:#a3be8c;">html</span><span>&#39;); </span><span style="color:#bf616a;">markdown_py </span><span>$</span><span style="color:#bf616a;">i </span><span style="color:#d08770;">1</span><span>&gt;$</span><span style="color:#bf616a;">h</span><span>;
+</span><span style="color:#b48ead;">end
+</span></code></pre>
+<p><em>Update2</em>: The up-to-date command is located here <a href="https://github.com/sigmaSd/sigmaSd.github.io/blob/simple_html%2Bcss/compile.fish">compile.fish</a></p>
+<p><em>Update3</em>: This page now uses <a href="https://www.getzola.org/">zola</a>. To see the old method blogged about in this post, checkout this link <a href="https://github.com/sigmaSd/sigmaSd.github.io/tree/simple_html+css">old_page</a> (html/css branch)</p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

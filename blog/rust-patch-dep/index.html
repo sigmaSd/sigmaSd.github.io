@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Patch rust dependency
+</h1>
+<p class="subtitle"><strong>11&#x2F;19&#x2F;22</strong></p>
+<p><strong>25/4/1444</strong></p>
+<hr />
+<p>Say we want to debug a dependency of a project, lets make a quick fixture.</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">cargo</span><span> new patchit
+</span></code></pre>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">cargo</span><span> add regex
+</span></code></pre>
+<p>We can see our dependencies with:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">cargo</span><span> tree
+</span></code></pre>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>patchit v0.1.0
+</span><span>└── regex v1.7.0
+</span><span>    ├── aho-corasick v0.7.19
+</span><span>    │   └── memchr v2.5.0 // lets patch this one
+</span><span>    ├── memchr v2.5.0 // which means also this one
+</span><span>    └── regex-syntax v0.6.28
+</span></code></pre>
+<p>Ok say we want to debug <code>memchr</code>:</p>
+<p>First we need to get its source, either download it from github or more easily run:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">cargo</span><span> vendor
+</span></code></pre>
+<p>This will download all dependencies under <code>vendor</code> folder, and it will recommend to replace <code>crates-io</code> sources under <code>config.toml</code> but we're only interested in the downloading part.</p>
+<p>And we're only interested in debugging one dependency, we can simply do this by adding this to <code>cargo.toml</code>:</p>
+<pre data-lang="toml" style="background-color:#2b303b;color:#c0c5ce;" class="language-toml "><code class="language-toml" data-lang="toml"><span>[patch.crates-io]
+</span><span style="color:#bf616a;">memchr </span><span>= { </span><span style="color:#bf616a;">path </span><span>= &quot;</span><span style="color:#a3be8c;">vendor/memchr</span><span>&quot; }
+</span></code></pre>
+<p>That's it! Now you can modify <code>vendor/memchr</code> sources and it will be automatically picked up.</p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>
