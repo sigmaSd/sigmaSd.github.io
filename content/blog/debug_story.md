@@ -9,8 +9,8 @@ date = 2024-07-17 07:00:00
 For some reason I wanted to "port" Jupyter Echo Kernel to Deno using
 [deno-python](https://github.com/denosaurs/deno_python). It shouldn't be too
 hard I already have relatively complex projects using it:
-[Stimulator](https://github.com/sigmaSd/Stimulator)
-[Share](https://github.com/flathub/io.github.sigmasd.share)
+[Stimulator](https://flathub.org/apps/io.github.sigmasd.stimulator)
+[Share](https://flathub.org/apps/io.github.sigmasd.share)
 
 Here is the python kernel
 
