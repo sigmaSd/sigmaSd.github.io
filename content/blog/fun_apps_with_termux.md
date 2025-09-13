@@ -28,7 +28,7 @@ if ((await showDialog("confirm", {title:"continue?"})).text === "yes") {
 }
 ```
 
-The Termux lib is just a JS wrapper for Termux APIs. I generated it by giving an LLM (I don't remember which LLM I used) the Termux API repo as context.
+The Termux lib is just a JS wrapper for Termux APIs. I generated it by giving an LLM (I don't remember which LLM I used) the Termux API repo as context. Here is the link https://jsr.io/@sigma/termux
 
 - Now add the Termux Widget (actual widget) to the screen, then refresh. You should see the script. Click it and it should work!
 
