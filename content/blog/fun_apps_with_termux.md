@@ -31,4 +31,6 @@ The Termux lib is just a JS wrapper for Termux APIs. I generated it by giving an
 
 - Now add the Termux Widget (actual widget) to the screen, then refresh. You should see the script. Click it and it should work!
 
-*Gif placeholder*
+
+
+https://github.com/user-attachments/assets/0bed2790-4a73-4bad-b898-6b48aa87961f
