@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Custom keybindings
+</h1>
+<p class="subtitle"><strong>06&#x2F;02&#x2F;21</strong></p>
+<p><strong>21/10/1442</strong></p>
+<p>Custom keybindings are possible via scripts.</p>
+<p>Lets see how can we add vim mode support using scripts.</p>
+<p>The next example uses linux commands but the same can be done on any platform.</p>
+<p><strong>1 - Activate scripting feature:</strong></p>
+<ul>
+<li>Edit <code>$config/irust/config</code> and set <code>activate_scripting = true</code> (<code>$config</code> location depends on the platform see <a href="https://docs.rs/dirs/latest/dirs/fn.config_dir.html">dirs</a>)</li>
+<li>Create a script directory to hold the scripts
+<code>mkdir -p $config/irust/script4</code></li>
+</ul>
+<p><strong>2 - Download vim-mode script and install it</strong></p>
+<pre data-lang="shell" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell "><code class="language-shell" data-lang="shell"><span>git clone https://github.com/sigmaSd/IRust irust
+</span><span>cd irust/scripts_examples
+</span><span>cargo b --release
+</span><span>chmod +x target/release/irust_vim
+</span><span>cp target/release/irust_vim $config/irust/script4/
+</span></code></pre>
+<p>That's it, to check for the list of scripts, run <code>:scripts</code></p>
+<p>To activate/deactivate a script run <code>:scripts $script [activate|deactivate]</code></p>
+<p>We can enable vim-mode now via <code>:scripts Vim activate</code></p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

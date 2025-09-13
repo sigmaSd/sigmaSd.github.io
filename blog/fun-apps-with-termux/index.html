@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Fun Apps With Termux
+</h1>
+<p class="subtitle"><strong>09&#x2F;13&#x2F;25</strong></p>
+<h2 id="21-3-1447"><strong>21/3/1447</strong></h2>
+<p>Here's the problem: I want to call <code>&quot;*140*1*1#&quot;</code> then <code>&quot;*140*00#&quot;</code>. The first one registers one day of internet (the cheapest option), and most importantly, the second one disables automatic refresh of these registrations (otherwise it will keep registering each day, yeah they're annoying, they do that → totally legal shady business).</p>
+<p>Anyhow, I asked Gemini, and it told me to add a contact with the 2 calls separated by &quot;,&quot;. That didn't work for me. It said I could also use Tasker or something similar, but hey, I remembered Termux maybe it can do this.</p>
+<p>And indeed it can! The plan: Termux + Termux API + Termux Widget + a script (with Deno because why not).</p>
+<p>So here are the steps:</p>
+<ul>
+<li>Install Termux, Termux API, and Termux Widget (I use Droidify https://github.com/Droid-ify/client these days)</li>
+<li>Open Termux and run: <code>pkg upgrade &amp;&amp; pkg install deno &amp;&amp; pkg install termux-api</code></li>
+<li><code>mkdir -p ~/.shortcuts/tasks</code> (scripts under tasks run without showing Termux)</li>
+<li>Add the following script to <code>~/.shortcuts/tasks/f100.ts</code> (don't forget to <code>chmod +x</code>)</li>
+</ul>
+<p><strong>f100.ts</strong></p>
+<pre data-lang="ts" style="background-color:#2b303b;color:#c0c5ce;" class="language-ts "><code class="language-ts" data-lang="ts"><span style="color:#65737e;">#!/data/data/com.termux/files/usr/bin/env -S deno -A
+</span><span style="color:#b48ead;">import </span><span>{</span><span style="color:#bf616a;">showDialog</span><span>, </span><span style="color:#bf616a;">telephonyCall</span><span>} </span><span style="color:#b48ead;">from </span><span>&quot;</span><span style="color:#a3be8c;">jsr:@sigma/termux@1</span><span>&quot;
+</span><span style="color:#b48ead;">await </span><span style="color:#8fa1b3;">telephonyCall</span><span>(&quot;</span><span style="color:#a3be8c;">*140*1*1#</span><span>&quot;);
+</span><span style="color:#65737e;">// Unfortunately, the telephonyCall function returns before the user actually finishes the call,
+</span><span style="color:#65737e;">// so I added this dialog as an interruption between the two calls.
+</span><span style="color:#b48ead;">if </span><span>((</span><span style="color:#b48ead;">await </span><span style="color:#8fa1b3;">showDialog</span><span>(&quot;</span><span style="color:#a3be8c;">confirm</span><span>&quot;, {title:&quot;</span><span style="color:#a3be8c;">continue?</span><span>&quot;})).text === &quot;</span><span style="color:#a3be8c;">yes</span><span>&quot;) {
+</span><span>  </span><span style="color:#b48ead;">await </span><span style="color:#8fa1b3;">telephonyCall</span><span>(&quot;</span><span style="color:#a3be8c;">*140*00#</span><span>&quot;);
+</span><span>}
+</span></code></pre>
+<p>The Termux lib is just a JS wrapper for Termux APIs. I generated it by giving an LLM (I don't remember which LLM I used) the Termux API repo as context. Here is the link https://jsr.io/@sigma/termux</p>
+<ul>
+<li>Now add the Termux Widget (actual widget) to the screen, then refresh. You should see the script. Click it and it should work!</li>
+</ul>
+<video width="640" height="360" controls>
+  <source src="https://github.com/sigmaSd/sigmaSd.github.io-assets/raw/refs/heads/main/termux_app.mp4" type="video/mp4">
+</video>
+<p>Termux scripts can even go beyond the APIs. How? By using ADB! You can connect Termux via ADB to your phone, and with that you can go full botting without needing a PC connection.</p>
+<p>Here are the steps:</p>
+<ul>
+<li>In Termux: <code>pkg install android-tools</code></li>
+<li>Activate wireless debugging on your phone</li>
+<li>Open wireless debugging settings, click on <code>Pair device with pairing code</code></li>
+<li>In Termux, run <code>adb pair &lt;device_ip&gt;:&lt;port&gt; &lt;code&gt;</code></li>
+<li>Then after pairing, run <code>adb connect &lt;device_ip&gt;:&lt;port&gt;</code> (these IP/port are different—you'll find them on the same settings page under <code>IP address &amp; Port</code>)</li>
+</ul>
+<p>That's it! Now it should work. Just one problem though: when I go to Termux to type the pairing IP, the pairing actually stops! So I don't know if there's a simpler way to do this, but I just ended up running a server inside Termux that runs shell commands from my PC so I can connect while the settings menu is open (or you can just use SSH).</p>
+<p>Here are the scripts for reference:</p>
+<p><strong>server.ts</strong> (in termux)</p>
+<pre data-lang="ts" style="background-color:#2b303b;color:#c0c5ce;" class="language-ts "><code class="language-ts" data-lang="ts"><span style="color:#65737e;">// server.ts
+</span><span style="color:#65737e;">// WARNING: This server executes any shell command it receives.
+</span><span style="color:#65737e;">// It is highly insecure
+</span><span>
+</span><span style="color:#b48ead;">async function </span><span style="color:#8fa1b3;">handler</span><span>(</span><span style="color:#bf616a;">req</span><span>: Request): Promise&lt;Response&gt; {
+</span><span>  </span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">command </span><span>= </span><span style="color:#b48ead;">await </span><span style="color:#bf616a;">req</span><span>.</span><span style="color:#8fa1b3;">text</span><span>();
+</span><span>  </span><span style="color:#ebcb8b;">console</span><span>.</span><span style="color:#96b5b4;">log</span><span>(`</span><span style="color:#a3be8c;">Received command: ${</span><span style="color:#bf616a;">command</span><span style="color:#a3be8c;">}</span><span>`);
+</span><span>
+</span><span>  </span><span style="color:#b48ead;">try </span><span>{
+</span><span>    </span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">p </span><span>= new Deno.Command(&quot;</span><span style="color:#a3be8c;">bash</span><span>&quot;, {
+</span><span>      args: [&quot;</span><span style="color:#a3be8c;">-c</span><span>&quot;, </span><span style="color:#bf616a;">command</span><span>],
+</span><span>      stdout: &quot;</span><span style="color:#a3be8c;">piped</span><span>&quot;,
+</span><span>      stderr: &quot;</span><span style="color:#a3be8c;">piped</span><span>&quot;,
+</span><span>    }).</span><span style="color:#8fa1b3;">spawn</span><span>();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">const </span><span>{ </span><span style="color:#bf616a;">success </span><span>} = </span><span style="color:#b48ead;">await </span><span style="color:#bf616a;">p</span><span>.status;
+</span><span>    </span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">rawOutput </span><span>= </span><span style="color:#b48ead;">await </span><span style="color:#bf616a;">p</span><span>.</span><span style="color:#8fa1b3;">output</span><span>();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">success</span><span>) {
+</span><span>      </span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">output </span><span>= new TextDecoder().</span><span style="color:#8fa1b3;">decode</span><span>(</span><span style="color:#bf616a;">rawOutput</span><span>.</span><span style="color:#bf616a;">stdout</span><span>);
+</span><span>      </span><span style="color:#b48ead;">return </span><span>new Response(</span><span style="color:#bf616a;">output</span><span>, { status: </span><span style="color:#d08770;">200 </span><span>});
+</span><span>    } </span><span style="color:#b48ead;">else </span><span>{
+</span><span>      </span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">error </span><span>= new TextDecoder().</span><span style="color:#8fa1b3;">decode</span><span>(</span><span style="color:#bf616a;">rawOutput</span><span>.</span><span style="color:#bf616a;">stderr</span><span>);
+</span><span>      </span><span style="color:#b48ead;">return </span><span>new Response(</span><span style="color:#bf616a;">error</span><span>, { status: </span><span style="color:#d08770;">500 </span><span>});
+</span><span>    }
+</span><span>  } </span><span style="color:#b48ead;">catch </span><span>(</span><span style="color:#bf616a;">error</span><span>) {
+</span><span>    </span><span style="color:#b48ead;">return </span><span>new Response(`</span><span style="color:#a3be8c;">${</span><span style="color:#bf616a;">error</span><span style="color:#a3be8c;">}</span><span>`, { status: </span><span style="color:#d08770;">500 </span><span>});
+</span><span>  }
+</span><span>}
+</span><span>
+</span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#8fa1b3;">serve</span><span>({ port: </span><span style="color:#d08770;">8080 </span><span>}, </span><span style="color:#bf616a;">handler</span><span>);
+</span><span style="color:#ebcb8b;">console</span><span>.</span><span style="color:#96b5b4;">log</span><span>(&quot;</span><span style="color:#a3be8c;">Server listening on http://localhost:8080</span><span>&quot;);
+</span></code></pre>
+<p><strong>client.ts</strong> (from pc)</p>
+<pre data-lang="ts" style="background-color:#2b303b;color:#c0c5ce;" class="language-ts "><code class="language-ts" data-lang="ts"><span style="color:#65737e;">// client.ts
+</span><span style="color:#b48ead;">import </span><span>{ </span><span style="color:#bf616a;">createInterface </span><span>} </span><span style="color:#b48ead;">from </span><span>&quot;</span><span style="color:#a3be8c;">node:readline</span><span>&quot;;
+</span><span style="color:#b48ead;">import </span><span style="color:#bf616a;">process </span><span style="color:#b48ead;">from </span><span>&quot;</span><span style="color:#a3be8c;">node:process</span><span>&quot;;
+</span><span>
+</span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#bf616a;">args</span><span>.length !== </span><span style="color:#d08770;">1</span><span>) {
+</span><span>  </span><span style="color:#ebcb8b;">console</span><span>.</span><span style="color:#96b5b4;">error</span><span>(&quot;</span><span style="color:#a3be8c;">Usage: deno run --allow-net client.ts &lt;server_url&gt;</span><span>&quot;);
+</span><span>  </span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#8fa1b3;">exit</span><span>(</span><span style="color:#d08770;">1</span><span>);
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">serverUrl </span><span>= </span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#bf616a;">args</span><span>[</span><span style="color:#d08770;">0</span><span>];
+</span><span>
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">rl </span><span>= </span><span style="color:#8fa1b3;">createInterface</span><span>({
+</span><span>  input: process.stdin,
+</span><span>  output: process.stdout,
+</span><span>});
+</span><span>
+</span><span style="color:#b48ead;">function </span><span style="color:#8fa1b3;">readCommand</span><span>() {
+</span><span>  </span><span style="color:#bf616a;">rl</span><span>.</span><span style="color:#8fa1b3;">question</span><span>(&quot;</span><span style="color:#a3be8c;">&gt; </span><span>&quot;, </span><span style="color:#b48ead;">async </span><span>(</span><span style="color:#bf616a;">command</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">command</span><span>.</span><span style="color:#96b5b4;">toLowerCase</span><span>() === &quot;</span><span style="color:#a3be8c;">exit</span><span>&quot;) {
+</span><span>      </span><span style="color:#bf616a;">rl</span><span>.</span><span style="color:#96b5b4;">close</span><span>();
+</span><span>      </span><span style="color:#b48ead;">return</span><span>;
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">try </span><span>{
+</span><span>      </span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">response </span><span>= </span><span style="color:#b48ead;">await </span><span style="color:#8fa1b3;">fetch</span><span>(</span><span style="color:#bf616a;">serverUrl</span><span>, {
+</span><span>        method: &quot;</span><span style="color:#a3be8c;">POST</span><span>&quot;,
+</span><span>        body: </span><span style="color:#bf616a;">command</span><span>,
+</span><span>      });
+</span><span>
+</span><span>      </span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">result </span><span>= </span><span style="color:#b48ead;">await </span><span style="color:#bf616a;">response</span><span>.</span><span style="color:#8fa1b3;">text</span><span>();
+</span><span>      </span><span style="color:#ebcb8b;">console</span><span>.</span><span style="color:#96b5b4;">log</span><span>(</span><span style="color:#bf616a;">result</span><span>);
+</span><span>    } </span><span style="color:#b48ead;">catch </span><span>(</span><span style="color:#bf616a;">error</span><span>) {
+</span><span>      </span><span style="color:#ebcb8b;">console</span><span>.</span><span style="color:#96b5b4;">error</span><span>(&quot;</span><span style="color:#a3be8c;">Error sending command:</span><span>&quot;, </span><span style="color:#bf616a;">error</span><span>);
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#8fa1b3;">readCommand</span><span>();
+</span><span>  });
+</span><span>}
+</span><span>
+</span><span style="color:#8fa1b3;">readCommand</span><span>();
+</span></code></pre>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

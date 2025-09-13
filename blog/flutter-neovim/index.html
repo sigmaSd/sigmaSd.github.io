@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Flutter + NeoVim
+</h1>
+<p class="subtitle"><strong>03&#x2F;22&#x2F;21</strong></p>
+<p><strong>9/8/1442</strong></p>
+<hr />
+<p><strong>Setup neovim + flutter:</strong></p>
+<ol>
+<li>
+<p>Install <a href="https://github.com/junegunn/vim-plug">vim-plug</a> for managing plugins and <a href="https://github.com/neoclide/coc.nvim">Coc</a> as lsp client</p>
+</li>
+<li>
+<p>Edit neovim config</p>
+</li>
+</ol>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>call plug#begin()
+</span><span>Plug &#39;neoclide/coc.nvim&#39;, {&#39;branch&#39;: &#39;release&#39;}
+</span><span>Plug &#39;dart-lang/dart-vim-plugin&#39;
+</span><span>call plug#end()
+</span></code></pre>
+<ol start="3">
+<li>
+<p>Run these commands:</p>
+<ul>
+<li><code>:PlugInstall</code></li>
+<li><code>:CocInstall coc-flutter</code></li>
+</ul>
+</li>
+</ol>
+<p>Everything should work by default, checkout <a href="https://github.com/iamcco/coc-flutter">coc-flutter</a> for the available commands.</p>
+<p>Most frequent commands:</p>
+<ul>
+<li><code>:CocCommand flutter.run</code></li>
+<li><code>:CocCommand flutter.dev.openDevLog</code></li>
+<li><code>:CocCommand flutter.dev.hotRestart</code></li>
+</ul>
+<p>One thing to add is formatting on save, for that run <code>:CocConfig</code> then add</p>
+<p><code>{ &quot;coc.preferences.formatOnSaveFiletypes&quot;: [&quot;dart&quot;] }</code></p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

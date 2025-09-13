@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Inline benchmark in rust
+</h1>
+<p class="subtitle"><strong>11&#x2F;18&#x2F;22</strong></p>
+<p><strong>24/4/1444</strong></p>
+<hr />
+<p>Turns out you can do inline benchmarks in rust with a not that bad user experience.</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">cargo</span><span> new bench-inline
+</span></code></pre>
+<p>In <code>main.rs</code>:</p>
+<pre data-lang="rs" style="background-color:#2b303b;color:#c0c5ce;" class="language-rs "><code class="language-rs" data-lang="rs"><span>#![</span><span style="color:#bf616a;">feature</span><span>(test)]
+</span><span>
+</span><span style="color:#b48ead;">extern crate</span><span> test;
+</span><span>
+</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>    
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">add_two</span><span>(</span><span style="color:#bf616a;">a</span><span>: </span><span style="color:#b48ead;">i32</span><span>) -&gt; </span><span style="color:#b48ead;">i32 </span><span>{
+</span><span>    a + </span><span style="color:#d08770;">2
+</span><span>}
+</span><span>
+</span><span>#[</span><span style="color:#bf616a;">cfg</span><span>(test)]
+</span><span style="color:#b48ead;">mod </span><span>tests {
+</span><span>    </span><span style="color:#b48ead;">use super</span><span>::*;
+</span><span>    </span><span style="color:#b48ead;">use </span><span>test::Bencher;
+</span><span>
+</span><span>    #[</span><span style="color:#bf616a;">test</span><span>]
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">it_works</span><span>() {
+</span><span>        assert_eq!(</span><span style="color:#d08770;">4</span><span>, </span><span style="color:#96b5b4;">add_two</span><span>(</span><span style="color:#d08770;">2</span><span>));
+</span><span>    }
+</span><span>
+</span><span>    #[</span><span style="color:#bf616a;">bench</span><span>]
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">bench_add_two</span><span>(</span><span style="color:#bf616a;">b</span><span>: &amp;</span><span style="color:#b48ead;">mut</span><span> Bencher) {
+</span><span>        b.</span><span style="color:#96b5b4;">iter</span><span>(|| </span><span style="color:#96b5b4;">add_two</span><span>(</span><span style="color:#d08770;">2</span><span>));
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">cargo</span><span> +nightly bench
+</span></code></pre>
+<p>Ok so far so good, we just followed <a href="https://doc.rust-lang.org/nightly/unstable-book/library-features/test.html">cargo-bench</a>, we have our inline benchmarks but the problem is this: we usually want to just use stable and only use <code>cargo +nightly</code> for bench also rust analyzer gets confused with this setup.</p>
+<p>Turns out there is a way!</p>
+<p>1- Add a new feature lets call it nightly</p>
+<p><code>cargo.toml</code></p>
+<pre data-lang="toml" style="background-color:#2b303b;color:#c0c5ce;" class="language-toml "><code class="language-toml" data-lang="toml"><span>[features]
+</span><span style="color:#bf616a;">nightly </span><span>= []
+</span></code></pre>
+<p>2- change our <code>main.rs</code> to:</p>
+<pre data-lang="rs" style="background-color:#2b303b;color:#c0c5ce;" class="language-rs "><code class="language-rs" data-lang="rs"><span>#![</span><span style="color:#bf616a;">cfg_attr</span><span>(feature = &quot;</span><span style="color:#a3be8c;">nightly</span><span>&quot;, </span><span style="color:#bf616a;">feature</span><span>(test))]
+</span><span>
+</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>    
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">add_two</span><span>(</span><span style="color:#bf616a;">a</span><span>: </span><span style="color:#b48ead;">i32</span><span>) -&gt; </span><span style="color:#b48ead;">i32 </span><span>{
+</span><span>    a + </span><span style="color:#d08770;">2
+</span><span>}
+</span><span>
+</span><span>#[</span><span style="color:#bf616a;">cfg</span><span>(test)]
+</span><span style="color:#b48ead;">mod </span><span>tests {
+</span><span>    #[</span><span style="color:#bf616a;">cfg</span><span>(feature = &quot;</span><span style="color:#a3be8c;">nightly</span><span>&quot;)]
+</span><span>    </span><span style="color:#b48ead;">extern crate</span><span> test;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">use super</span><span>::*;
+</span><span>
+</span><span>    #[</span><span style="color:#bf616a;">test</span><span>]
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">it_works</span><span>() {
+</span><span>        assert_eq!(</span><span style="color:#d08770;">4</span><span>, </span><span style="color:#96b5b4;">add_two</span><span>(</span><span style="color:#d08770;">2</span><span>));
+</span><span>    }
+</span><span>
+</span><span>    #[</span><span style="color:#bf616a;">cfg</span><span>(feature = &quot;</span><span style="color:#a3be8c;">nightly</span><span>&quot;)]
+</span><span>    #[</span><span style="color:#bf616a;">bench</span><span>]
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">bench_add_two</span><span>(</span><span style="color:#bf616a;">b</span><span>: &amp;</span><span style="color:#b48ead;">mut </span><span>test::Bencher) {
+</span><span>        b.</span><span style="color:#96b5b4;">iter</span><span>(|| </span><span style="color:#96b5b4;">add_two</span><span>(</span><span style="color:#d08770;">2</span><span>));
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>That's it! Now rust analyzer is not confused, you can run tests with <code>cargo test</code> and benchmarks with <code>cargo +nightly bench --features nightly</code></p>
+<p>And for a real word example I used this idea to benchmark a PR change in irust and it was really useful <a href="https://github.com/sigmaSd/IRust/pull/99#issuecomment-1304842421">irust-syntect-pr</a></p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

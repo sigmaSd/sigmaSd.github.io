@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Shell interpolation
+</h1>
+<p class="subtitle"><strong>12&#x2F;18&#x2F;21</strong></p>
+<p><strong>14/05/1443</strong></p>
+<p>I recently noticed that IPython can interpolate shell, which I thought is pretty useful so I added it to IRust.</p>
+<p>You can still invoke the shell via <code>::</code> like <code>::ls</code></p>
+<p>But now you can also interpolate shell via <code>$$shell here$$</code>, example:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">let</span><span> list = $$ ls -la $$;
+</span><span>:</span><span style="color:#b48ead;">type </span><span>list </span><span style="color:#65737e;">// This outputs `String`
+</span></code></pre>
+<p>This will transform the result of the shell result to a String, that you can simply use!</p>
+<p>demo:
+<img src="https://github.com/sigmaSd/sigmaSd.github.io/raw/master/content/irust_book/assets/aoc_2021.gif" alt="Alt Text" /></p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

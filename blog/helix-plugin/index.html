@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Simulate plugin experience in Helix
+</h1>
+<p class="subtitle"><strong>12&#x2F;07&#x2F;22</strong></p>
+<p><strong>09/5/1444</strong></p>
+<hr />
+<p>I like helix, especially multi-cursor supports which unfortunately for nvim seems hard to add</p>
+<p>So everyone is waiting for the plugin system, till then here is a not so bad plugin like experience</p>
+<ul>
+<li>Create a folder to hold our scripts</li>
+</ul>
+<p><code>mkdir -p ~/dev/helix/scripts/source</code></p>
+<ul>
+<li>Make helix aware of our scripts by adding scripts to the PATH only for helix</li>
+</ul>
+<p>This example uses fish, other shell have similar abilities</p>
+<pre data-lang="fish" style="background-color:#2b303b;color:#c0c5ce;" class="language-fish "><code class="language-fish" data-lang="fish"><span style="color:#b48ead;">function </span><span style="color:#8fa1b3;">hx
+</span><span>    </span><span style="color:#bf616a;">set </span><span>PATH_TMP $</span><span style="color:#bf616a;">PATH
+</span><span>    </span><span style="color:#bf616a;">set </span><span>PATH ~/dev/helix/scripts/ $</span><span style="color:#bf616a;">PATH
+</span><span>    </span><span style="color:#bf616a;">helix </span><span>$</span><span style="color:#bf616a;">argv
+</span><span>    </span><span style="color:#bf616a;">set </span><span>PATH $</span><span style="color:#bf616a;">PATH_TMP
+</span><span style="color:#b48ead;">end
+</span><span>
+</span><span style="color:#bf616a;">funcsave </span><span>hx
+</span></code></pre>
+<p>So now <code>hx</code> is aliased to helix that knows about our scripts path</p>
+<ul>
+<li>Create a script</li>
+</ul>
+<p>I'm going to use <em>deno</em> here, but any compiled program can work</p>
+<p>The advantage of <em>deno</em>, is the programs have 0 permissions by default which works actually very well as a plugin</p>
+<p>But realisticly you want a compiled language, for the fastest cold startup time.
+I prefer <em>Zig</em> for this since it makes the lowest amount of syscalls possible by default in linux for example. </p>
+<p><code>cd ~/dev/helix/scripts</code></p>
+<p>Here is an example for a script I just needed that just simply flips <code>]</code> to <code>)</code> and <code>[</code> to <code>(</code></p>
+<p><code>source/f.ts</code></p>
+<pre data-lang="ts" style="background-color:#2b303b;color:#c0c5ce;" class="language-ts "><code class="language-ts" data-lang="ts"><span style="color:#b48ead;">const </span><span style="color:#bf616a;">buf </span><span>= new Uint8Array(</span><span style="color:#d08770;">256</span><span>);
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">n </span><span>= </span><span style="color:#b48ead;">await </span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#bf616a;">stdin</span><span>.</span><span style="color:#8fa1b3;">read</span><span>(</span><span style="color:#bf616a;">buf</span><span>);
+</span><span>
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">a </span><span>= new TextDecoder().</span><span style="color:#8fa1b3;">decode</span><span>(</span><span style="color:#bf616a;">buf</span><span>.</span><span style="color:#96b5b4;">slice</span><span>(</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#bf616a;">n</span><span>!));
+</span><span style="color:#b48ead;">let </span><span style="color:#bf616a;">r</span><span>;
+</span><span style="color:#b48ead;">switch </span><span>(</span><span style="color:#bf616a;">a</span><span>) {
+</span><span>  </span><span style="color:#b48ead;">case </span><span>&quot;</span><span style="color:#a3be8c;">]</span><span>&quot;:
+</span><span>    </span><span style="color:#bf616a;">r </span><span>= &quot;</span><span style="color:#a3be8c;">)</span><span>&quot;;
+</span><span>    </span><span style="color:#b48ead;">break</span><span>;
+</span><span>  </span><span style="color:#b48ead;">case </span><span>&quot;</span><span style="color:#a3be8c;">[</span><span>&quot;:
+</span><span>    </span><span style="color:#bf616a;">r </span><span>= &quot;</span><span style="color:#a3be8c;">(</span><span>&quot;;
+</span><span>    </span><span style="color:#b48ead;">break</span><span>;
+</span><span>  </span><span style="color:#b48ead;">default</span><span>:
+</span><span>    </span><span style="color:#bf616a;">r </span><span>= </span><span style="color:#bf616a;">a</span><span>;
+</span><span>}
+</span><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#bf616a;">stdout</span><span>.</span><span style="color:#8fa1b3;">writeSync</span><span>(new TextEncoder().</span><span style="color:#8fa1b3;">encode</span><span>(</span><span style="color:#bf616a;">r</span><span>));
+</span></code></pre>
+<p>Or another script that acts as a snippet (just inserts console.log)</p>
+<pre data-lang="ts" style="background-color:#2b303b;color:#c0c5ce;" class="language-ts "><code class="language-ts" data-lang="ts"><span style="color:#bf616a;">Deno</span><span>.</span><span style="color:#bf616a;">stdout</span><span>.</span><span style="color:#8fa1b3;">writeSync</span><span>(new TextEncoder().</span><span style="color:#8fa1b3;">encode</span><span>(&quot;</span><span style="color:#a3be8c;">console.log(</span><span>&quot;));
+</span></code></pre>
+<ul>
+<li>Compile our scripts</li>
+</ul>
+<p>This example uses fish syntax, other shell have similar workflow</p>
+<pre data-lang="fish" style="background-color:#2b303b;color:#c0c5ce;" class="language-fish "><code class="language-fish" data-lang="fish"><span style="color:#b48ead;">for </span><span>f </span><span style="color:#b48ead;">in </span><span>(</span><span style="color:#bf616a;">ls </span><span>source)
+</span><span>    </span><span style="color:#bf616a;">deno </span><span>compile source/$</span><span style="color:#bf616a;">f
+</span><span style="color:#b48ead;">end
+</span></code></pre>
+<p>That's it, now when running helix, we can pipe a selection to our scripts using the pipe command 
+which is bound to <code>|</code> key by default (can be changed, I have personally <code>&quot;µ&quot; = &quot;shell_pipe&quot;</code> for azerty keyboard)</p>
+<img src="https://cdn.discordapp.com/attachments/983096812456017934/1050122920594255882/qqqq.gif"/>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Use the clouds (gitpod)
+</h1>
+<p class="subtitle"><strong>03&#x2F;24&#x2F;21</strong></p>
+<p><strong>11/8/1442</strong></p>
+<hr />
+<p>Recently I discovered <a href="https://gitpod.io/">gitpod</a> and its been great!</p>
+<p>You get access to a super environment for free.</p>
+<p>Ever thought about contributing to a cool project, but building it requires waiting a couple of hours? gitpod might be what you're looking for.</p>
+<p>Its as simple as adding <code>gitpod.io/#</code> infront of the repository url, and you immediately get access to a powerful environment.<br />
+Example: <code>https://gitpod.io/#https://github.com/sigmaSd/visual-studio-code-wayland</code></p>
+<p>I even have a script (invoked by a launcher) that runs <code>wl-copy &quot;gitpod.io/#&quot;</code>
+Obviously you can just use the browser extension.</p>
+<p>Currently I'm using gitpod to build an android apk from a flutter project <a href="https://github.com/sigmaSd/APOD/tree/gitpod">https://github.com/sigmaSd/APOD/tree/gitpod</a> (success!) and also building vscode with wayland support (success!(checkout <em>update1</em>)).</p>
+<p>Couple of tips and tricks:</p>
+<ul>
+<li>
+<p>To be able to use <code>sudo</code> (which is really handy for installing dependencies without messing with the docker image) you can go to  <a href="https://gitpod.io/settings/">https://gitpod.io/settings/</a> and enable <code>Feature Preview</code> and that's it now you can!</p>
+</li>
+<li>
+<p>Do <em>not</em> use the vscode vim extension, currently it makes everything slow, but that might change soon! <a href="https://github.com/gitpod-io/gitpod/issues/1212">https://github.com/gitpod-io/gitpod/issues/1212</a></p>
+</li>
+<li>
+<p>Building an android apk is a little bit tricky, I wrote a simple guide here <a href="https://github.com/sigmaSd/flutter_gitpod">https://github.com/sigmaSd/flutter_gitpod</a></p>
+</li>
+<li>
+<p>Downloading a file from gitpod sometimes freeze the ui.<br />
+Using <code>python -m http.server</code> seems to work better.</p>
+</li>
+</ul>
+<p><em>Update1:</em> To build vscode with wayland support here are the steps <a href="https://github.com/microsoft/vscode/issues/109176#issuecomment-806067083">https://github.com/microsoft/vscode/issues/109176#issuecomment-806067083</a></p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

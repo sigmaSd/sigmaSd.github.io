@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>sigmasd.github.io</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href='https://sigmasd.github.io/favicon.svg'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+    html {
+        font-size: 17px; 
+    }
+    </style>
+
+    <navbar style="margin-left: 1%; font-size: large; display: flex; gap: 1rem; font-weight: bold;">
+        <a href='https://sigmasd.github.io'>Main Page</a> |
+        <a href='https://sigmasd.github.io/blog'>Blog Posts</a> |
+        <a href='https://github.com/sigmaSd/sigmaSd.github.io'>Source Code</a>
+    </navbar>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            
+<h1 class="title">
+    Github Pages (Part 2)
+</h1>
+<p class="subtitle"><strong>03&#x2F;22&#x2F;21</strong></p>
+<p><strong>9/8/1442</strong></p>
+<hr />
+<p>This page now uses <a href="https://www.getzola.org/">zola</a>.</p>
+<p>It was pretty straight forward to set up, simply following <a href="https://www.getzola.org/documentation/getting-started/overview/">getting-started</a>
+should get you up and running.</p>
+<p>Deploying to GithubPages is also fairly simple <a href="https://www.getzola.org/documentation/deployment/github-pages/">deployment</a>.</p>
+<p><em>Couple of things I had to look for:</em></p>
+<ul>
+<li><strong>Formatting dates:</strong> </li>
+</ul>
+<p><code>{{ page.date | date(format=$chrono_format_string) }}</code> example: <code>{{ page.date | date(format=&quot;%D&quot;) }}</code></p>
+<ul>
+<li><strong>Using the correct relative url in the template:</strong></li>
+</ul>
+<p><code>{ get_url(path=$path)}</code> example: <code>{ get_url(path=&quot;/&quot;)}</code></p>
+<ul>
+<li><strong>Adding new lines in markdown:</strong></li>
+</ul>
+<p><code>&lt;br/&gt;</code></p>
+<hr />
+<p><strong>Update1:</strong> <br />
+Turns out that css matters in markdown spacing. The above <code>&lt;br/&gt;</code> trick is not needed if the css stylesheet used have a good enough spacing between paragraphs.<br />
+Line breaks if needed can be added with <code>\</code></p>
+<p>Currently I have switched to <a href="https://github.com/oxalorg/sakura">sakura css framework</a>.<br />
+So far it looks quite nice and it adapts automatically to smaller screens.</p>
+
+
+        </div>
+    </section>
+</body>
+
+</html>
