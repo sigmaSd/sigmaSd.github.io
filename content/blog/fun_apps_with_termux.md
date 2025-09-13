@@ -4,7 +4,7 @@ date = 2025-09-13 07:00:00
 +++
 **21/3/1447**
 ---
-Here's the problem: I want to call "*140*1*1#" then "*140*00#". The first one registers one day of internet (the cheapest option), and most importantly, the second one disables automatic refresh of these registrations (it will keep registering each day—yeah, they're annoying and do that → totally legal shady business).
+Here's the problem: I want to call `"*140*1*1#"` then `"*140*00#"`. The first one registers one day of internet (the cheapest option), and most importantly, the second one disables automatic refresh of these registrations (otherwise it will keep registering each day, yeah they're annoying, they do that → totally legal shady business).
 
 Anyhow, I asked Gemini, and it told me to add a contact with the 2 calls separated by ",". That didn't work for me. It said I could also use Tasker or something similar, but hey, I remembered Termux maybe it can do this.
 
@@ -20,6 +20,8 @@ So here are the steps:
 #!/data/data/com.termux/files/usr/bin/env -S deno -A
 import {showDialog, telephonyCall} from "jsr:@sigma/termux@1"
 await telephonyCall("*140*1*1#");
+// Unfortunately, the telephonyCall function returns before the user actually finishes the call,
+// so I added this dialog as an interruption between the two calls.
 if ((await showDialog("confirm", {title:"continue?"})).text === "yes") {
   await telephonyCall("*140*00#");
 }
