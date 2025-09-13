@@ -33,4 +33,6 @@ The Termux lib is just a JS wrapper for Termux APIs. I generated it by giving an
 
 
 
-https://github.com/user-attachments/assets/0bed2790-4a73-4bad-b898-6b48aa87961f
+<video width="640" height="360" controls>
+  <source src="https://github.com/user-attachments/assets/0bed2790-4a73-4bad-b898-6b48aa87961f" type="video/mp4">
+</video>
