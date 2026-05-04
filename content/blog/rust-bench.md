@@ -1,6 +1,7 @@
 +++
 title = "Inline benchmark in rust"
 date = 2022-11-18 19:00:00
+description = "Learn how to perform inline benchmarks in Rust with a smooth developer experience."
 +++
 **24/4/1444**
 

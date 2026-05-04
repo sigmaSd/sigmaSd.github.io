@@ -1,6 +1,7 @@
 +++
 title = "Github Pages (Part 2)"
 date = 2021-03-22 17:00:00
+description = "Updating my GitHub Pages site to use the Zola static site generator."
 +++
 **9/8/1442**
 

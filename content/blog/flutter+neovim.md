@@ -1,7 +1,9 @@
 +++
-title = "Flutter + NeoVim"
-date = 2021-03-22 10:00:00
+title = "Flutter + Neovim"
+date = 2021-05-18 10:00:00
+description = "A guide on setting up a productive Flutter development environment using Neovim."
 +++
+
 **9/8/1442**
 
 ---

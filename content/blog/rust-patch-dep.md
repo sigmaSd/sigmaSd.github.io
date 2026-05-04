@@ -1,6 +1,7 @@
 +++
 title = "Patch rust dependency"
 date = 2022-11-19 19:00:00
+description = "A quick guide on how to patch and debug Rust dependencies locally."
 +++
 **25/4/1444**
 

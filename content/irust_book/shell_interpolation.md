@@ -1,7 +1,10 @@
 +++
 title = "Shell interpolation"
-date = 2021-12-18 08:00:00
+date = 2021-05-05 10:00:00
+weight = 20
+description = "Execute shell commands directly from IRust with interpolation support."
 +++
+
 **14/05/1443**
 
 I recently noticed that IPython can interpolate shell, which I thought is pretty useful so I added it to IRust.

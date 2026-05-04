@@ -1,6 +1,7 @@
 +++
 title = "A debugging story"
 date = 2024-07-17 07:00:00
+description = "A deep dive into a mysterious bug while porting Jupyter Echo Kernel to Deno."
 +++
 **11/1/1446**
 

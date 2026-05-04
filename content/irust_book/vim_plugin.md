@@ -1,6 +1,8 @@
 +++
 title = "Vim Plugin"
 date = 2022-01-30 14:00:00
+weight = 40
+description = "Integrate IRust with Vim for a powerful REPL-driven development workflow."
 +++
 **27/6/1443**
 

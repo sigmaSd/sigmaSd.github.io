@@ -2,6 +2,7 @@
 +++
 title = "Simulate plugin experience in Helix"
 date = 2022-12-07 19:00:00
+description = "How to emulate a plugin-like experience in the Helix editor."
 +++
 **09/5/1444**
 

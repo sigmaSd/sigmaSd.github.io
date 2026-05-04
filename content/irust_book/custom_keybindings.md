@@ -1,7 +1,10 @@
 +++
 title = "Custom keybindings"
-date = 2021-06-02 18:00:00
+date = 2021-05-05 10:00:00
+weight = 30
+description = "Customize your IRust experience with scripts and custom keybindings."
 +++
+
 **21/10/1442**
 
 Custom keybindings are possible via scripts.

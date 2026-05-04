@@ -1,6 +1,7 @@
 +++
 title = "Use the clouds (gitpod)"
 date = 2021-03-24 18:00:00
+description = "Exploring the benefits of using Gitpod for a seamless cloud-based development environment."
 +++
 **11/8/1442**
 

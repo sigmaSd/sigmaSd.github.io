@@ -1,6 +1,7 @@
 +++
 title = "Github Pages"
 date = 2021-03-22 11:00:00
+description = "A quick introduction to hosting your own site using GitHub Pages."
 +++
 **9/8/1442**
 

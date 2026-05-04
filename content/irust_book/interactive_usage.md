@@ -1,6 +1,8 @@
 +++
 title = "Interactive usage"
 date = 2021-05-05 10:00:00
+weight = 10
+description = "Learn how to use IRust interactively, including adding crates on the fly."
 +++
 **23/9/1442**
 
