@@ -13,7 +13,7 @@ jobs:
         env:
           # Target branch
           PAGES_BRANCH: gh-pages
-          # Provide personal access token
-          TOKEN: ${{ secrets.TOKEN }}
+          # Use the automatic GITHUB_TOKEN for publishing
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Theme is now a regular folder
           BUILD_THEMES: false
