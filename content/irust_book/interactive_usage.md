@@ -26,4 +26,4 @@ We can use this for interactive usage:
 - Now any public function written in `lib.rs` will be immediately usable in IRust after saving the file!
 
 demo:
-![Alt Text](https://github.com/sigmaSd/sigmaSd.github.io/raw/master/content/irust_book/assets/irust.gif)
+![Alt Text](/irust_book/assets/irust.gif)

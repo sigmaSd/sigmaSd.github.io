@@ -13,4 +13,4 @@ To use it:
 - Set `local_server` to true in IRust configuration file
 
 Demo:
-![Vim plugin demo](https://github.com/sigmaSd/sigmaSd.github.io/raw/master/content/irust_book/assets/vim_plugin.gif)
+![Vim plugin demo](/irust_book/assets/vim_plugin.gif)

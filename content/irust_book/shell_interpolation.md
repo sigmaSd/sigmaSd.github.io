@@ -21,4 +21,4 @@ let list = $$ ls -la $$;
 This will transform the result of the shell result to a String, that you can simply use!
 
 demo:
-![Alt Text](https://github.com/sigmaSd/sigmaSd.github.io/raw/master/content/irust_book/assets/aoc_2021.gif)
+![Alt Text](/irust_book/assets/aoc_2021.gif)
