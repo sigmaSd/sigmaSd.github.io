@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8"><meta http-equiv="Content-Security-Policy"
+content="default-src 'self';style-src 'self' 'unsafe-inline';connect-src 'self';script-src 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https://sigmasd.github.io">
+
+    
+    <title>
+sigmaSd • Simulate plugin experience in Helix</title>
+
+    
+    
+    
+
+    
+    
+        
+            
+            
+                
+                    <link rel="alternate" type="application/atom+xml" title="sigmaSd - Atom Feed" href="https://sigmasd.github.io/atom.xml">
+                
+            
+        
+    
+
+    
+    
+    
+        
+            <link rel="stylesheet" href="https://sigmasd.github.io/custom_subset.css?h=0b9535a28bc3d5bf2321">
+        
+    
+
+    
+        <link rel="stylesheet" href="https://sigmasd.github.io/main.css?h=23f0b5dce3e7c0ee3df6" />
+        <link rel="stylesheet" href="https://sigmasd.github.io/skins/teal.css?h=bd19e558a52d678a50de" />
+
+    <meta name="color-scheme" content="light dark" />
+        <meta name="description" content="How to emulate a plugin-like experience in the Helix editor." />
+        <meta property="og:description" content="How to emulate a plugin-like experience in the Helix editor." />
+
+    
+
+    <meta property="og:title" content="Simulate plugin experience in Helix" />
+    <meta property="og:type" content="article" />
+
+    
+<meta property="og:locale" content="en_GB" />
+
+    <meta property="og:url" content="https:&#x2F;&#x2F;sigmasd.github.io&#x2F;blog&#x2F;helix-plugin&#x2F;" /><meta property="og:site_name" content="sigmaSd">
+        <noscript><link rel="stylesheet" href="https://sigmasd.github.io/no_js.css"/></noscript>
+        <script type="text/javascript" src="https://sigmasd.github.io/js/initializeTheme.min.js"></script>
+        <script defer src="https://sigmasd.github.io/js/themeSwitcher.min.js"></script>
+        <script defer src="https://sigmasd.github.io/js/searchElasticlunr.min.js?h=c0e7a768def63c5e8e57"></script>
+
+        
+    
+</head>
+
+
+<body>
+    <a href="#main-content" id="skip-link">Skip to content</a>
+    <header>
+    <nav class="navbar">
+        <div class="nav-title">
+            <a class="home-title" href="https://sigmasd.github.io/">sigmaSd</a>
+        </div>
+            <div class="nav-navs">
+                <ul>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding" href="https://sigmasd.github.io/blog/">Blog
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding" href="https://sigmasd.github.io/irust_book/">IRust Book
+                                </a>
+                            </li>
+                        <li class="menu-icons-container">
+                        <ul class="menu-icons-group">
+                            <li class="js menu-icon">
+                                <div role="button" tabindex="0" id="search-button" class="search-icon interactive-icon" title="Click or press $SHORTCUT to open search" aria-label="Click or press $SHORTCUT to open search">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                        <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
+                                    </svg>
+                                </div>
+                            </li>
+
+                            
+                            
+
+                            <li class="theme-switcher-wrapper js"><div
+        title="Toggle dark&#x2F;light mode"
+        class="theme-switcher"
+        tabindex="0"
+        role="button"
+        aria-label="Toggle dark mode"
+        aria-pressed="false">
+    </div><div
+        title="Reset mode to default"
+        class="theme-resetter arrow"
+        tabindex="0"
+        role="button"
+        aria-hidden="true"
+        aria-label="Reset mode to default">
+    </div>
+
+</li>
+</ul>
+                    </li>
+                </ul>
+            </div>
+        
+    </nav>
+</header>
+
+    <div class="content" id="main-content">
+
+        
+        
+
+
+
+
+
+<main>
+    <article class="h-entry">
+        <h1 class="p-name article-title">
+            Simulate plugin experience in Helix
+        </h1>
+        <a class="u-url u-uid" href="https://sigmasd.github.io/blog/helix-plugin/"></a>
+
+        <ul class="meta"><span class="hidden p-author h-card">
+<a rel="author" href="https:&#x2F;&#x2F;sigmasd.github.io" class="u-url " title="sigmaSd">sigmaSd</a>
+</span>
+<li><time class="dt-published" datetime="2022-12-07T19:00:00">7th Dec 2022</time></li><li title="246 words"><span class='separator' aria-hidden='true'>•</span>2 min read</li>
+        </ul>
+            <p class="p-summary" hidden>How to emulate a plugin-like experience in the Helix editor.</p><section class="e-content body"><p><strong>09/5/1444</strong></p>
+<hr />
+<p>I like helix, especially multi-cursor supports which unfortunately for nvim seems hard to add</p>
+<p>So everyone is waiting for the plugin system, till then here is a not so bad plugin like experience</p>
+<ul>
+<li>Create a folder to hold our scripts</li>
+</ul>
+<p><code>mkdir -p ~/dev/helix/scripts/source</code></p>
+<ul>
+<li>Make helix aware of our scripts by adding scripts to the PATH only for helix</li>
+</ul>
+<p>This example uses fish, other shell have similar abilities</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="fish"><span class="giallo-l"><span style="color: #F97583;">function</span><span> hx</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    set</span><span> PATH_TMP $PATH</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    set</span><span> PATH ~/dev/helix/scripts/ $PATH</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    helix $argv</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    set</span><span> PATH $PATH_TMP</span></span>
+<span class="giallo-l"><span style="color: #F97583;">end</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #79B8FF;">funcsave</span><span> hx</span></span></code></pre>
+<p>So now <code>hx</code> is aliased to helix that knows about our scripts path</p>
+<ul>
+<li>Create a script</li>
+</ul>
+<p>I’m going to use <em>deno</em> here, but any compiled program can work</p>
+<p>The advantage of <em>deno</em>, is the programs have 0 permissions by default which works actually very well as a plugin</p>
+<p>But realisticly you want a compiled language, for the fastest cold startup time.
+I prefer <em>Zig</em> for this since it makes the lowest amount of syscalls possible by default in linux for example.</p>
+<p><code>cd ~/dev/helix/scripts</code></p>
+<p>Here is an example for a script I just needed that just simply flips <code>]</code> to <code>)</code> and <code>[</code> to <code>(</code></p>
+<p><code>source/f.ts</code></p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="typescript"><span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> buf</span><span style="color: #F97583;"> = new</span><span style="color: #B392F0;"> Uint8Array</span><span>(</span><span style="color: #79B8FF;">256</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> n</span><span style="color: #F97583;"> = await</span><span> Deno.stdin.</span><span style="color: #B392F0;">read</span><span>(buf);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> a</span><span style="color: #F97583;"> = new</span><span style="color: #B392F0;"> TextDecoder</span><span>().</span><span style="color: #B392F0;">decode</span><span>(buf.</span><span style="color: #B392F0;">slice</span><span>(</span><span style="color: #79B8FF;">0</span><span>, n</span><span style="color: #F97583;">!</span><span>));</span></span>
+<span class="giallo-l"><span style="color: #F97583;">let</span><span> r;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">switch</span><span> (a) {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">  case</span><span style="color: #9ECBFF;"> &quot;]&quot;</span><span>:</span></span>
+<span class="giallo-l"><span>    r</span><span style="color: #F97583;"> =</span><span style="color: #9ECBFF;"> &quot;)&quot;</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    break</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">  case</span><span style="color: #9ECBFF;"> &quot;[&quot;</span><span>:</span></span>
+<span class="giallo-l"><span>    r</span><span style="color: #F97583;"> =</span><span style="color: #9ECBFF;"> &quot;(&quot;</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    break</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">  default</span><span>:</span></span>
+<span class="giallo-l"><span>    r</span><span style="color: #F97583;"> =</span><span> a;</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span>Deno.stdout.</span><span style="color: #B392F0;">writeSync</span><span>(</span><span style="color: #F97583;">new</span><span style="color: #B392F0;"> TextEncoder</span><span>().</span><span style="color: #B392F0;">encode</span><span>(r));</span></span></code></pre>
+<p>Or another script that acts as a snippet (just inserts console.log)</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="typescript"><span class="giallo-l"><span>Deno.stdout.</span><span style="color: #B392F0;">writeSync</span><span>(</span><span style="color: #F97583;">new</span><span style="color: #B392F0;"> TextEncoder</span><span>().</span><span style="color: #B392F0;">encode</span><span>(</span><span style="color: #9ECBFF;">&quot;console.log(&quot;</span><span>));</span></span></code></pre>
+<ul>
+<li>Compile our scripts</li>
+</ul>
+<p>This example uses fish syntax, other shell have similar workflow</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="fish"><span class="giallo-l"><span style="color: #F97583;">for</span><span> f </span><span style="color: #F97583;">in</span><span> (</span><span style="color: #79B8FF;">ls</span><span> source)</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    deno</span><span> compile source/$f</span></span>
+<span class="giallo-l"><span style="color: #F97583;">end</span></span></code></pre>
+<p>That’s it, now when running helix, we can pipe a selection to our scripts using the pipe command
+which is bound to <code>|</code> key by default (can be changed, I have personally <code>"µ" = "shell_pipe"</code> for azerty keyboard)</p>
+<img src="https://cdn.discordapp.com/attachments/983096812456017934/1050122920594255882/qqqq.gif"/>
+
+        </section>
+        
+        
+
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+        </article>
+</main>
+
+
+<span id="copy-success" class="hidden">
+        Copied!
+    </span>
+    <span id="copy-init" class="hidden">
+        Copy code to clipboard
+    </span>
+    <script defer src="https://sigmasd.github.io/js/copyCodeToClipboard.min.js"></script>
+
+
+    </div>
+    <footer>
+    <section>
+        <nav class="socials nav-navs"><ul><li>
+                        <a class="nav-links no-hover-padding social" rel="" 
+
+ href="https://sigmasd.github.io/atom.xml">
+                        <img loading="lazy" alt="feed" title="feed" src="https://sigmasd.github.io/social_icons/rss.svg">
+                        </a>
+                    </li>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding social" rel=" me" 
+
+ href="https://github.com/sigmaSd">
+                                    <img loading="lazy" alt="github" title="github" src="https://sigmasd.github.io/social_icons/github.svg">
+                                </a>
+                            </li>
+                        
+                    
+                </ul>
+            
+        </nav>
+
+        
+        <nav class="nav-navs">
+                <small>
+                    <ul>
+                        
+                        <li><a class="nav-links no-hover-padding" href="https:&#x2F;&#x2F;github.com&#x2F;sigmaSd&#x2F;sigmaSd.github.io">
+                                Source Code
+                            </a>
+                        </li>
+                    
+                    </ul>
+                </small>
+        
+        </nav>
+
+        <div class="credits">
+            <small>
+                
+
+                
+                Powered by
+                <a rel="" 
+
+ href="https://www.getzola.org">Zola</a>
+                &amp;
+                <a rel="" 
+
+ href="https://github.com/welpo/tabi">tabi</a>
+
+                </small>
+        </div>
+    </section>
+
+    <div id="searchModal" class="search-modal js" role="dialog" aria-labelledby="modalTitle">
+    <h1 id="modalTitle" class="visually-hidden">Search</h1>
+    <div id="modal-content">
+        <div id="searchBar">
+            <div class="search-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
+                </svg>
+            </div>
+            <input id="searchInput" role="combobox" autocomplete="off" spellcheck="false" aria-expanded="false" aria-controls="results-container" placeholder="Search…"/>
+            <div id="clear-search" class="close-icon interactive-icon" tabindex="0" role="button" title="Clear search">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+            </div>
+        </div>
+        <div id="results-container">
+            <div id="results-info"><span id="zero_results"> No results</span>
+                <span id="one_results"> $NUMBER result</span>
+                <span id="many_results"> $NUMBER results</span><span id="two_results"> $NUMBER results</span>
+                <span id="few_results"> $NUMBER results</span>
+            </div>
+            <div id="results" role="listbox"></div>
+        </div>
+    </div>
+</div>
+</footer>
+
+
+    
+    
+</body>
+
+</html>

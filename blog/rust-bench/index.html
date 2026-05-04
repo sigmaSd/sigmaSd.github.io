@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8"><meta http-equiv="Content-Security-Policy"
+content="default-src 'self';style-src 'self' 'unsafe-inline';connect-src 'self';script-src 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https://sigmasd.github.io">
+
+    
+    <title>
+sigmaSd • Inline benchmark in rust</title>
+
+    
+    
+    
+
+    
+    
+        
+            
+            
+                
+                    <link rel="alternate" type="application/atom+xml" title="sigmaSd - Atom Feed" href="https://sigmasd.github.io/atom.xml">
+                
+            
+        
+    
+
+    
+    
+    
+        
+            <link rel="stylesheet" href="https://sigmasd.github.io/custom_subset.css?h=0b9535a28bc3d5bf2321">
+        
+    
+
+    
+        <link rel="stylesheet" href="https://sigmasd.github.io/main.css?h=23f0b5dce3e7c0ee3df6" />
+        <link rel="stylesheet" href="https://sigmasd.github.io/skins/teal.css?h=bd19e558a52d678a50de" />
+
+    <meta name="color-scheme" content="light dark" />
+        <meta name="description" content="Learn how to perform inline benchmarks in Rust with a smooth developer experience." />
+        <meta property="og:description" content="Learn how to perform inline benchmarks in Rust with a smooth developer experience." />
+
+    
+
+    <meta property="og:title" content="Inline benchmark in rust" />
+    <meta property="og:type" content="article" />
+
+    
+<meta property="og:locale" content="en_GB" />
+
+    <meta property="og:url" content="https:&#x2F;&#x2F;sigmasd.github.io&#x2F;blog&#x2F;rust-bench&#x2F;" /><meta property="og:site_name" content="sigmaSd">
+        <noscript><link rel="stylesheet" href="https://sigmasd.github.io/no_js.css"/></noscript>
+        <script type="text/javascript" src="https://sigmasd.github.io/js/initializeTheme.min.js"></script>
+        <script defer src="https://sigmasd.github.io/js/themeSwitcher.min.js"></script>
+        <script defer src="https://sigmasd.github.io/js/searchElasticlunr.min.js?h=c0e7a768def63c5e8e57"></script>
+
+        
+    
+</head>
+
+
+<body>
+    <a href="#main-content" id="skip-link">Skip to content</a>
+    <header>
+    <nav class="navbar">
+        <div class="nav-title">
+            <a class="home-title" href="https://sigmasd.github.io/">sigmaSd</a>
+        </div>
+            <div class="nav-navs">
+                <ul>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding" href="https://sigmasd.github.io/blog/">Blog
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding" href="https://sigmasd.github.io/irust_book/">IRust Book
+                                </a>
+                            </li>
+                        <li class="menu-icons-container">
+                        <ul class="menu-icons-group">
+                            <li class="js menu-icon">
+                                <div role="button" tabindex="0" id="search-button" class="search-icon interactive-icon" title="Click or press $SHORTCUT to open search" aria-label="Click or press $SHORTCUT to open search">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                        <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
+                                    </svg>
+                                </div>
+                            </li>
+
+                            
+                            
+
+                            <li class="theme-switcher-wrapper js"><div
+        title="Toggle dark&#x2F;light mode"
+        class="theme-switcher"
+        tabindex="0"
+        role="button"
+        aria-label="Toggle dark mode"
+        aria-pressed="false">
+    </div><div
+        title="Reset mode to default"
+        class="theme-resetter arrow"
+        tabindex="0"
+        role="button"
+        aria-hidden="true"
+        aria-label="Reset mode to default">
+    </div>
+
+</li>
+</ul>
+                    </li>
+                </ul>
+            </div>
+        
+    </nav>
+</header>
+
+    <div class="content" id="main-content">
+
+        
+        
+
+
+
+
+
+<main>
+    <article class="h-entry">
+        <h1 class="p-name article-title">
+            Inline benchmark in rust
+        </h1>
+        <a class="u-url u-uid" href="https://sigmasd.github.io/blog/rust-bench/"></a>
+
+        <ul class="meta"><span class="hidden p-author h-card">
+<a rel="author" href="https:&#x2F;&#x2F;sigmasd.github.io" class="u-url " title="sigmaSd">sigmaSd</a>
+</span>
+<li><time class="dt-published" datetime="2022-11-18T19:00:00">18th Nov 2022</time></li><li title="149 words"><span class='separator' aria-hidden='true'>•</span>1 min read</li>
+        </ul>
+            <p class="p-summary" hidden>Learn how to perform inline benchmarks in Rust with a smooth developer experience.</p><section class="e-content body"><p><strong>24/4/1444</strong></p>
+<hr />
+<p>Turns out you can do inline benchmarks in rust with a not that bad user experience.</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #B392F0;">cargo</span><span style="color: #9ECBFF;"> new bench-inline</span></span></code></pre>
+<p>In <code>main.rs</code>:</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="rust"><span class="giallo-l"><span>#![feature(test)]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">extern crate</span><span> test;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">fn</span><span style="color: #B392F0;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span>    </span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">pub fn</span><span style="color: #B392F0;"> add_two</span><span>(a</span><span style="color: #F97583;">:</span><span style="color: #B392F0;"> i32</span><span>)</span><span style="color: #F97583;"> -&gt;</span><span style="color: #B392F0;"> i32</span><span> {</span></span>
+<span class="giallo-l"><span>    a</span><span style="color: #F97583;"> +</span><span style="color: #79B8FF;"> 2</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>#[cfg(test)]</span></span>
+<span class="giallo-l"><span style="color: #F97583;">mod</span><span style="color: #B392F0;"> tests</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    use</span><span style="color: #79B8FF;"> super</span><span style="color: #F97583;">::*</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    use</span><span style="color: #B392F0;"> test</span><span style="color: #F97583;">::</span><span style="color: #B392F0;">Bencher</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    #[test]</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    fn</span><span style="color: #B392F0;"> it_works</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">        assert_eq!</span><span>(</span><span style="color: #79B8FF;">4</span><span>,</span><span style="color: #B392F0;"> add_two</span><span>(</span><span style="color: #79B8FF;">2</span><span>));</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    #[bench]</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    fn</span><span style="color: #B392F0;"> bench_add_two</span><span>(b</span><span style="color: #F97583;">: &amp;mut</span><span style="color: #B392F0;"> Bencher</span><span>) {</span></span>
+<span class="giallo-l"><span>        b</span><span style="color: #F97583;">.</span><span style="color: #B392F0;">iter</span><span>(</span><span style="color: #F97583;">||</span><span style="color: #B392F0;"> add_two</span><span>(</span><span style="color: #79B8FF;">2</span><span>));</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #B392F0;">cargo</span><span style="color: #9ECBFF;"> +nightly bench</span></span></code></pre>
+<p>Ok so far so good, we just followed <a rel="external" href="https://doc.rust-lang.org/nightly/unstable-book/library-features/test.html">cargo-bench</a>, we have our inline benchmarks but the problem is this: we usually want to just use stable and only use <code>cargo +nightly</code> for bench also rust analyzer gets confused with this setup.</p>
+<p>Turns out there is a way!</p>
+<p>1- Add a new feature lets call it nightly</p>
+<p><code>cargo.toml</code></p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="toml"><span class="giallo-l"><span>[</span><span style="color: #B392F0;">features</span><span>]</span></span>
+<span class="giallo-l"><span>nightly = []</span></span></code></pre>
+<p>2- change our <code>main.rs</code> to:</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="rust"><span class="giallo-l"><span>#![cfg_attr(feature </span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;"> &quot;nightly&quot;</span><span>, feature(test))]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">fn</span><span style="color: #B392F0;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span>    </span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">pub fn</span><span style="color: #B392F0;"> add_two</span><span>(a</span><span style="color: #F97583;">:</span><span style="color: #B392F0;"> i32</span><span>)</span><span style="color: #F97583;"> -&gt;</span><span style="color: #B392F0;"> i32</span><span> {</span></span>
+<span class="giallo-l"><span>    a</span><span style="color: #F97583;"> +</span><span style="color: #79B8FF;"> 2</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>#[cfg(test)]</span></span>
+<span class="giallo-l"><span style="color: #F97583;">mod</span><span style="color: #B392F0;"> tests</span><span> {</span></span>
+<span class="giallo-l"><span>    #[cfg(feature </span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;"> &quot;nightly&quot;</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    extern crate</span><span> test;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">    use</span><span style="color: #79B8FF;"> super</span><span style="color: #F97583;">::*</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    #[test]</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    fn</span><span style="color: #B392F0;"> it_works</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">        assert_eq!</span><span>(</span><span style="color: #79B8FF;">4</span><span>,</span><span style="color: #B392F0;"> add_two</span><span>(</span><span style="color: #79B8FF;">2</span><span>));</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    #[cfg(feature </span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;"> &quot;nightly&quot;</span><span>)]</span></span>
+<span class="giallo-l"><span>    #[bench]</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    fn</span><span style="color: #B392F0;"> bench_add_two</span><span>(b</span><span style="color: #F97583;">: &amp;mut</span><span style="color: #B392F0;"> test</span><span style="color: #F97583;">::</span><span style="color: #B392F0;">Bencher</span><span>) {</span></span>
+<span class="giallo-l"><span>        b</span><span style="color: #F97583;">.</span><span style="color: #B392F0;">iter</span><span>(</span><span style="color: #F97583;">||</span><span style="color: #B392F0;"> add_two</span><span>(</span><span style="color: #79B8FF;">2</span><span>));</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>That’s it! Now rust analyzer is not confused, you can run tests with <code>cargo test</code> and benchmarks with <code>cargo +nightly bench --features nightly</code></p>
+<p>And for a real word example I used this idea to benchmark a PR change in irust and it was really useful <a rel="external" href="https://github.com/sigmaSd/IRust/pull/99#issuecomment-1304842421">irust-syntect-pr</a></p>
+
+        </section>
+        
+        
+
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+        </article>
+</main>
+
+
+<span id="copy-success" class="hidden">
+        Copied!
+    </span>
+    <span id="copy-init" class="hidden">
+        Copy code to clipboard
+    </span>
+    <script defer src="https://sigmasd.github.io/js/copyCodeToClipboard.min.js"></script>
+
+
+    </div>
+    <footer>
+    <section>
+        <nav class="socials nav-navs"><ul><li>
+                        <a class="nav-links no-hover-padding social" rel="" 
+
+ href="https://sigmasd.github.io/atom.xml">
+                        <img loading="lazy" alt="feed" title="feed" src="https://sigmasd.github.io/social_icons/rss.svg">
+                        </a>
+                    </li>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding social" rel=" me" 
+
+ href="https://github.com/sigmaSd">
+                                    <img loading="lazy" alt="github" title="github" src="https://sigmasd.github.io/social_icons/github.svg">
+                                </a>
+                            </li>
+                        
+                    
+                </ul>
+            
+        </nav>
+
+        
+        <nav class="nav-navs">
+                <small>
+                    <ul>
+                        
+                        <li><a class="nav-links no-hover-padding" href="https:&#x2F;&#x2F;github.com&#x2F;sigmaSd&#x2F;sigmaSd.github.io">
+                                Source Code
+                            </a>
+                        </li>
+                    
+                    </ul>
+                </small>
+        
+        </nav>
+
+        <div class="credits">
+            <small>
+                
+
+                
+                Powered by
+                <a rel="" 
+
+ href="https://www.getzola.org">Zola</a>
+                &amp;
+                <a rel="" 
+
+ href="https://github.com/welpo/tabi">tabi</a>
+
+                </small>
+        </div>
+    </section>
+
+    <div id="searchModal" class="search-modal js" role="dialog" aria-labelledby="modalTitle">
+    <h1 id="modalTitle" class="visually-hidden">Search</h1>
+    <div id="modal-content">
+        <div id="searchBar">
+            <div class="search-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
+                </svg>
+            </div>
+            <input id="searchInput" role="combobox" autocomplete="off" spellcheck="false" aria-expanded="false" aria-controls="results-container" placeholder="Search…"/>
+            <div id="clear-search" class="close-icon interactive-icon" tabindex="0" role="button" title="Clear search">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+            </div>
+        </div>
+        <div id="results-container">
+            <div id="results-info"><span id="zero_results"> No results</span>
+                <span id="one_results"> $NUMBER result</span>
+                <span id="many_results"> $NUMBER results</span><span id="two_results"> $NUMBER results</span>
+                <span id="few_results"> $NUMBER results</span>
+            </div>
+            <div id="results" role="listbox"></div>
+        </div>
+    </div>
+</div>
+</footer>
+
+
+    
+    
+</body>
+
+</html>

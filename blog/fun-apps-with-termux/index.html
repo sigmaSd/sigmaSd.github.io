@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8"><meta http-equiv="Content-Security-Policy"
+content="default-src 'self';style-src 'self' 'unsafe-inline';connect-src 'self';script-src 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https://sigmasd.github.io">
+
+    
+    <title>
+sigmaSd • Fun Apps With Termux</title>
+
+    
+    
+    
+
+    
+    
+        
+            
+            
+                
+                    <link rel="alternate" type="application/atom+xml" title="sigmaSd - Atom Feed" href="https://sigmasd.github.io/atom.xml">
+                
+            
+        
+    
+
+    
+    
+    
+        
+            <link rel="stylesheet" href="https://sigmasd.github.io/custom_subset.css?h=0b9535a28bc3d5bf2321">
+        
+    
+
+    
+        <link rel="stylesheet" href="https://sigmasd.github.io/main.css?h=23f0b5dce3e7c0ee3df6" />
+        <link rel="stylesheet" href="https://sigmasd.github.io/skins/teal.css?h=bd19e558a52d678a50de" />
+
+    <meta name="color-scheme" content="light dark" />
+        <meta name="description" content="Using Termux for automation." />
+        <meta property="og:description" content="Using Termux for automation." />
+
+    
+
+    <meta property="og:title" content="Fun Apps With Termux" />
+    <meta property="og:type" content="article" />
+
+    
+<meta property="og:locale" content="en_GB" />
+
+    <meta property="og:url" content="https:&#x2F;&#x2F;sigmasd.github.io&#x2F;blog&#x2F;fun-apps-with-termux&#x2F;" /><meta property="og:site_name" content="sigmaSd">
+        <noscript><link rel="stylesheet" href="https://sigmasd.github.io/no_js.css"/></noscript>
+        <script type="text/javascript" src="https://sigmasd.github.io/js/initializeTheme.min.js"></script>
+        <script defer src="https://sigmasd.github.io/js/themeSwitcher.min.js"></script>
+        <script defer src="https://sigmasd.github.io/js/searchElasticlunr.min.js?h=c0e7a768def63c5e8e57"></script>
+
+        
+    
+</head>
+
+
+<body>
+    <a href="#main-content" id="skip-link">Skip to content</a>
+    <header>
+    <nav class="navbar">
+        <div class="nav-title">
+            <a class="home-title" href="https://sigmasd.github.io/">sigmaSd</a>
+        </div>
+            <div class="nav-navs">
+                <ul>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding" href="https://sigmasd.github.io/blog/">Blog
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding" href="https://sigmasd.github.io/irust_book/">IRust Book
+                                </a>
+                            </li>
+                        <li class="menu-icons-container">
+                        <ul class="menu-icons-group">
+                            <li class="js menu-icon">
+                                <div role="button" tabindex="0" id="search-button" class="search-icon interactive-icon" title="Click or press $SHORTCUT to open search" aria-label="Click or press $SHORTCUT to open search">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                        <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
+                                    </svg>
+                                </div>
+                            </li>
+
+                            
+                            
+
+                            <li class="theme-switcher-wrapper js"><div
+        title="Toggle dark&#x2F;light mode"
+        class="theme-switcher"
+        tabindex="0"
+        role="button"
+        aria-label="Toggle dark mode"
+        aria-pressed="false">
+    </div><div
+        title="Reset mode to default"
+        class="theme-resetter arrow"
+        tabindex="0"
+        role="button"
+        aria-hidden="true"
+        aria-label="Reset mode to default">
+    </div>
+
+</li>
+</ul>
+                    </li>
+                </ul>
+            </div>
+        
+    </nav>
+</header>
+
+    <div class="content" id="main-content">
+
+        
+        
+
+
+
+
+
+<main>
+    <article class="h-entry">
+        <h1 class="p-name article-title">
+            Fun Apps With Termux
+        </h1>
+        <a class="u-url u-uid" href="https://sigmasd.github.io/blog/fun-apps-with-termux/"></a>
+
+        <ul class="meta"><span class="hidden p-author h-card">
+<a rel="author" href="https:&#x2F;&#x2F;sigmasd.github.io" class="u-url " title="sigmaSd">sigmaSd</a>
+</span>
+<li><time class="dt-published" datetime="2025-09-13T07:00:00">13th Sep 2025</time></li><li title="438 words"><span class='separator' aria-hidden='true'>•</span>3 min read</li>
+        </ul>
+            <p class="p-summary" hidden>Using Termux for automation.</p><section class="e-content body"><h2 id="21-3-1447"><strong>21/3/1447</strong></h2>
+<p>Here’s the problem: I want to call <code>"*140*1*1#"</code> then <code>"*140*00#"</code>. The first one registers one day of internet (the cheapest option), and most importantly, the second one disables automatic refresh of these registrations (otherwise it will keep registering each day, yeah they’re annoying, they do that → totally legal shady business).</p>
+<p>Anyhow, I asked Gemini, and it told me to add a contact with the 2 calls separated by “,”. That didn’t work for me. It said I could also use Tasker or something similar, but hey, I remembered Termux maybe it can do this.</p>
+<p>And indeed it can! The plan: Termux + Termux API + Termux Widget + a script (with Deno because why not).</p>
+<p>So here are the steps:</p>
+<ul>
+<li>Install Termux, Termux API, and Termux Widget (I use Droidify https://github.com/Droid-ify/client these days)</li>
+<li>Open Termux and run: <code>pkg upgrade &amp;&amp; pkg install deno &amp;&amp; pkg install termux-api</code></li>
+<li><code>mkdir -p ~/.shortcuts/tasks</code> (scripts under tasks run without showing Termux)</li>
+<li>Add the following script to <code>~/.shortcuts/tasks/f100.ts</code> (don’t forget to <code>chmod +x</code>)</li>
+</ul>
+<p><strong>f100.ts</strong></p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="typescript"><span class="giallo-l"><span style="color: #6A737D;">#!/data/data/com.termux/files/usr/bin/env -S deno -A</span></span>
+<span class="giallo-l"><span style="color: #F97583;">import</span><span> {showDialog, telephonyCall}</span><span style="color: #F97583;"> from</span><span style="color: #9ECBFF;"> &quot;jsr:@sigma/termux@1&quot;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">await</span><span style="color: #B392F0;"> telephonyCall</span><span>(</span><span style="color: #9ECBFF;">&quot;*140*1*1#&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #6A737D;">// Unfortunately, the telephonyCall function returns before the user actually finishes the call,</span></span>
+<span class="giallo-l"><span style="color: #6A737D;">// so I added this dialog as an interruption between the two calls.</span></span>
+<span class="giallo-l"><span style="color: #F97583;">if</span><span> ((</span><span style="color: #F97583;">await</span><span style="color: #B392F0;"> showDialog</span><span>(</span><span style="color: #9ECBFF;">&quot;confirm&quot;</span><span>, {title:</span><span style="color: #9ECBFF;">&quot;continue?&quot;</span><span>})).text</span><span style="color: #F97583;"> ===</span><span style="color: #9ECBFF;"> &quot;yes&quot;</span><span>) {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">  await</span><span style="color: #B392F0;"> telephonyCall</span><span>(</span><span style="color: #9ECBFF;">&quot;*140*00#&quot;</span><span>);</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>The Termux lib is just a JS wrapper for Termux APIs. I generated it by giving an LLM (I don’t remember which LLM I used) the Termux API repo as context. Here is the link https://jsr.io/@sigma/termux</p>
+<ul>
+<li>Now add the Termux Widget (actual widget) to the screen, then refresh. You should see the script. Click it and it should work!</li>
+</ul>
+<video width="640" height="360" controls>
+  <source src="https://github.com/sigmaSd/sigmaSd.github.io-assets/raw/refs/heads/main/termux_app.mp4" type="video/mp4">
+</video>
+<p>Termux scripts can even go beyond the APIs. How? By using ADB! You can connect Termux via ADB to your phone, and with that you can go full botting without needing a PC connection.</p>
+<p>Here are the steps:</p>
+<ul>
+<li>In Termux: <code>pkg install android-tools</code></li>
+<li>Activate wireless debugging on your phone</li>
+<li>Open wireless debugging settings, click on <code>Pair device with pairing code</code></li>
+<li>In Termux, run <code>adb pair &lt;device_ip&gt;:&lt;port&gt; &lt;code&gt;</code></li>
+<li>Then after pairing, run <code>adb connect &lt;device_ip&gt;:&lt;port&gt;</code> (these IP/port are different—you’ll find them on the same settings page under <code>IP address &amp; Port</code>)</li>
+</ul>
+<p>That’s it! Now it should work. Just one problem though: when I go to Termux to type the pairing IP, the pairing actually stops! So I don’t know if there’s a simpler way to do this, but I just ended up running a server inside Termux that runs shell commands from my PC so I can connect while the settings menu is open (or you can just use SSH).</p>
+<p>Here are the scripts for reference:</p>
+<p><strong>server.ts</strong> (in termux)</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="typescript"><span class="giallo-l"><span style="color: #6A737D;">// server.ts</span></span>
+<span class="giallo-l"><span style="color: #6A737D;">// WARNING: This server executes any shell command it receives.</span></span>
+<span class="giallo-l"><span style="color: #6A737D;">// It is highly insecure</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">async function</span><span style="color: #B392F0;"> handler</span><span>(</span><span style="color: #FFAB70;">req</span><span style="color: #F97583;">:</span><span style="color: #B392F0;"> Request</span><span>)</span><span style="color: #F97583;">:</span><span style="color: #B392F0;"> Promise</span><span>&lt;</span><span style="color: #B392F0;">Response</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">  const</span><span style="color: #79B8FF;"> command</span><span style="color: #F97583;"> = await</span><span> req.</span><span style="color: #B392F0;">text</span><span>();</span></span>
+<span class="giallo-l"><span>  console.</span><span style="color: #B392F0;">log</span><span>(</span><span style="color: #9ECBFF;">`Received command: ${</span><span>command</span><span style="color: #9ECBFF;">}`</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">  try</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    const</span><span style="color: #79B8FF;"> p</span><span style="color: #F97583;"> = new</span><span> Deno.</span><span style="color: #B392F0;">Command</span><span>(</span><span style="color: #9ECBFF;">&quot;bash&quot;</span><span>, {</span></span>
+<span class="giallo-l"><span>      args: [</span><span style="color: #9ECBFF;">&quot;-c&quot;</span><span>, command],</span></span>
+<span class="giallo-l"><span>      stdout:</span><span style="color: #9ECBFF;"> &quot;piped&quot;</span><span>,</span></span>
+<span class="giallo-l"><span>      stderr:</span><span style="color: #9ECBFF;"> &quot;piped&quot;</span><span>,</span></span>
+<span class="giallo-l"><span>    }).</span><span style="color: #B392F0;">spawn</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">    const</span><span> {</span><span style="color: #79B8FF;"> success</span><span> }</span><span style="color: #F97583;"> = await</span><span> p.status;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    const</span><span style="color: #79B8FF;"> rawOutput</span><span style="color: #F97583;"> = await</span><span> p.</span><span style="color: #B392F0;">output</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">    if</span><span> (success) {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">      const</span><span style="color: #79B8FF;"> output</span><span style="color: #F97583;"> = new</span><span style="color: #B392F0;"> TextDecoder</span><span>().</span><span style="color: #B392F0;">decode</span><span>(rawOutput.stdout);</span></span>
+<span class="giallo-l"><span style="color: #F97583;">      return new</span><span style="color: #B392F0;"> Response</span><span>(output, { status:</span><span style="color: #79B8FF;"> 200</span><span> });</span></span>
+<span class="giallo-l"><span>    }</span><span style="color: #F97583;"> else</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">      const</span><span style="color: #79B8FF;"> error</span><span style="color: #F97583;"> = new</span><span style="color: #B392F0;"> TextDecoder</span><span>().</span><span style="color: #B392F0;">decode</span><span>(rawOutput.stderr);</span></span>
+<span class="giallo-l"><span style="color: #F97583;">      return new</span><span style="color: #B392F0;"> Response</span><span>(error, { status:</span><span style="color: #79B8FF;"> 500</span><span> });</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>  }</span><span style="color: #F97583;"> catch</span><span> (error) {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    return new</span><span style="color: #B392F0;"> Response</span><span>(</span><span style="color: #9ECBFF;">`${</span><span>error</span><span style="color: #9ECBFF;">}`</span><span>, { status:</span><span style="color: #79B8FF;"> 500</span><span> });</span></span>
+<span class="giallo-l"><span>  }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Deno.</span><span style="color: #B392F0;">serve</span><span>({ port:</span><span style="color: #79B8FF;"> 8080</span><span> }, handler);</span></span>
+<span class="giallo-l"><span>console.</span><span style="color: #B392F0;">log</span><span>(</span><span style="color: #9ECBFF;">&quot;Server listening on http://localhost:8080&quot;</span><span>);</span></span></code></pre>
+<p><strong>client.ts</strong> (from pc)</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="typescript"><span class="giallo-l"><span style="color: #6A737D;">// client.ts</span></span>
+<span class="giallo-l"><span style="color: #F97583;">import</span><span> { createInterface }</span><span style="color: #F97583;"> from</span><span style="color: #9ECBFF;"> &quot;node:readline&quot;</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">import</span><span> process</span><span style="color: #F97583;"> from</span><span style="color: #9ECBFF;"> &quot;node:process&quot;</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">if</span><span> (Deno.args.</span><span style="color: #79B8FF;">length</span><span style="color: #F97583;"> !==</span><span style="color: #79B8FF;"> 1</span><span>) {</span></span>
+<span class="giallo-l"><span>  console.</span><span style="color: #B392F0;">error</span><span>(</span><span style="color: #9ECBFF;">&quot;Usage: deno run --allow-net client.ts &lt;server_url&gt;&quot;</span><span>);</span></span>
+<span class="giallo-l"><span>  Deno.</span><span style="color: #B392F0;">exit</span><span>(</span><span style="color: #79B8FF;">1</span><span>);</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> serverUrl</span><span style="color: #F97583;"> =</span><span> Deno.args[</span><span style="color: #79B8FF;">0</span><span>];</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> rl</span><span style="color: #F97583;"> =</span><span style="color: #B392F0;"> createInterface</span><span>({</span></span>
+<span class="giallo-l"><span>  input: process.stdin,</span></span>
+<span class="giallo-l"><span>  output: process.stdout,</span></span>
+<span class="giallo-l"><span>});</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">function</span><span style="color: #B392F0;"> readCommand</span><span>() {</span></span>
+<span class="giallo-l"><span>  rl.</span><span style="color: #B392F0;">question</span><span>(</span><span style="color: #9ECBFF;">&quot;&gt; &quot;</span><span>,</span><span style="color: #F97583;"> async</span><span> (</span><span style="color: #FFAB70;">command</span><span>)</span><span style="color: #F97583;"> =&gt;</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    if</span><span> (command.</span><span style="color: #B392F0;">toLowerCase</span><span>()</span><span style="color: #F97583;"> ===</span><span style="color: #9ECBFF;"> &quot;exit&quot;</span><span>) {</span></span>
+<span class="giallo-l"><span>      rl.</span><span style="color: #B392F0;">close</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #F97583;">      return</span><span>;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">    try</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">      const</span><span style="color: #79B8FF;"> response</span><span style="color: #F97583;"> = await</span><span style="color: #B392F0;"> fetch</span><span>(serverUrl, {</span></span>
+<span class="giallo-l"><span>        method:</span><span style="color: #9ECBFF;"> &quot;POST&quot;</span><span>,</span></span>
+<span class="giallo-l"><span>        body: command,</span></span>
+<span class="giallo-l"><span>      });</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">      const</span><span style="color: #79B8FF;"> result</span><span style="color: #F97583;"> = await</span><span> response.</span><span style="color: #B392F0;">text</span><span>();</span></span>
+<span class="giallo-l"><span>      console.</span><span style="color: #B392F0;">log</span><span>(result);</span></span>
+<span class="giallo-l"><span>    }</span><span style="color: #F97583;"> catch</span><span> (error) {</span></span>
+<span class="giallo-l"><span>      console.</span><span style="color: #B392F0;">error</span><span>(</span><span style="color: #9ECBFF;">&quot;Error sending command:&quot;</span><span>, error);</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #B392F0;">    readCommand</span><span>();</span></span>
+<span class="giallo-l"><span>  });</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #B392F0;">readCommand</span><span>();</span></span></code></pre>
+        </section>
+        
+        
+
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+        </article>
+</main>
+
+
+<span id="copy-success" class="hidden">
+        Copied!
+    </span>
+    <span id="copy-init" class="hidden">
+        Copy code to clipboard
+    </span>
+    <script defer src="https://sigmasd.github.io/js/copyCodeToClipboard.min.js"></script>
+
+
+    </div>
+    <footer>
+    <section>
+        <nav class="socials nav-navs"><ul><li>
+                        <a class="nav-links no-hover-padding social" rel="" 
+
+ href="https://sigmasd.github.io/atom.xml">
+                        <img loading="lazy" alt="feed" title="feed" src="https://sigmasd.github.io/social_icons/rss.svg">
+                        </a>
+                    </li>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding social" rel=" me" 
+
+ href="https://github.com/sigmaSd">
+                                    <img loading="lazy" alt="github" title="github" src="https://sigmasd.github.io/social_icons/github.svg">
+                                </a>
+                            </li>
+                        
+                    
+                </ul>
+            
+        </nav>
+
+        
+        <nav class="nav-navs">
+                <small>
+                    <ul>
+                        
+                        <li><a class="nav-links no-hover-padding" href="https:&#x2F;&#x2F;github.com&#x2F;sigmaSd&#x2F;sigmaSd.github.io">
+                                Source Code
+                            </a>
+                        </li>
+                    
+                    </ul>
+                </small>
+        
+        </nav>
+
+        <div class="credits">
+            <small>
+                
+
+                
+                Powered by
+                <a rel="" 
+
+ href="https://www.getzola.org">Zola</a>
+                &amp;
+                <a rel="" 
+
+ href="https://github.com/welpo/tabi">tabi</a>
+
+                </small>
+        </div>
+    </section>
+
+    <div id="searchModal" class="search-modal js" role="dialog" aria-labelledby="modalTitle">
+    <h1 id="modalTitle" class="visually-hidden">Search</h1>
+    <div id="modal-content">
+        <div id="searchBar">
+            <div class="search-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
+                </svg>
+            </div>
+            <input id="searchInput" role="combobox" autocomplete="off" spellcheck="false" aria-expanded="false" aria-controls="results-container" placeholder="Search…"/>
+            <div id="clear-search" class="close-icon interactive-icon" tabindex="0" role="button" title="Clear search">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+            </div>
+        </div>
+        <div id="results-container">
+            <div id="results-info"><span id="zero_results"> No results</span>
+                <span id="one_results"> $NUMBER result</span>
+                <span id="many_results"> $NUMBER results</span><span id="two_results"> $NUMBER results</span>
+                <span id="few_results"> $NUMBER results</span>
+            </div>
+            <div id="results" role="listbox"></div>
+        </div>
+    </div>
+</div>
+</footer>
+
+
+    
+    
+</body>
+
+</html>
