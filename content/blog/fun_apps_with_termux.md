@@ -1,7 +1,7 @@
 +++
 title = "Fun Apps With Termux"
 date = 2025-09-13 07:00:00
-description = "Using Termux to automate shady business and run useful apps on Android."
+description = "Using Termux for automation."
 +++
 **21/3/1447**
 ---

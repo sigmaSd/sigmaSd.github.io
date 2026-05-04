@@ -1,5 +1,5 @@
 +++
-title = "sigmaSd"
+title = "Blog"
 description = "Blogging about random stuff"
 sort_by = "date"
 
