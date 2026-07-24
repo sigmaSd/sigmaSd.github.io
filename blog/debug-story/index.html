@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8"><meta http-equiv="Content-Security-Policy"
+content="default-src 'self';style-src 'self' 'unsafe-inline';connect-src 'self';script-src 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https://sigmasd.github.io">
+
+    
+    <title>
+sigmaSd • A debugging story</title>
+
+    
+    
+    
+
+    
+    
+        
+            
+            
+                
+                    <link rel="alternate" type="application/atom+xml" title="sigmaSd - Atom Feed" href="https://sigmasd.github.io/atom.xml">
+                
+            
+        
+    
+
+    
+    
+    
+        
+            <link rel="stylesheet" href="https://sigmasd.github.io/custom_subset.css?h=0b9535a28bc3d5bf2321">
+        
+    
+
+    
+        <link rel="stylesheet" href="https://sigmasd.github.io/main.css?h=23f0b5dce3e7c0ee3df6" />
+        <link rel="stylesheet" href="https://sigmasd.github.io/skins/teal.css?h=bd19e558a52d678a50de" />
+
+    <meta name="color-scheme" content="light dark" />
+        <meta name="description" content="A deep dive into a mysterious bug while porting Jupyter Echo Kernel to Deno." />
+        <meta property="og:description" content="A deep dive into a mysterious bug while porting Jupyter Echo Kernel to Deno." />
+
+    
+
+    <meta property="og:title" content="A debugging story" />
+    <meta property="og:type" content="article" />
+
+    
+<meta property="og:locale" content="en_GB" />
+
+    <meta property="og:url" content="https:&#x2F;&#x2F;sigmasd.github.io&#x2F;blog&#x2F;debug-story&#x2F;" /><meta property="og:site_name" content="sigmaSd">
+        <noscript><link rel="stylesheet" href="https://sigmasd.github.io/no_js.css"/></noscript>
+        <script type="text/javascript" src="https://sigmasd.github.io/js/initializeTheme.min.js"></script>
+        <script defer src="https://sigmasd.github.io/js/themeSwitcher.min.js"></script>
+        <script defer src="https://sigmasd.github.io/js/searchElasticlunr.min.js?h=c0e7a768def63c5e8e57"></script>
+
+        
+    
+</head>
+
+
+<body>
+    <a href="#main-content" id="skip-link">Skip to content</a>
+    <header>
+    <nav class="navbar">
+        <div class="nav-title">
+            <a class="home-title" href="https://sigmasd.github.io/">sigmaSd</a>
+        </div>
+            <div class="nav-navs">
+                <ul>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding" href="https://sigmasd.github.io/blog/">Blog
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding" href="https://sigmasd.github.io/irust_book/">IRust Book
+                                </a>
+                            </li>
+                        <li class="menu-icons-container">
+                        <ul class="menu-icons-group">
+                            <li class="js menu-icon">
+                                <div role="button" tabindex="0" id="search-button" class="search-icon interactive-icon" title="Click or press $SHORTCUT to open search" aria-label="Click or press $SHORTCUT to open search">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                        <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
+                                    </svg>
+                                </div>
+                            </li>
+
+                            
+                            
+
+                            <li class="theme-switcher-wrapper js"><div
+        title="Toggle dark&#x2F;light mode"
+        class="theme-switcher"
+        tabindex="0"
+        role="button"
+        aria-label="Toggle dark mode"
+        aria-pressed="false">
+    </div><div
+        title="Reset mode to default"
+        class="theme-resetter arrow"
+        tabindex="0"
+        role="button"
+        aria-hidden="true"
+        aria-label="Reset mode to default">
+    </div>
+
+</li>
+</ul>
+                    </li>
+                </ul>
+            </div>
+        
+    </nav>
+</header>
+
+    <div class="content" id="main-content">
+
+        
+        
+
+
+
+
+
+<main>
+    <article class="h-entry">
+        <h1 class="p-name article-title">
+            A debugging story
+        </h1>
+        <a class="u-url u-uid" href="https://sigmasd.github.io/blog/debug-story/"></a>
+
+        <ul class="meta"><span class="hidden p-author h-card">
+<a rel="author" href="https:&#x2F;&#x2F;sigmasd.github.io" class="u-url " title="sigmaSd">sigmaSd</a>
+</span>
+<li><time class="dt-published" datetime="2024-07-17T07:00:00">17th Jul 2024</time></li><li title="340 words"><span class='separator' aria-hidden='true'>•</span>2 min read</li>
+        </ul>
+            <p class="p-summary" hidden>A deep dive into a mysterious bug while porting Jupyter Echo Kernel to Deno.</p><section class="e-content body"><p><strong>11/1/1446</strong></p>
+<hr />
+<p>For some reason I wanted to “port” Jupyter Echo Kernel to Deno using
+<a rel="external" href="https://github.com/denosaurs/deno_python">deno-python</a>. It shouldn’t be too
+hard I already have relatively complex projects using it:
+<a rel="external" href="https://flathub.org/apps/io.github.sigmasd.stimulator">Stimulator</a>
+<a rel="external" href="https://flathub.org/apps/io.github.sigmasd.share">Share</a></p>
+<p>Here is the python kernel</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="python"><span class="giallo-l"><span style="color: #F97583;">from</span><span> ipykernel.kernelbase</span><span style="color: #F97583;"> import</span><span> Kernel</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">class</span><span style="color: #B392F0;"> EchoKernel</span><span>(</span><span style="color: #B392F0;">Kernel</span><span>):</span></span>
+<span class="giallo-l"><span>    implementation</span><span style="color: #F97583;"> =</span><span style="color: #9ECBFF;"> &#39;Echo&#39;</span></span>
+<span class="giallo-l"><span>    implementation_version</span><span style="color: #F97583;"> =</span><span style="color: #9ECBFF;"> &#39;1.0&#39;</span></span>
+<span class="giallo-l"><span>    language</span><span style="color: #F97583;"> =</span><span style="color: #9ECBFF;"> &#39;no-op&#39;</span></span>
+<span class="giallo-l"><span>    language_version</span><span style="color: #F97583;"> =</span><span style="color: #9ECBFF;"> &#39;0.1&#39;</span></span>
+<span class="giallo-l"><span>    language_info</span><span style="color: #F97583;"> =</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">        &#39;name&#39;</span><span>:</span><span style="color: #9ECBFF;"> &#39;Any text&#39;</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">        &#39;mimetype&#39;</span><span>:</span><span style="color: #9ECBFF;"> &#39;text/plain&#39;</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">        &#39;file_extension&#39;</span><span>:</span><span style="color: #9ECBFF;"> &#39;.txt&#39;</span><span>,</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>    banner</span><span style="color: #F97583;"> =</span><span style="color: #9ECBFF;"> &quot;Echo kernel - as useful as a parrot&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">    def</span><span style="color: #B392F0;"> do_execute</span><span>(self, code, silent, store_history</span><span style="color: #F97583;">=</span><span style="color: #79B8FF;">True</span><span>, user_expressions</span><span style="color: #F97583;">=</span><span style="color: #79B8FF;">None</span><span>,</span></span>
+<span class="giallo-l"><span>                   allow_stdin</span><span style="color: #F97583;">=</span><span style="color: #79B8FF;">False</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #F97583;">        if not</span><span> silent:</span></span>
+<span class="giallo-l"><span>            stream_content</span><span style="color: #F97583;"> =</span><span> {</span><span style="color: #9ECBFF;">&#39;name&#39;</span><span>:</span><span style="color: #9ECBFF;"> &#39;stdout&#39;</span><span>,</span><span style="color: #9ECBFF;"> &#39;text&#39;</span><span>: code}</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">            self</span><span>.send_response(</span><span style="color: #79B8FF;">self</span><span>.iopub_socket,</span><span style="color: #9ECBFF;"> &#39;stream&#39;</span><span>, stream_content)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">        return</span><span> {</span><span style="color: #9ECBFF;">&#39;status&#39;</span><span>:</span><span style="color: #9ECBFF;"> &#39;ok&#39;</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #6A737D;">                # The base class increments the execution count</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">                &#39;execution_count&#39;</span><span>:</span><span style="color: #79B8FF;"> self</span><span>.execution_count,</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">                &#39;payload&#39;</span><span>: [],</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">                &#39;user_expressions&#39;</span><span>: {},</span></span>
+<span class="giallo-l"><span>               }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">if</span><span style="color: #79B8FF;"> __name__</span><span style="color: #F97583;"> ==</span><span style="color: #9ECBFF;"> &#39;__main__&#39;</span><span>:</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    from</span><span> ipykernel.kernelapp</span><span style="color: #F97583;"> import</span><span> IPKernelApp</span></span>
+<span class="giallo-l"><span>    IPKernelApp.launch_instance(</span><span style="color: #FFAB70;">kernel_class</span><span style="color: #F97583;">=</span><span>EchoKernel)</span></span></code></pre>
+<p>Here is a start at porting (file is called a.ts)</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="typescript"><span class="giallo-l"><span style="color: #6A737D;">#!/usr/bin/env -S deno run --allow-all --unstable-ffi</span></span>
+<span class="giallo-l"><span style="color: #F97583;">import</span><span> { NamedArgument, PyObject, python }</span><span style="color: #F97583;"> from</span><span style="color: #9ECBFF;"> &quot;jsr:@denosaurs/python&quot;</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> m</span><span style="color: #F97583;"> =</span><span> python.</span><span style="color: #B392F0;">runModule</span><span>(</span><span style="color: #9ECBFF;">`</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">from ipykernel.kernelbase import Kernel</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">class EchoKernel(Kernel):</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">  implementation = &#39;Echo&#39;</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">  implementation_version = &#39;1.0&#39;</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">  language = &#39;no-op&#39;</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">  language_version = &#39;0.1&#39;</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">  language_info = {</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">      &#39;name&#39;: &#39;Any text&#39;,</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">      &#39;mimetype&#39;: &#39;text/plain&#39;,</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">      &#39;file_extension&#39;: &#39;.txt&#39;,</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">  }</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">  banner = &quot;Echo kernel - as useful as a parrot&quot;</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">`</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6A737D;">// NOTE: this also modifies m.EchoKernel</span></span>
+<span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> kernel</span><span style="color: #F97583;"> =</span><span> PyObject.</span><span style="color: #B392F0;">from</span><span>(m.EchoKernel);</span></span>
+<span class="giallo-l"><span>kernel.</span><span style="color: #B392F0;">setAttr</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">    &quot;do_execute&quot;</span><span>,</span></span>
+<span class="giallo-l"><span>    python.</span><span style="color: #B392F0;">callback</span><span>(()</span><span style="color: #F97583;"> =&gt;</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #6A737D;">        //TODO: implement this</span></span>
+<span class="giallo-l"><span style="color: #F97583;">        return</span><span> {</span></span>
+<span class="giallo-l"><span>            status:</span><span style="color: #9ECBFF;"> &quot;ok&quot;</span><span>,</span></span>
+<span class="giallo-l"><span>            execution_count:</span><span style="color: #79B8FF;"> 0</span><span>,</span></span>
+<span class="giallo-l"><span>            payload: [],</span></span>
+<span class="giallo-l"><span>            user_expressions: {},</span></span>
+<span class="giallo-l"><span>        };</span></span>
+<span class="giallo-l"><span>    }),</span></span>
+<span class="giallo-l"><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">if</span><span> (</span><span style="color: #F97583;">import</span><span>.</span><span style="color: #79B8FF;">meta</span><span>.main) {</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    const</span><span style="color: #79B8FF;"> IPKernelApp</span><span style="color: #F97583;"> =</span><span> python.</span><span style="color: #B392F0;">import</span><span>(</span><span style="color: #9ECBFF;">&quot;ipykernel.kernelapp&quot;</span><span>).IPKernelApp;</span></span>
+<span class="giallo-l"><span>    IPKernelApp.</span><span style="color: #B392F0;">launch_instance</span><span>(</span><span style="color: #F97583;">new</span><span style="color: #B392F0;"> NamedArgument</span><span>(</span><span style="color: #9ECBFF;">&quot;kernel_class&quot;</span><span>, kernel));</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>Ok wasn’t that hard, <code>chmod +x ./a.ts &amp;&amp; ./a.ts</code></p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="plain"><span class="giallo-l"><span>NOTE: When using the `ipython kernel` entry point, Ctrl-C will not work.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>To exit, you will have to explicitly quit this process, by either sending</span></span>
+<span class="giallo-l"><span>&quot;quit&quot; from a client, or using Ctrl-\ in UNIX-like environments.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>To read more about this, see https://github.com/ipython/ipython/issues/2049</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>To connect another client to this kernel, use:</span></span>
+<span class="giallo-l"><span>    --existing kernel-15074.json</span></span>
+<span class="giallo-l"><span>fish: Job 1, &#39;deno run -A a.ts&#39; terminated by signal SIGSEGV (Address boundary error)</span></span></code></pre>
+<p>Hmm, it worked but then segfaulted, so gdb to the rescue</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="plain"><span class="giallo-l"><span>gdb --args deno run -A --unstable-ffi a.ts</span></span></code></pre><pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="plain"><span class="giallo-l"><span>(gdb) r</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Thread 1 &quot;deno&quot; received sig``nal SIGSEGV, Segmentation fault.</span></span>
+<span class="giallo-l"><span>0x00007ffff7e1dfb0 in __strncmp_sse42 () from /lib64/libc.so.6</span></span></code></pre>
+<p>Ok we’re comparing something, lets check what it is, arguments are passed in
+linux x86 in rdi then rsi</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="plain"><span class="giallo-l"><span>info registers</span></span></code></pre><pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="plain"><span class="giallo-l"><span>rsi            0x55555c25b900      93825106557184</span></span>
+<span class="giallo-l"><span>rdi            0x5555              21845</span></span></code></pre>
+<p><code>rsi</code> seems like a valid pointer, but <code>rdi</code> is definitely not, lets just check
+<code>rsi</code> first and try to print it as a cstring</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="plain"><span class="giallo-l"><span>(gdb) x/s $rsi</span></span>
+<span class="giallo-l"><span>0x55555c25b900: &quot;JSCallback:anonymous&quot;</span></span></code></pre>
+<p>Where are we doing this?</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="plain"><span class="giallo-l"><span>(gdb) bt</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>#0  0x00007ffff7e1dfb0 in __strncmp_sse42 () from /lib64/libc.so.6</span></span>
+<span class="giallo-l"><span>#1  0x00007ffff4bf79f1 in find_signature</span></span></code></pre>
+<p>Ok so whats <code>find_signature</code>, lets check <a rel="external" href="https://github.com/python/cpython/blob/69c68de43aef03dd52fabd21f99cb3b0f9329201/Objects/typeobject.c#L664">cpython</a></p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="python"><span class="giallo-l"><span style="color: #F97583;">/*</span></span>
+<span class="giallo-l"><span style="color: #F97583;"> *</span><span> finds the beginning of the docstring</span><span style="color: #9ECBFF;">&#39;s introspection signature.</span></span>
+<span class="giallo-l"><span style="color: #F97583;"> * if</span><span> present, returns a pointer pointing to the first</span><span style="color: #9ECBFF;"> &#39;(&#39;</span><span>.</span></span>
+<span class="giallo-l"><span style="color: #F97583;"> *</span><span> otherwise returns</span><span style="color: #79B8FF;"> NULL</span><span>.</span></span>
+<span class="giallo-l"><span style="color: #F97583;"> *</span></span>
+<span class="giallo-l"><span style="color: #F97583;"> *</span><span> doesn</span><span style="color: #9ECBFF;">&#39;t guarantee that the signature is valid, only that it</span></span>
+<span class="giallo-l"><span style="color: #F97583;"> *</span><span> has a valid prefix.  (the signature must also</span><span style="color: #F97583;"> pass</span><span> skip_signature.)</span></span>
+<span class="giallo-l"><span style="color: #F97583;"> */</span></span>
+<span class="giallo-l"><span>static const char</span><span style="color: #F97583;"> *</span></span>
+<span class="giallo-l"><span>find_signature(const char</span><span style="color: #F97583;"> *</span><span>name, const char</span><span style="color: #F97583;"> *</span><span>doc)</span></span></code></pre>
+<p>We’re getting an invalid pointer for doc.</p>
+<p>Lets look at <code>deno-python</code> to see how we’re creating <code>name</code>, and <code>doc</code>. <code>doc</code>
+is created <a rel="external" href="https://github.com/denosaurs/deno_python/blob/8bd35566b07a43746b7abd8cd1cc7730abe2b4bd/src/python.ts#L473">here</a></p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="typescript"><span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> pyMethodDef</span><span style="color: #F97583;"> = new</span><span style="color: #B392F0;"> Uint8Array</span><span>(</span><span style="color: #79B8FF;">8</span><span style="color: #F97583;"> +</span><span style="color: #79B8FF;"> 8</span><span style="color: #F97583;"> +</span><span style="color: #79B8FF;"> 4</span><span style="color: #F97583;"> +</span><span style="color: #79B8FF;"> 8</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> view</span><span style="color: #F97583;"> = new</span><span style="color: #B392F0;"> DataView</span><span>(pyMethodDef.buffer);</span></span>
+<span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> LE</span><span style="color: #F97583;"> =</span></span>
+<span class="giallo-l"><span style="color: #F97583;">  new</span><span style="color: #B392F0;"> Uint8Array</span><span>(</span><span style="color: #F97583;">new</span><span style="color: #B392F0;"> Uint32Array</span><span>([</span><span style="color: #79B8FF;">0x12345678</span><span>]).buffer)[</span><span style="color: #79B8FF;">0</span><span>]</span><span style="color: #F97583;"> !==</span><span style="color: #79B8FF;"> 0x7</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> nameBuf</span><span style="color: #F97583;"> = new</span><span style="color: #B392F0;"> TextEncoder</span><span>().</span><span style="color: #B392F0;">encode</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">  &quot;JSCallback:&quot;</span><span style="color: #F97583;"> +</span><span> (v.callback.name</span><span style="color: #F97583;"> ||</span><span style="color: #9ECBFF;"> &quot;anonymous&quot;</span><span>)</span><span style="color: #F97583;"> +</span><span style="color: #9ECBFF;"> &quot;</span><span style="color: #79B8FF;">\0</span><span style="color: #9ECBFF;">&quot;</span><span>,</span></span>
+<span class="giallo-l"><span>);</span></span>
+<span class="giallo-l"><span>view.</span><span style="color: #B392F0;">setBigUint64</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">  0</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">  BigInt</span><span>(Deno.UnsafePointer.</span><span style="color: #B392F0;">value</span><span>(Deno.UnsafePointer.</span><span style="color: #B392F0;">of</span><span>(nameBuf)</span><span style="color: #F97583;">!</span><span>)),</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">  LE</span><span>,</span></span>
+<span class="giallo-l"><span>);</span></span>
+<span class="giallo-l"><span>view.</span><span style="color: #B392F0;">setBigUint64</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">  8</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">  BigInt</span><span>(Deno.UnsafePointer.</span><span style="color: #B392F0;">value</span><span>(v.unsafe.pointer)),</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">  LE</span><span>,</span></span>
+<span class="giallo-l"><span>);</span></span>
+<span class="giallo-l"><span>view.</span><span style="color: #B392F0;">setInt32</span><span>(</span><span style="color: #79B8FF;">16</span><span>,</span><span style="color: #79B8FF;"> 0x1</span><span style="color: #F97583;"> |</span><span style="color: #79B8FF;"> 0x2</span><span>,</span><span style="color: #79B8FF;"> LE</span><span>);</span></span>
+<span class="giallo-l"><span>view.</span><span style="color: #B392F0;">setBigUint64</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">  20</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">  BigInt</span><span>(Deno.UnsafePointer.</span><span style="color: #B392F0;">value</span><span>(Deno.UnsafePointer.</span><span style="color: #B392F0;">of</span><span>(nameBuf)</span><span style="color: #F97583;">!</span><span>)),</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">  LE</span><span>,</span></span>
+<span class="giallo-l"><span>);</span></span>
+<span class="giallo-l"><span style="color: #F97583;">const</span><span style="color: #79B8FF;"> fn</span><span style="color: #F97583;"> =</span><span> py.</span><span style="color: #B392F0;">PyCFunction_NewEx</span><span>(</span></span>
+<span class="giallo-l"><span>  pyMet hodDef,</span></span>
+<span class="giallo-l"><span>  PyObject.</span><span style="color: #B392F0;">from</span><span>(</span><span style="color: #79B8FF;">null</span><span>).handle,</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">  null</span><span>,</span></span>
+<span class="giallo-l"><span>);</span></span></code></pre>
+<p>We’re suspecting that something is wrong with pyMethodDef buffer creation.
+Looking at the <a rel="external" href="https://docs.python.org/3/c-api/structures.html#c.PyMethodDef">docs</a> the fields seems
+correct to me</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="plain"><span class="giallo-l"><span>const char *ml_name -&gt; 8 bytes</span></span>
+<span class="giallo-l"><span>PyCFunction ml_meth -&gt; 8 bytes</span></span>
+<span class="giallo-l"><span>int ml_flags -&gt; 4 bytes </span></span>
+<span class="giallo-l"><span>const char *ml_doc -&gt; 8bytes</span></span></code></pre>
+<p>The bug is there though, can you spot it …. After I asked around (deno
+discord have a couple of ffi magicians there) I have my answer:</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="plain"><span class="giallo-l"><span>from AapoAlas</span></span>
+<span class="giallo-l"><span>    Yeah, the last pointer is not correctly aligned. Pointers should be 8 byte aligned (regardless of architecture), but it&#39;s at byte index 20: 20/8 does not an integer make.</span></span>
+<span class="giallo-l"><span>    So 24 is the correct place for it</span></span></code></pre>
+<p>The 4th field is a pointer so it needs to be 8 byte aligned, but since the 3rd
+field is only 4 bytes, there are 4 bytes of padding that are automatically
+inserted</p>
+<p>The fix turns out to be simple <a rel="external" href="https://github.com/denosaurs/deno_python/pull/65/files">https://github.com/denosaurs/deno_python/pull/65/files</a></p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="diff"><span class="giallo-l"><span style="color: #79B8FF;">diff --git a/src/python.ts b/src/python.ts</span></span>
+<span class="giallo-l"><span>index e09b821..9c41ea1 100644</span></span>
+<span class="giallo-l"><span style="color: #FDAEB7;background-color: #86181D;">--- a/src/python.ts</span></span>
+<span class="giallo-l"><span style="color: #85E89D;background-color: #144620;">+++ b/src/python.ts</span></span>
+<span class="giallo-l"><span style="color: #B392F0;font-weight: bold;">@@ -452,7 +452,9 @@</span><span> export class PyObject {</span></span>
+<span class="giallo-l"><span>           }</span></span>
+<span class="giallo-l"><span>           return new PyObject(list);</span></span>
+<span class="giallo-l"><span>         } else if (v instanceof Callback) {</span></span>
+<span class="giallo-l"><span style="color: #FDAEB7;background-color: #86181D;">-          const pyMethodDef = new Uint8Array(8 + 8 + 4 + 8);</span></span>
+<span class="giallo-l"><span style="color: #85E89D;background-color: #144620;">+          // https://docs.python.org/3/c-api/structures.html#c.PyMethodDef</span></span>
+<span class="giallo-l"><span style="color: #85E89D;background-color: #144620;">+          // there are extra 4 bytes of padding after ml_flags field</span></span>
+<span class="giallo-l"><span style="color: #85E89D;background-color: #144620;">+          const pyMethodDef = new Uint8Array(8 + 8 + 4 + 4 + 8);</span></span>
+<span class="giallo-l"><span>           const view = new DataView(pyMethodDef.buffer);</span></span>
+<span class="giallo-l"><span>           const LE =</span></span>
+<span class="giallo-l"><span>             new Uint8Array(new Uint32Array([0x12345678]).buffer)[0] !== 0x7;</span></span>
+<span class="giallo-l"><span style="color: #B392F0;font-weight: bold;">@@ -471,7 +473,7 @@</span><span> export class PyObject {</span></span>
+<span class="giallo-l"><span>           );</span></span>
+<span class="giallo-l"><span>           view.setInt32(16, 0x1 | 0x2, LE);</span></span>
+<span class="giallo-l"><span>           view.setBigUint64(</span></span>
+<span class="giallo-l"><span style="color: #FDAEB7;background-color: #86181D;">-            20,</span></span>
+<span class="giallo-l"><span style="color: #85E89D;background-color: #144620;">+            24,</span></span>
+<span class="giallo-l"><span>             BigInt(Deno.UnsafePointer.value(Deno.UnsafePointer.of(nameBuf)!)),</span></span>
+<span class="giallo-l"><span>             LE,</span></span>
+<span class="giallo-l"><span>           );</span></span></code></pre>
+<p>Running the kernel, it doesn’t segfault anymore, but unfortunately it just
+exits.</p>
+<p>Debugging that is another part of the story, in the meantime you can jump to the
+pr where I fixed it <a rel="external" href="https://github.com/denosaurs/deno_python/pull/67">https://github.com/denosaurs/deno_python/pull/67</a>
+<a rel="external" href="https://github.com/denosaurs/deno_python/pull/68">https://github.com/denosaurs/deno_python/pull/68</a></p>
+
+        </section>
+        
+        
+
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+        </article>
+</main>
+
+
+<span id="copy-success" class="hidden">
+        Copied!
+    </span>
+    <span id="copy-init" class="hidden">
+        Copy code to clipboard
+    </span>
+    <script defer src="https://sigmasd.github.io/js/copyCodeToClipboard.min.js"></script>
+
+
+    </div>
+    <footer>
+    <section>
+        <nav class="socials nav-navs"><ul><li>
+                        <a class="nav-links no-hover-padding social" rel="" 
+
+ href="https://sigmasd.github.io/atom.xml">
+                        <img loading="lazy" alt="feed" title="feed" src="https://sigmasd.github.io/social_icons/rss.svg">
+                        </a>
+                    </li>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding social" rel=" me" 
+
+ href="https://github.com/sigmaSd">
+                                    <img loading="lazy" alt="github" title="github" src="https://sigmasd.github.io/social_icons/github.svg">
+                                </a>
+                            </li>
+                        
+                    
+                </ul>
+            
+        </nav>
+
+        
+        <nav class="nav-navs">
+                <small>
+                    <ul>
+                        
+                        <li><a class="nav-links no-hover-padding" href="https:&#x2F;&#x2F;github.com&#x2F;sigmaSd&#x2F;sigmaSd.github.io">
+                                Source Code
+                            </a>
+                        </li>
+                    
+                    </ul>
+                </small>
+        
+        </nav>
+
+        <div class="credits">
+            <small>
+                
+
+                
+                Powered by
+                <a rel="" 
+
+ href="https://www.getzola.org">Zola</a>
+                &amp;
+                <a rel="" 
+
+ href="https://github.com/welpo/tabi">tabi</a>
+
+                </small>
+        </div>
+    </section>
+
+    <div id="searchModal" class="search-modal js" role="dialog" aria-labelledby="modalTitle">
+    <h1 id="modalTitle" class="visually-hidden">Search</h1>
+    <div id="modal-content">
+        <div id="searchBar">
+            <div class="search-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
+                </svg>
+            </div>
+            <input id="searchInput" role="combobox" autocomplete="off" spellcheck="false" aria-expanded="false" aria-controls="results-container" placeholder="Search…"/>
+            <div id="clear-search" class="close-icon interactive-icon" tabindex="0" role="button" title="Clear search">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+            </div>
+        </div>
+        <div id="results-container">
+            <div id="results-info"><span id="zero_results"> No results</span>
+                <span id="one_results"> $NUMBER result</span>
+                <span id="many_results"> $NUMBER results</span><span id="two_results"> $NUMBER results</span>
+                <span id="few_results"> $NUMBER results</span>
+            </div>
+            <div id="results" role="listbox"></div>
+        </div>
+    </div>
+</div>
+</footer>
+
+
+    
+    
+</body>
+
+</html>

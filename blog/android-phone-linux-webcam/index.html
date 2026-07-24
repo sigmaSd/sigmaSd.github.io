@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8"><meta http-equiv="Content-Security-Policy"
+content="default-src 'self';style-src 'self' 'unsafe-inline';connect-src 'self';script-src 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https://sigmasd.github.io">
+
+    
+    <title>
+sigmaSd • Turn Your Android Phone into a Linux Virtual Webcam (No Third-Party Apps, Secure Boot Friendly)</title>
+
+    
+    
+    
+
+    
+    
+        
+            
+            
+                
+                    <link rel="alternate" type="application/atom+xml" title="sigmaSd - Atom Feed" href="https://sigmasd.github.io/atom.xml">
+                
+            
+        
+    
+
+    
+    
+    
+        
+            <link rel="stylesheet" href="https://sigmasd.github.io/custom_subset.css?h=0b9535a28bc3d5bf2321">
+        
+    
+
+    
+        <link rel="stylesheet" href="https://sigmasd.github.io/main.css?h=23f0b5dce3e7c0ee3df6" />
+        <link rel="stylesheet" href="https://sigmasd.github.io/skins/teal.css?h=bd19e558a52d678a50de" />
+
+    <meta name="color-scheme" content="light dark" />
+        <meta name="description" content="Using native Android camera features via scrcpy, v4l2loopback, and a short Bash script to build a scriptable, headless, local wireless webcam setup on Linux." />
+        <meta property="og:description" content="Using native Android camera features via scrcpy, v4l2loopback, and a short Bash script to build a scriptable, headless, local wireless webcam setup on Linux." />
+
+    
+
+    <meta property="og:title" content="Turn Your Android Phone into a Linux Virtual Webcam (No Third-Party Apps, Secure Boot Friendly)" />
+    <meta property="og:type" content="article" />
+
+    
+<meta property="og:locale" content="en_GB" />
+
+    <meta property="og:url" content="https:&#x2F;&#x2F;sigmasd.github.io&#x2F;blog&#x2F;android-phone-linux-webcam&#x2F;" /><meta property="og:site_name" content="sigmaSd">
+        <noscript><link rel="stylesheet" href="https://sigmasd.github.io/no_js.css"/></noscript>
+        <script type="text/javascript" src="https://sigmasd.github.io/js/initializeTheme.min.js"></script>
+        <script defer src="https://sigmasd.github.io/js/themeSwitcher.min.js"></script>
+        <script defer src="https://sigmasd.github.io/js/searchElasticlunr.min.js?h=c0e7a768def63c5e8e57"></script>
+
+        
+    
+</head>
+
+
+<body>
+    <a href="#main-content" id="skip-link">Skip to content</a>
+    <header>
+    <nav class="navbar">
+        <div class="nav-title">
+            <a class="home-title" href="https://sigmasd.github.io/">sigmaSd</a>
+        </div>
+            <div class="nav-navs">
+                <ul>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding" href="https://sigmasd.github.io/blog/">Blog
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding" href="https://sigmasd.github.io/irust_book/">IRust Book
+                                </a>
+                            </li>
+                        <li class="menu-icons-container">
+                        <ul class="menu-icons-group">
+                            <li class="js menu-icon">
+                                <div role="button" tabindex="0" id="search-button" class="search-icon interactive-icon" title="Click or press $SHORTCUT to open search" aria-label="Click or press $SHORTCUT to open search">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                        <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
+                                    </svg>
+                                </div>
+                            </li>
+
+                            
+                            
+
+                            <li class="theme-switcher-wrapper js"><div
+        title="Toggle dark&#x2F;light mode"
+        class="theme-switcher"
+        tabindex="0"
+        role="button"
+        aria-label="Toggle dark mode"
+        aria-pressed="false">
+    </div><div
+        title="Reset mode to default"
+        class="theme-resetter arrow"
+        tabindex="0"
+        role="button"
+        aria-hidden="true"
+        aria-label="Reset mode to default">
+    </div>
+
+</li>
+</ul>
+                    </li>
+                </ul>
+            </div>
+        
+    </nav>
+</header>
+
+    <div class="content" id="main-content">
+
+        
+        
+
+
+
+
+
+<main>
+    <article class="h-entry">
+        <h1 class="p-name article-title">
+            Turn Your Android Phone into a Linux Virtual Webcam (No Third-Party Apps, Secure Boot Friendly)
+        </h1>
+        <a class="u-url u-uid" href="https://sigmasd.github.io/blog/android-phone-linux-webcam/"></a>
+
+        <ul class="meta"><span class="hidden p-author h-card">
+<a rel="author" href="https:&#x2F;&#x2F;sigmasd.github.io" class="u-url " title="sigmaSd">sigmaSd</a>
+</span>
+<li><time class="dt-published" datetime="2026-07-25">25th Jul 2026</time></li><li title="725 words"><span class='separator' aria-hidden='true'>•</span>4 min read</li>
+        </ul>
+            <p class="p-summary" hidden>Using native Android camera features via scrcpy, v4l2loopback, and a short Bash script to build a scriptable, headless, local wireless webcam setup on Linux.</p><section class="e-content body"><p>You don’t need any third-party Android apps installed on your phone to get a clean 1080p stream into <code>/dev/video0</code>. Using native Android camera features via <code>scrcpy</code>, <code>v4l2loopback</code>, and a short Bash script, you can build a scriptable, headless, local wireless webcam setup on Linux—even with <strong>Secure Boot</strong> enabled.</p>
+<hr />
+<h2 id="the-tech-stack">The Tech Stack</h2>
+<ol>
+<li><strong>ADB over Wi-Fi</strong>: Native Android developer tooling for wireless frame capture.</li>
+<li><strong><code>v4l2loopback</code></strong>: The Linux kernel module that creates virtual video devices (<code>/dev/videoX</code>).</li>
+<li><strong><code>sign-file</code> + MOK</strong>: Signs the compiled kernel module so Secure Boot allows <code>insmod</code>.</li>
+<li><strong><code>scrcpy</code> + Zenity</strong>: Grabs the camera feed and presents a quick desktop dialog to choose between front and back sensors on launch.</li>
+</ol>
+<hr />
+<h2 id="step-1-clone-v4l2loopback">Step 1: Clone <code>v4l2loopback</code></h2>
+<p>First, clone the official repository to a local directory:</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #B392F0;">git</span><span style="color: #9ECBFF;"> clone https://github.com/umlaeute/v4l2loopback.git ~/dev/others/v4l2loopback</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">cd</span><span style="color: #9ECBFF;"> ~/dev/others/v4l2loopback</span></span>
+<span class="giallo-l"></span></code></pre>
+<hr />
+<h2 id="step-2-one-time-key-generation-mok-enrollment-secure-boot">Step 2: One-Time Key Generation &amp; MOK Enrollment (Secure Boot)</h2>
+<p>If Secure Boot is active on your system, loading an unsigned kernel module (<code>insmod v4l2loopback.ko</code>) will fail. To fix this, create a local keypair and register it with UEFI using <code>mokutil</code>.</p>
+<h3 id="1-generate-the-certificate-private-key">1. Generate the Certificate &amp; Private Key</h3>
+<p>Inside your <code>v4l2loopback</code> folder, run:</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #B392F0;">openssl</span><span style="color: #9ECBFF;"> req</span><span style="color: #79B8FF;"> -new -x509 -newkey</span><span style="color: #9ECBFF;"> rsa:2048</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    -keyout</span><span style="color: #9ECBFF;"> MOK.key</span><span style="color: #79B8FF;"> -outform</span><span style="color: #9ECBFF;"> DER</span><span style="color: #79B8FF;"> -out</span><span style="color: #9ECBFF;"> MOK.crt</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    -nodes -days 36500 -subj</span><span style="color: #9ECBFF;"> &quot;/CN=Local Module Signing Key/&quot;</span></span>
+<span class="giallo-l"></span></code></pre>
+<p>Here is what each flag actually does under the hood:</p>
+<ul>
+<li><code>-new -x509</code>: Instructs OpenSSL to output a self-signed X.509 public key certificate rather than a Certificate Signing Request (CSR).</li>
+<li><code>-newkey rsa:2048</code>: Generates a new 2048-bit RSA keypair simultaneously.</li>
+<li><code>-keyout MOK.key</code>: Specifies where to save the <strong>private key</strong> (used later by <code>sign-file</code> to sign <code>.ko</code> modules).</li>
+<li><code>-outform DER</code>: Formats the public certificate as binary DER data (required by Linux kernel/UEFI tools) instead of the default Base64 PEM format.</li>
+<li><code>-out MOK.crt</code>: Specifies where to save the <strong>public certificate</strong> (imported into the UEFI MOK database).</li>
+<li><code>-nodes</code>: Short for “no DES”—stores the private key unencrypted so automated build scripts can sign modules without prompting for a passphrase.</li>
+<li><code>-days 36500</code>: Sets key validity to ~100 years so you don’t have to re-enroll keys every few months.</li>
+<li><code>-subj "/CN=..."</code>: Fills in the Common Name field directly, bypassing the interactive country/organization prompts.</li>
+</ul>
+<h3 id="2-enroll-the-key-into-the-uefi-database">2. Enroll the Key into the UEFI Database</h3>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #B392F0;">sudo</span><span style="color: #9ECBFF;"> mokutil</span><span style="color: #79B8FF;"> --import</span><span style="color: #9ECBFF;"> MOK.crt</span></span>
+<span class="giallo-l"></span></code></pre>
+<p><em>Reboot your system. You will see a blue UEFI screen prompting you to <strong>Enroll MOK</strong>. Select it, enter the temporary password you set during <code>--import</code>, and boot into Linux.</em></p>
+<hr />
+<h2 id="step-3-connect-via-wireless-adb-zero-setup-via-adb-wifi">Step 3: Connect via Wireless ADB (Zero Setup via <code>adb-wifi</code>)</h2>
+<p>Instead of manually checking IP addresses, pairing ports, and running <code>adb pair</code> / <code>adb connect</code> every time, you can automate wireless pairing using QR codes via <a rel="external" href="https://github.com/sigmaSd/adb-wifi">adb-wifi</a>. It uses mDNS to discover your device automatically.</p>
+<p>Run it directly via Deno without installing anything:</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #B392F0;">deno</span><span style="color: #79B8FF;"> -NS --unstable-net --allow-run=adb</span><span style="color: #9ECBFF;"> https://raw.githubusercontent.com/sigmaSd/adb-wifi/refs/heads/master/main.ts</span></span>
+<span class="giallo-l"></span></code></pre>
+<ol>
+<li>Go to <strong>Settings → Developer options → Wireless debugging</strong> on your phone.</li>
+<li>Select <strong>Pair device with QR code</strong>.</li>
+<li>Scan the terminal QR code. Once paired, your host machine maintains an active ADB connection over Wi-Fi.</li>
+</ol>
+<hr />
+<h2 id="step-4-automate-everything-with-bash-zenity">Step 4: Automate Everything with Bash + Zenity</h2>
+<p>The script below handles kernel compilation, signs the <code>.ko</code> file against your MOK key, loads the drivers, queries available phone cameras using <code>scrcpy</code>, and pops up a <strong>Zenity GUI dialog</strong> to let you pick the front or rear camera on launch.</p>
+<p>Save this as <code>phone-webcam.sh</code> and make it executable (<code>chmod +x phone-webcam.sh</code>):</p>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #6A737D;">#!/usr/bin/env bash</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">set -euo</span><span style="color: #9ECBFF;"> pipefail</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6A737D;"># === CONFIGURATION ===</span></span>
+<span class="giallo-l"><span>SRC_DIR</span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;">&quot;</span><span>$HOME</span><span style="color: #9ECBFF;">/dev/others/v4l2loopback&quot;</span><span style="color: #6A737D;"> # Folder containing the v4l2loopback Makefile/C source</span></span>
+<span class="giallo-l"><span>MOK_KEY</span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;">&quot;</span><span>$SRC_DIR</span><span style="color: #9ECBFF;">/MOK.key&quot;</span></span>
+<span class="giallo-l"><span>MOK_CRT</span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;">&quot;</span><span>$SRC_DIR</span><span style="color: #9ECBFF;">/MOK.crt&quot;</span></span>
+<span class="giallo-l"><span>KO_PATH</span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;">&quot;</span><span>$SRC_DIR</span><span style="color: #9ECBFF;">/v4l2loopback.ko&quot;</span></span>
+<span class="giallo-l"><span>VIDEO_DEV</span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;">&quot;/dev/video0&quot;</span></span>
+<span class="giallo-l"><span>CUR_KVER</span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;">&quot;$(</span><span style="color: #B392F0;">uname</span><span style="color: #79B8FF;"> -r</span><span style="color: #9ECBFF;">)&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #79B8FF;">echo</span><span style="color: #9ECBFF;"> &quot;=== Starting Wireless Phone Webcam Pipeline ===&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6A737D;"># 1. Verify ADB is connected</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">echo</span><span style="color: #9ECBFF;"> &quot;[1/5] Checking ADB connection...&quot;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">if !</span><span style="color: #B392F0;"> adb</span><span style="color: #9ECBFF;"> devices</span><span style="color: #F97583;"> |</span><span style="color: #B392F0;"> grep</span><span style="color: #79B8FF;"> -qE</span><span style="color: #9ECBFF;"> &#39;\bdevice\b&#39;</span><span>;</span><span style="color: #F97583;"> then</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    echo</span><span style="color: #9ECBFF;"> &quot;ERROR: No active ADB device found.&quot;</span><span style="color: #F97583;"> &gt;&amp;2</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    echo</span><span style="color: #9ECBFF;"> &quot;Please connect via Wireless ADB (adb connect &lt;IP&gt;:&lt;PORT&gt;) and re-run.&quot;</span><span style="color: #F97583;"> &gt;&amp;2</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    exit 1</span></span>
+<span class="giallo-l"><span style="color: #F97583;">fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6A737D;"># 2. Check if we need to auto-compile for the current kernel</span></span>
+<span class="giallo-l"><span style="color: #6A737D;"># Recompiles if .ko is missing OR if kernel headers/build tree path changed</span></span>
+<span class="giallo-l"><span style="color: #F97583;">if</span><span> [[</span><span style="color: #F97583;"> ! -f</span><span style="color: #9ECBFF;"> &quot;</span><span>$KO_PATH</span><span style="color: #9ECBFF;">&quot;</span><span> ]]</span><span style="color: #F97583;"> || !</span><span style="color: #B392F0;"> modinfo</span><span style="color: #9ECBFF;"> &quot;</span><span>$KO_PATH</span><span style="color: #9ECBFF;">&quot;</span><span style="color: #F97583;"> |</span><span style="color: #B392F0;"> grep</span><span style="color: #79B8FF;"> -q</span><span style="color: #9ECBFF;"> &quot;</span><span>$CUR_KVER</span><span style="color: #9ECBFF;">&quot;</span><span>;</span><span style="color: #F97583;"> then</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    echo</span><span style="color: #9ECBFF;"> &quot;[2/5] Kernel update or missing module detected (</span><span>$CUR_KVER</span><span style="color: #9ECBFF;">). Compiling v4l2loopback...&quot;</span></span>
+<span class="giallo-l"><span>    </span></span>
+<span class="giallo-l"><span style="color: #6A737D;">    # Ensure kernel development headers are installed for current running kernel</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    if</span><span> [[</span><span style="color: #F97583;"> ! -d</span><span style="color: #9ECBFF;"> &quot;/lib/modules/</span><span>$CUR_KVER</span><span style="color: #9ECBFF;">/build&quot;</span><span> ]];</span><span style="color: #F97583;"> then</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">        echo</span><span style="color: #9ECBFF;"> &quot;Installing missing kernel-devel package for </span><span>$CUR_KVER</span><span style="color: #9ECBFF;">...&quot;</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">        sudo</span><span style="color: #9ECBFF;"> dnf install</span><span style="color: #79B8FF;"> -y</span><span style="color: #9ECBFF;"> &quot;kernel-devel-</span><span>$CUR_KVER</span><span style="color: #9ECBFF;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6A737D;">    # Build the module in source directory</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">    make</span><span style="color: #79B8FF;"> -C</span><span style="color: #9ECBFF;"> &quot;</span><span>$SRC_DIR</span><span style="color: #9ECBFF;">&quot; clean</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">    make</span><span style="color: #79B8FF;"> -C</span><span style="color: #9ECBFF;"> &quot;</span><span>$SRC_DIR</span><span style="color: #9ECBFF;">&quot;</span><span style="color: #79B8FF;"> -C</span><span style="color: #9ECBFF;"> &quot;/lib/modules/</span><span>$CUR_KVER</span><span style="color: #9ECBFF;">/build&quot; M=&quot;</span><span>$SRC_DIR</span><span style="color: #9ECBFF;">&quot; modules</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    echo</span><span style="color: #9ECBFF;"> &quot;Signing compiled module...&quot;</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">    sudo</span><span style="color: #9ECBFF;"> /usr/src/kernels/&quot;</span><span>$CUR_KVER</span><span style="color: #9ECBFF;">&quot;/scripts/sign-file</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">        sha256</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">        &quot;</span><span>$MOK_KEY</span><span style="color: #9ECBFF;">&quot;</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">        &quot;</span><span>$MOK_CRT</span><span style="color: #9ECBFF;">&quot;</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">        &quot;</span><span>$KO_PATH</span><span style="color: #9ECBFF;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">else</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    echo</span><span style="color: #9ECBFF;"> &quot;[2/5] Module </span><span>$KO_PATH</span><span style="color: #9ECBFF;"> is up to date for kernel </span><span>$CUR_KVER</span><span style="color: #9ECBFF;">.&quot;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6A737D;"># 3. Ensure base videodev kernel subsystem is active</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">echo</span><span style="color: #9ECBFF;"> &quot;[3/5] Ensuring videodev kernel module is active...&quot;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">if</span><span> [[</span><span style="color: #F97583;"> ! -d</span><span> /sys/module/videodev ]];</span><span style="color: #F97583;"> then</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">    sudo</span><span style="color: #9ECBFF;"> modprobe videodev</span></span>
+<span class="giallo-l"><span style="color: #F97583;">fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6A737D;"># 4. Insert v4l2loopback if not already loaded in kernel memory</span></span>
+<span class="giallo-l"><span style="color: #F97583;">if</span><span> [[</span><span style="color: #F97583;"> ! -d</span><span> /sys/module/v4l2loopback ]];</span><span style="color: #F97583;"> then</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    echo</span><span style="color: #9ECBFF;"> &quot;[4/5] Inserting v4l2loopback module...&quot;</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">    sudo</span><span style="color: #9ECBFF;"> insmod &quot;</span><span>$KO_PATH</span><span style="color: #9ECBFF;">&quot; exclusive_caps=</span><span style="color: #79B8FF;">1</span><span style="color: #9ECBFF;"> card_label=&quot;Phone Webcam&quot;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">else</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    echo</span><span style="color: #9ECBFF;"> &quot;[4/5] v4l2loopback is already loaded.&quot;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">fi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6A737D;"># 5. Let user pick camera source via Zenity GUI</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">echo</span><span style="color: #9ECBFF;"> &quot;[5/5] Selecting camera source...&quot;</span></span>
+<span class="giallo-l"><span>CAMERAS</span><span style="color: #F97583;">=</span><span>$(</span><span style="color: #B392F0;">scrcpy</span><span style="color: #79B8FF;"> --list-cameras</span><span style="color: #F97583;"> 2&gt;</span><span style="color: #9ECBFF;">/dev/null</span><span>)</span></span>
+<span class="giallo-l"><span>FRONT_ID</span><span style="color: #F97583;">=</span><span>$(</span><span style="color: #79B8FF;">echo</span><span style="color: #9ECBFF;"> &quot;</span><span>$CAMERAS</span><span style="color: #9ECBFF;">&quot;</span><span style="color: #F97583;"> |</span><span style="color: #B392F0;"> grep</span><span style="color: #79B8FF;"> -i</span><span style="color: #9ECBFF;"> &#39;front&#39;</span><span style="color: #F97583;"> |</span><span style="color: #B392F0;"> grep</span><span style="color: #79B8FF;"> -oP</span><span style="color: #9ECBFF;"> &#39;camera-id=\K\d+&#39;</span><span>)</span></span>
+<span class="giallo-l"><span>BACK_ID</span><span style="color: #F97583;">=</span><span>$(</span><span style="color: #79B8FF;">echo</span><span style="color: #9ECBFF;"> &quot;</span><span>$CAMERAS</span><span style="color: #9ECBFF;">&quot;</span><span style="color: #F97583;"> |</span><span style="color: #B392F0;"> grep</span><span style="color: #79B8FF;"> -i</span><span style="color: #9ECBFF;"> &#39;back&#39;</span><span style="color: #F97583;"> |</span><span style="color: #B392F0;"> grep</span><span style="color: #79B8FF;"> -oP</span><span style="color: #9ECBFF;"> &#39;camera-id=\K\d+&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>CHOICE</span><span style="color: #F97583;">=</span><span>$(</span><span style="color: #B392F0;">zenity</span><span style="color: #79B8FF;"> --list --title=</span><span style="color: #9ECBFF;">&quot;Phone Webcam&quot;</span><span style="color: #79B8FF;"> --text=</span><span style="color: #9ECBFF;">&quot;Choose camera source:&quot;</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">    --column=</span><span style="color: #9ECBFF;">&quot;Camera&quot;</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">    &quot;Front&quot;</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #9ECBFF;">    &quot;Back&quot;</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #F97583;">    2&gt;</span><span style="color: #9ECBFF;">/dev/null</span><span>)</span><span style="color: #F97583;"> ||</span><span style="color: #79B8FF;"> exit 1</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F97583;">case</span><span style="color: #9ECBFF;"> &quot;</span><span>$CHOICE</span><span style="color: #9ECBFF;">&quot;</span><span style="color: #F97583;"> in</span></span>
+<span class="giallo-l"><span style="color: #DBEDFF;">    Front</span><span style="color: #F97583;">)</span><span> CAMERA_CHOICE</span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;">&quot;</span><span>$FRONT_ID</span><span style="color: #9ECBFF;">&quot;</span><span> ;;</span></span>
+<span class="giallo-l"><span style="color: #DBEDFF;">    Back</span><span style="color: #F97583;">)</span><span>  CAMERA_CHOICE</span><span style="color: #F97583;">=</span><span style="color: #9ECBFF;">&quot;</span><span>$BACK_ID</span><span style="color: #9ECBFF;">&quot;</span><span> ;;</span></span>
+<span class="giallo-l"><span style="color: #F97583;">esac</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6A737D;"># 6. Launch headless scrcpy stream directly to virtual webcam node</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">echo</span><span style="color: #9ECBFF;"> &quot;[6/5] Streaming camera feed to ${</span><span>VIDEO_DEV</span><span style="color: #9ECBFF;">}...&quot;</span></span>
+<span class="giallo-l"><span style="color: #B392F0;">scrcpy</span><span style="color: #79B8FF;"> --video-source=camera \</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">       --camera-id=</span><span style="color: #9ECBFF;">&quot;</span><span>$CAMERA_CHOICE</span><span style="color: #9ECBFF;">&quot;</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">       --camera-size=1920x1080 \</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">       --camera-fps=30 \</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">       --v4l2-sink=</span><span style="color: #9ECBFF;">&quot;${</span><span>VIDEO_DEV</span><span style="color: #9ECBFF;">}&quot;</span><span style="color: #79B8FF;"> \</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">       --no-video-playback \</span></span>
+<span class="giallo-l"><span style="color: #79B8FF;">       --no-audio</span></span>
+<span class="giallo-l"></span></code></pre>
+<hr />
+<h2 id="usage-workflow">Usage Workflow</h2>
+<ol>
+<li>Connect your device via ADB Wi-Fi:</li>
+</ol>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #B392F0;">deno</span><span style="color: #79B8FF;"> -NS --unstable-net --allow-run=adb</span><span style="color: #9ECBFF;"> https://raw.githubusercontent.com/sigmaSd/adb-wifi/refs/heads/master/main.ts</span></span>
+<span class="giallo-l"></span></code></pre>
+<ol start="2">
+<li>Execute your script:</li>
+</ol>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #B392F0;">./phone-webcam.sh</span></span>
+<span class="giallo-l"></span></code></pre>
+<ol start="3">
+<li>A native GTK dialog pops up allowing you to pick <strong>Front</strong> or <strong>Back</strong>. Once selected, <code>scrcpy</code> binds to <code>/dev/video0</code> with zero display overhead or window latency!</li>
+</ol>
+<p>Now that <code>v4l2loopback</code> presents <code>/dev/video0</code> as a standard V4L2 device node (and loaded with <code>exclusive_caps=1</code>), your phone functions like a regular hardware webcam across your entire system. You can immediately open Chrome, Firefox, Zoom, OBS Studio, Discord, or Teams, select <strong>“Phone Webcam”</strong> from your video device list, and enjoy an uncompressed 1080p stream.</p>
+<hr />
+<h2 id="a-note-on-camera-resolutions-camera-size">A Note on Camera Resolutions (<code>--camera-size</code>)</h2>
+<p>The <code>--camera-size=1920x1080</code> parameter tells <code>scrcpy</code> which resolution mode to request from the Android Camera2 API.</p>
+<ul>
+<li><strong>Explicit Resolutions</strong>: <code>scrcpy</code> will only accept resolutions actually exposed by your phone’s camera hardware. Standard choices include <code>1920x1080</code> (1080p), <code>1280x720</code> (720p), or <code>3840x2160</code> (4K).</li>
+<li><strong>Listing Supported Sizes</strong>: If <code>1920x1080</code> fails or looks stretched, you can list every native size supported by your phone’s sensors by running:</li>
+</ul>
+<pre class="giallo" style="color: #E1E4E8; background-color: #24292E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #B392F0;">scrcpy</span><span style="color: #79B8FF;"> --list-camera-sizes</span></span></code></pre>
+<ul>
+<li><strong>Auto-Scaling</strong>: If you pass a maximum dimension constraint like <code>--max-size=1920</code> (or <code>-m1920</code>) instead, <code>scrcpy</code> automatically picks the best matching native resolution for the selected camera sensor.</li>
+</ul>
+
+        </section>
+        
+        
+
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+            
+            
+            
+
+            
+        
+        </article>
+</main>
+
+
+<span id="copy-success" class="hidden">
+        Copied!
+    </span>
+    <span id="copy-init" class="hidden">
+        Copy code to clipboard
+    </span>
+    <script defer src="https://sigmasd.github.io/js/copyCodeToClipboard.min.js"></script>
+
+
+    </div>
+    <footer>
+    <section>
+        <nav class="socials nav-navs"><ul><li>
+                        <a class="nav-links no-hover-padding social" rel="" 
+
+ href="https://sigmasd.github.io/atom.xml">
+                        <img loading="lazy" alt="feed" title="feed" src="https://sigmasd.github.io/social_icons/rss.svg">
+                        </a>
+                    </li>
+                        
+                            <li>
+                                <a class="nav-links no-hover-padding social" rel=" me" 
+
+ href="https://github.com/sigmaSd">
+                                    <img loading="lazy" alt="github" title="github" src="https://sigmasd.github.io/social_icons/github.svg">
+                                </a>
+                            </li>
+                        
+                    
+                </ul>
+            
+        </nav>
+
+        
+        <nav class="nav-navs">
+                <small>
+                    <ul>
+                        
+                        <li><a class="nav-links no-hover-padding" href="https:&#x2F;&#x2F;github.com&#x2F;sigmaSd&#x2F;sigmaSd.github.io">
+                                Source Code
+                            </a>
+                        </li>
+                    
+                    </ul>
+                </small>
+        
+        </nav>
+
+        <div class="credits">
+            <small>
+                
+
+                
+                Powered by
+                <a rel="" 
+
+ href="https://www.getzola.org">Zola</a>
+                &amp;
+                <a rel="" 
+
+ href="https://github.com/welpo/tabi">tabi</a>
+
+                </small>
+        </div>
+    </section>
+
+    <div id="searchModal" class="search-modal js" role="dialog" aria-labelledby="modalTitle">
+    <h1 id="modalTitle" class="visually-hidden">Search</h1>
+    <div id="modal-content">
+        <div id="searchBar">
+            <div class="search-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
+                </svg>
+            </div>
+            <input id="searchInput" role="combobox" autocomplete="off" spellcheck="false" aria-expanded="false" aria-controls="results-container" placeholder="Search…"/>
+            <div id="clear-search" class="close-icon interactive-icon" tabindex="0" role="button" title="Clear search">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+            </div>
+        </div>
+        <div id="results-container">
+            <div id="results-info"><span id="zero_results"> No results</span>
+                <span id="one_results"> $NUMBER result</span>
+                <span id="many_results"> $NUMBER results</span><span id="two_results"> $NUMBER results</span>
+                <span id="few_results"> $NUMBER results</span>
+            </div>
+            <div id="results" role="listbox"></div>
+        </div>
+    </div>
+</div>
+</footer>
+
+
+    
+    
+</body>
+
+</html>
