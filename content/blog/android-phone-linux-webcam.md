@@ -4,8 +4,6 @@ date = 2026-07-25
 description = "Using native Android camera features via scrcpy, v4l2loopback, and a short Bash script to build a scriptable, headless, local wireless webcam setup on Linux."
 +++
 
-If you've ever tried using a spare Android phone as a high-definition webcam on Linux, you've probably run into the usual pain points: sketchy proprietary apps, bloated background daemons, or laggy WebRTC streams.
-
 You don't need any third-party Android apps installed on your phone to get a clean 1080p stream into `/dev/video0`. Using native Android camera features via `scrcpy`, `v4l2loopback`, and a short Bash script, you can build a scriptable, headless, local wireless webcam setup on Linux—even with **Secure Boot** enabled.
 
 ---
