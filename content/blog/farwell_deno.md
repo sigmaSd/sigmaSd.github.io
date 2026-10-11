@@ -9,6 +9,8 @@ iine = true
 iine_icon = "thumbs_up"
 +++
 
+<p dir="rtl" lang="ar">30 ربيع الآخر 1448 هـ</p>
+
 This is a new kind of style for me where I freestyle write about my thoughts
 with no care for organization or fact checking, take what I tell you next with a
 grain of salt I could be misremembering or just wrong about some facts.
