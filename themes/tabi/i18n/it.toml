@@ -1,3 +1,6 @@
+# NOTE: The labels for GitHub-style alerts are defined in sass/parts/_admonitions.scss.
+# Please keep both in sync when adding or updating a language.
+
 language_name = "Italiano"  # Shown in language picker for multi-language sites.
 date_locale = "it_IT"
 full_stop = "."  # Used at the end of a sentence.
@@ -83,7 +86,7 @@ translation_missing = "o non è ancora stata tradotta nella tua lingua"
 check_url = "Controlla l'URL per errori o"
 go_home = "torna alla homepage"
 
-# For multilingual quote shortcode.
+# For the multilingual quote component.
 # https://welpo.github.io/tabi/blog/shortcodes/#multilingual-quotes
 show_original_quote = "Mostra citazione originale"
 show_translation = "Mostra traduzione"

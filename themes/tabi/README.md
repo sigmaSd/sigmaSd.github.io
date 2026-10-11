@@ -52,7 +52,6 @@ tabi has a perfect score on Google's Lighthouse audit:
 - [X] [Comprehensive multi-language support](https://welpo.github.io/tabi/blog/faq-languages/#how-does-tabi-handle-multilingual-support). Add as many languages as you wish.
 - [X] Support for [comments using giscus, utterances, Hyvor Talk, or Isso](https://welpo.github.io/tabi/blog/comments/).
 - [X] [Indieweb](https://indieweb.org/) ready with microformats, [hcard](https://welpo.github.io/tabi/blog/mastering-tabi-settings/#representative-h-card) and [webmentions](https://welpo.github.io/tabi/blog/mastering-tabi-settings/#webmentions) support.
-- [X] Code syntax highlighting with colours based on [Catppuccin](https://github.com/catppuccin/catppuccin) Frappé.
 - [X] [Mermaid support](https://welpo.github.io/tabi/blog/shortcodes/#mermaid-diagrams) to create diagrams and charts with text.
 - [X] [Local search](https://welpo.github.io/tabi/blog/mastering-tabi-settings/#search) with an accessible, multi-lingual interface.
 - [X] [Custom Twitter card](https://welpo.github.io/tabi/blog/mastering-tabi-settings/#social-media-cards) and automatic Open Graph tags.
@@ -68,7 +67,7 @@ tabi has a perfect score on Google's Lighthouse audit:
 - [X] [Quick navigation buttons](https://welpo.github.io/tabi/blog/mastering-tabi-settings/#quick-navigation-buttons).
 - [X] [Custom copyright notice](https://welpo.github.io/tabi/blog/mastering-tabi-settings/#copyright).
 - [X] [Custom canonical URLs](https://welpo.github.io/tabi/blog/mastering-tabi-settings/#canonical-url).
-- [X] [Custom shortcodes](https://welpo.github.io/tabi/blog/shortcodes/).
+- [X] [Custom components](https://welpo.github.io/tabi/blog/shortcodes/).
 - [X] [Customizable skins](https://welpo.github.io/tabi/blog/customise-tabi/).
 - [X] [Social media cards](https://welpo.github.io/tabi/blog/mastering-tabi-settings/#social-media-cards).
 - [X] Responsive design.
@@ -126,6 +125,8 @@ title = "Your Site Title"
 theme = "catppuccin-frappe"
 style = "class"
 ```
+
+   Zola generates and tabi loads the stylesheet for the configured theme. Choose any theme from [this list](https://textmate-grammars-themes.netlify.app/). tabi requires `style = "class"`.
 
 5. Create a `content/_index.md` file. This file controls how your home page looks and behaves. Choose one of the following options:
 
@@ -221,6 +222,7 @@ git pull
 | [b1n.io](https://b1n.io) | [b1nhack](https://github.com/b1nhack) | Linux kernel vulnerability researcher | [Source](https://github.com/b1nhack/blog) |
 | [posixlycorrect.com](https://posixlycorrect.com/) | [Fabian Montero](https://git.posixlycorrect.com/fabian) | Personal homepage | [Source](https://git.posixlycorrect.com/fabian/homepage) |
 | [Coded Chords](https://codedchords.dev/) | [yostos](https://github.com/yostos) | Personal tech blog | [Source](https://github.com/yostos/blog-yostos) |
+| [soumendrak.com](https://www.soumendrak.com) | [Soumendra Kumar Sahoo](https://github.com/soumendrak) | Personal blog: AI observability, engineering, and weekly notes | &mdash; |
 
 Using tabi? Feel free to create a PR and add your site to this list.
 

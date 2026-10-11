@@ -1,3 +1,6 @@
+# NOTE: The labels for GitHub-style alerts are defined in sass/parts/_admonitions.scss.
+# Please keep both in sync when adding or updating a language.
+
 # This has been machine translated.
 # If you would like to help correct errors or improve the translation,
 # please open an issue or submit a pull request.
@@ -97,7 +100,7 @@ translation_missing = "або ще не перекладена на вашу м�
 check_url = "Перевірте URL на помилки або"
 go_home = "поверніться на головну сторінку"
 
-# For multilingual quote shortcode.
+# For the multilingual quote component.
 # https://welpo.github.io/tabi/blog/shortcodes/#multilingual-quotes
 show_original_quote = "Показати оригінальну цитату"
 show_translation = "Показати переклад"

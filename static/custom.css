@@ -1,0 +1,11 @@
+/* Site-specific overrides on top of the tabi theme.
+   Keep tweaks here (not in themes/tabi) so the theme can be updated by copying upstream over it. See THEME.md. */
+
+/* Inline code: bordered chip instead of tabi's filled background */
+code {
+    border-radius: 4px;
+    background-color: var(--bg-0);
+    border: 1px solid var(--divider-color);
+    padding-inline: 0.4em;
+    font-size: 0.85rem;
+}

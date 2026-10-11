@@ -1,3 +1,6 @@
+# NOTE: The labels for GitHub-style alerts are defined in sass/parts/_admonitions.scss.
+# Please keep both in sync when adding or updating a language.
+
 # This has been machine translated.
 # If you would like to help correct errors or improve the translation, please open an issue or submit a pull request.
 language_name = "हिंदी"  # Shown in language picker for multi-language sites.
@@ -86,7 +89,7 @@ translation_missing = "या फिर आपकी भाषा में अ�
 check_url = "URL में त्रुटियों की जांच करें या"
 go_home = "मुख्य पृष्ठ पर वापस जाएं"
 
-# For multilingual quote shortcode.
+# For the multilingual quote component.
 # https://welpo.github.io/tabi/blog/shortcodes/#multilingual-quotes
 show_original_quote = "मौलिक उद्धरण दिखाएं"
 show_translation = "अनुवाद दिखाएं"

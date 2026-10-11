@@ -26,6 +26,7 @@ theme = "github-dark"
 style = "inline"
 
 [extra]
+stylesheets = ["custom.css"]  # site overrides, see THEME.md
 allowed_domains = [
     { directive = "style-src", domains = ["'self'", "'unsafe-inline'"] },
 ]

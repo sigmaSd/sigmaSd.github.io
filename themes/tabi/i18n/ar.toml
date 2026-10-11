@@ -1,3 +1,6 @@
+# NOTE: The labels for GitHub-style alerts are defined in sass/parts/_admonitions.scss.
+# Please keep both in sync when adding or updating a language.
+
 # Hello, the Arabic language has many pronouns and words, and each word indicates a different meaning,
 # unlike the English language, in which, on the other hand, the word can refer to a person and a group.
 # This translation is for individual use, if you are a company or organization, I have put a comment in
@@ -99,7 +102,7 @@ translation_missing = "أو لم يتم ترجمتها إلى اللغة الت�
 check_url = "تحقق من أن الرابط صحيح أو"
 go_home = "انتقل إلى الصفحة الرئيسية"
 
-# For multilingual quote shortcode.
+# For the multilingual quote component.
 # https://welpo.github.io/tabi/blog/shortcodes/#multilingual-quotes
 show_original_quote = "إظهار الإقتباس الأصلي"
 show_translation = "إظهار الترجمة"

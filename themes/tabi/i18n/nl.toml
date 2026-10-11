@@ -1,3 +1,6 @@
+# NOTE: The labels for GitHub-style alerts are defined in sass/parts/_admonitions.scss.
+# Please keep both in sync when adding or updating a language.
+
 language_name = "Dutch"  # Shown in language picker for multi-language sites.
 date_locale = "nl_NL" #nl_BE can also be used for Flemish
 full_stop = "."  # Used at the end of a sentence.
@@ -84,7 +87,7 @@ translation_missing = "of het is nog niet in jouw taal vertaald"
 check_url = "Controleer de URL op fouten of"
 go_home = "ga terug naar de startpagina"
 
-# For multilingual quote shortcode.
+# For the multilingual quote component.
 # https://welpo.github.io/tabi/blog/shortcodes/#multilingual-quotes
 show_original_quote = "Toon origineel citaat"
 show_translation = "Vertaling tonen"

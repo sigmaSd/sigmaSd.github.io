@@ -1,3 +1,6 @@
+# NOTE: The labels for GitHub-style alerts are defined in sass/parts/_admonitions.scss.
+# Please keep both in sync when adding or updating a language.
+
 # This has been machine translated.
 # If you would like to help correct errors or improve the translation,
 # please open an issue or submit a pull request.
@@ -88,7 +91,7 @@ translation_missing = "또는 아직 해당 언어로 번역되지 않았습니�
 check_url = "URL을 확인하거나"
 go_home = "홈페이지로 돌아가기"
 
-# For multilingual quote shortcode.
+# For the multilingual quote component.
 # https://welpo.github.io/tabi/blog/shortcodes/#multilingual-quotes
 show_original_quote = "원문 인용 보기"
 show_translation = "번역 보기"

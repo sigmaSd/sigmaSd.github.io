@@ -20,7 +20,7 @@ Deploying to GithubPages is also fairly simple [deployment](https://www.getzola.
 
 - **Formatting dates:** 
 
-`{{ page.date | date(format=$chrono_format_string) }}` example: `{{ page.date | date(format="%D") }}`
+{% raw %}`{{ page.date | date(format=$chrono_format_string) }}` example: `{{ page.date | date(format="%D") }}`{% endraw %}
 
 
 - **Using the correct relative url in the template:**

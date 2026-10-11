@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "zola",
+      "runtimeExecutable": "chef",
+      "runtimeArgs": ["run", "zola", "serve", "--port", "1111", "-o", "../tmp/zola-serve", "--force"],
+      "port": 1111,
+      "url": "http://127.0.0.1:1111"
+    }
+  ]
+}
