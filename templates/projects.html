@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{# tabi's cards.html, for projects that have their own site instead of a page here: see content/projects/_index.md #}
+{% block main_content %}
+    {{< page_header title={section.title} />}}
+
+    <main>
+        <div class="cards">
+            {%- for project in section.extra.projects %}
+                <a href="{{ project.url }}" class="card">
+                    <img class="card-image" alt="" src="{{ get_url(path=project.icon) }}" width="96" height="96">
+                    <div class="card-info">
+                        <h2 class="card-title">{{ project.name }}</h2>
+                        <div class="card-description">{{ project.description }}</div>
+                    </div>
+                </a>
+            {% endfor -%}
+        </div>
+    </main>
+{% endblock main_content %}

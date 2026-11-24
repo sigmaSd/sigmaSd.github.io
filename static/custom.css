@@ -9,3 +9,11 @@ code {
     padding-inline: 0.4em;
     font-size: 0.85rem;
 }
+
+/* Projects page: icons, not tabi's full-width card images */
+.cards .card .card-image {
+    display: block;
+    margin-inline: auto;
+    width: 96px;
+    height: 96px;
+}
