@@ -17,3 +17,23 @@ code {
     width: 96px;
     height: 96px;
 }
+
+/* Projects page: the tags on each card */
+.cards .card .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin: 0.9em 0 0;
+    padding: 0;
+    list-style: none;
+}
+.cards .card .project-tags li {
+    margin: 0;
+    border: 1px solid var(--divider-color);
+    border-radius: 1rem;
+    background: var(--bg-0);
+    padding: 0 10px;
+    color: var(--text-color);
+    font-size: 0.75rem;
+}

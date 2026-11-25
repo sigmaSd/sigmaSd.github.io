@@ -12,6 +12,11 @@
                     <div class="card-info">
                         <h2 class="card-title">{{ project.name }}</h2>
                         <div class="card-description">{{ project.description }}</div>
+                        {% if project?.tags -%}
+                            <ul class="project-tags">
+                                {%- for tag in project.tags %}<li>{{ tag }}</li>{% endfor -%}
+                            </ul>
+                        {%- endif %}
                     </div>
                 </a>
             {% endfor -%}
