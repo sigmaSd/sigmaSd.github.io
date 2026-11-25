@@ -24,6 +24,7 @@ Put site-specific changes outside the theme:
 | Inline `code` styled as a bordered chip (border, `--bg-0` background, 0.85rem) | `static/custom.css` |
 | Projects page: cards that link to the project sites, made from a list (tabi's `cards.html` needs a page for each) | `templates/projects.html` |
 | Screenshots and small icons on those cards | `templates/projects.html`, `static/custom.css` |
+| Front page: intro, latest posts and project icons, instead of tabi's banner and full post list | `templates/index.html`, `static/custom.css` |
 | No "Powered by" line in the footer | `static/custom.css` |
 | Tags on those cards (`tags` in the list) | `templates/projects.html`, `static/custom.css` |
 

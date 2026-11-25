@@ -45,7 +45,6 @@ show_date = true
 menu = [
     { name = "Blog", url = "blog", trailing_slash = true },
     { name = "Projects", url = "projects", trailing_slash = true },
-    { name = "IRust Book", url = "irust_book", trailing_slash = true },
 ]
 
 socials = [

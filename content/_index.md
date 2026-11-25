@@ -1,18 +1,11 @@
 +++
-title = "Blog"
+title = "Home"
 description = "Blogging about random stuff"
 sort_by = "date"
 
+# Laid out by templates/index.html: the intro below, the latest posts, then the projects of content/projects/_index.md.
 [extra]
-header = { title = "sigmaSd" }
-section_path = "blog/_index.md"
 max_posts = 3
 +++
 
 Blogging about random stuff, coding, and other experiments.
-
----
-
-## Books
-
-- [The IRust Book](@/irust_book/_index.md)

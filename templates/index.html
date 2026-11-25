@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{# The front page: the intro (content/_index.md), the latest posts, then the projects as icons #}
+{% block main_content %}
+{%- set blog = get_section(path="blog/_index.md") -%}
+{%- set projects = get_section(path="projects/_index.md") -%}
+    <main class="home">
+        <h1 class="visually-hidden">{{ config.title }}</h1>
+        <div class="home-intro">{{ section.content | safe }}</div>
+
+        <section>
+            <h2 class="home-heading">Latest posts <a href="{{ blog.permalink }}">All posts</a></h2>
+            <ul class="home-posts">
+                {%- for post in blog.pages %}
+                {%- if loop.index > section.extra.max_posts %}{% break %}{% endif %}
+                <li>
+                    <a class="home-post-title" href="{{ post.permalink }}">{{ post.title }}</a>
+                    <span class="home-post-date">{{< format_date date={post.date} short={false} />}}</span>
+                    {% if post.description -%}
+                        <p>{{ post.description | markdown(inline=true) | safe }}</p>
+                    {%- endif %}
+                </li>
+                {% endfor -%}
+            </ul>
+        </section>
+
+        <section>
+            <h2 class="home-heading">Projects <a href="{{ projects.permalink }}">All projects</a></h2>
+            <ul class="home-projects">
+                {%- for project in projects.extra.projects %}
+                <li>
+                    <a class="no-hover-padding" href="{{ project.url }}">
+                        <img alt="" src="{{ get_url(path=project.icon) }}" width="40" height="40">
+                        {{ project.name }}
+                    </a>
+                </li>
+                {% endfor -%}
+            </ul>
+        </section>
+    </main>
+{% endblock main_content %}

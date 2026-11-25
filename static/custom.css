@@ -19,7 +19,12 @@ footer .credits {
 /* Projects page: a screenshot, then the icon and name, the description and the tags */
 @media (min-width: 721px) {
     .cards:has(.project-shot) {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* an odd last card is centered */
+    }
+    .cards:has(.project-shot) .card {
+        width: calc(50% - 12px);
     }
 }
 .cards .card .project-shot {
@@ -30,6 +35,19 @@ footer .credits {
     height: auto;
     aspect-ratio: 8 / 5;
     object-fit: cover;
+}
+.cards .card:has(.project-shot):hover {
+    outline: 1px solid var(--primary-color);
+    background: var(--bg-2);
+}
+.cards .card:has(.project-shot):hover .card-title {
+    color: var(--primary-color);
+}
+.cards .card:has(.project-shot):hover .card-description {
+    color: var(--text-color);
+}
+.cards .card:has(.project-shot):hover::before {
+    content: none;
 }
 .cards .card:has(.project-shot) .card-info {
     padding-block-start: 18px;
@@ -70,4 +88,78 @@ footer .credits {
     padding: 0 10px;
     color: var(--text-color);
     font-size: 0.75rem;
+}
+
+/* Front page (templates/index.html) */
+.home-intro {
+    margin-block: 1rem 0;
+}
+.home-intro p {
+    margin: 0;
+    font-size: 1.4rem;
+    line-height: 1.5;
+}
+.home section {
+    margin-block-start: 3rem;
+}
+.home-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 0 0 1rem;
+    border-bottom: 1px solid var(--divider-color);
+    padding-bottom: 0.4rem;
+    font-size: 1.3rem;
+}
+.home-heading a {
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+.home-posts,
+.home-projects {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.home-posts li {
+    margin: 0 0 1.4rem;
+}
+.home-posts .home-post-title {
+    font-weight: 550;
+    font-size: 1.1rem;
+}
+.home-posts .home-post-date {
+    margin-inline-start: 0.6rem;
+    color: var(--meta-color);
+    font-size: 0.85rem;
+}
+.home-posts p {
+    margin: 0.2rem 0 0;
+}
+.home-projects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.home-projects li {
+    margin: 0;
+}
+.home-projects a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 0.8rem;
+    background: var(--bg-2);
+    border: 1px solid transparent;
+    padding: 8px 16px 8px 10px;
+}
+.home-projects a:hover {
+    border-color: var(--primary-color);
+    background: var(--bg-2);
+    color: var(--primary-color);
+}
+.home-projects img {
+    margin: 0;
+    width: 40px;
+    height: 40px;
 }

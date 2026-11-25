@@ -1,5 +1,5 @@
 +++
-# The websites of my projects, published from their own repositories.
+# The websites of my projects, published from their own repositories (except IRust's: its book, in this one).
 #
 # Each project site owns /<repo>/ on this domain, so no page, section or static folder of the blog may use
 # a project's name at the root: not content/tandem/, static/tandem/ or a page with path = "tandem".
@@ -40,4 +40,12 @@ url = "https://sigmasd.github.io/bandito-gtk/"
 icon = "projects/bandito.svg"
 screenshot = "projects/screenshots/bandito.webp"
 tags = ["Linux"]
+
+[[extra.projects]]
+name = "IRust"
+description = "A Rust REPL for the terminal: type Rust and see what it does. Opens its book."
+url = "/irust_book/"
+icon = "projects/irust.png"
+screenshot = "projects/screenshots/irust.webp"
+tags = ["Linux", "Windows", "macOS"]
 +++
