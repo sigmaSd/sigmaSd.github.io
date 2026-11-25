@@ -10,12 +10,46 @@ code {
     font-size: 0.85rem;
 }
 
-/* Projects page: icons, not tabi's full-width card images */
-.cards .card .card-image {
+/* Footer: no "Powered by Zola & tabi" (tabi has no setting for it; its copyright notice, unused here, is in
+   the same block) */
+footer .credits {
+    display: none;
+}
+
+/* Projects page: a screenshot, then the icon and name, the description and the tags */
+@media (min-width: 721px) {
+    .cards:has(.project-shot) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+.cards .card .project-shot {
     display: block;
-    margin-inline: auto;
-    width: 96px;
-    height: 96px;
+    margin: 0;
+    border-radius: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 8 / 5;
+    object-fit: cover;
+}
+.cards .card:has(.project-shot) .card-info {
+    padding-block-start: 18px;
+}
+.cards .card:has(.project-shot) .card-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+.cards .card .project-icon {
+    margin: 0;
+    width: 32px;
+    height: 32px;
+}
+.project-note {
+    color: var(--meta-color);
+    font-size: 0.8rem;
+    text-align: center;
 }
 
 /* Projects page: the tags on each card */

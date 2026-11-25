@@ -8,9 +8,12 @@
         <div class="cards">
             {%- for project in section.extra.projects %}
                 <a href="{{ project.url }}" class="card">
-                    <img class="card-image" alt="" src="{{ get_url(path=project.icon) }}" width="96" height="96">
+                    <img class="project-shot" alt="" src="{{ get_url(path=project.screenshot) }}" width="880" height="550">
                     <div class="card-info">
-                        <h2 class="card-title">{{ project.name }}</h2>
+                        <h2 class="card-title">
+                            <img class="project-icon" alt="" src="{{ get_url(path=project.icon) }}" width="32" height="32">
+                            {{ project.name }}
+                        </h2>
                         <div class="card-description">{{ project.description }}</div>
                         {% if project?.tags -%}
                             <ul class="project-tags">
@@ -21,5 +24,6 @@
                 </a>
             {% endfor -%}
         </div>
+        <p class="project-note">Screenshots show sample data.</p>
     </main>
 {% endblock main_content %}
