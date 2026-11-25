@@ -13,6 +13,6 @@ Blogging about random stuff, coding, and other experiments.
 
 ---
 
-## Projects
+## Books
 
 - [The IRust Book](@/irust_book/_index.md)
