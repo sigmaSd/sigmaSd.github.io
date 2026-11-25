@@ -30,8 +30,10 @@ stylesheets = ["custom.css"]  # site overrides, see THEME.md
 allowed_domains = [
     { directive = "style-src", domains = ["'self'", "'unsafe-inline'"] },
     # tabi's icons (theme switcher, copy button...) and its header font are data: URLs in its CSS
-    { directive = "img-src", domains = ["'self'", "data:"] },
+    { directive = "img-src", domains = ["'self'", "https:", "data:"] },  # https: images in posts
     { directive = "font-src", domains = ["'self'", "data:"] },
+    # Videos in posts: GitHub sends raw files on to raw.githubusercontent.com
+    { directive = "media-src", domains = ["'self'", "https://github.com", "https://raw.githubusercontent.com"] },
 ]
 theme_switcher = true
 default_theme = "dark"
