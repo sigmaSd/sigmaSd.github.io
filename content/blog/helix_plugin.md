@@ -86,4 +86,4 @@ end
 That's it, now when running helix, we can pipe a selection to our scripts using the pipe command 
 which is bound to `|` key by default (can be changed, I have personally `"µ" = "shell_pipe"` for azerty keyboard)
 
-<img src="https://cdn.discordapp.com/attachments/983096812456017934/1050122920594255882/qqqq.gif"/>
+*(There was a GIF here, but I don't have it anymore.)*
