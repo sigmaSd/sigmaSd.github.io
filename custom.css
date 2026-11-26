@@ -1,0 +1,165 @@
+/* Site-specific overrides on top of the tabi theme.
+   Keep tweaks here (not in themes/tabi) so the theme can be updated by copying upstream over it. See THEME.md. */
+
+/* Inline code: bordered chip instead of tabi's filled background */
+code {
+    border-radius: 4px;
+    background-color: var(--bg-0);
+    border: 1px solid var(--divider-color);
+    padding-inline: 0.4em;
+    font-size: 0.85rem;
+}
+
+/* Footer: no "Powered by Zola & tabi" (tabi has no setting for it; its copyright notice, unused here, is in
+   the same block) */
+footer .credits {
+    display: none;
+}
+
+/* Projects page: a screenshot, then the icon and name, the description and the tags */
+@media (min-width: 721px) {
+    .cards:has(.project-shot) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* an odd last card is centered */
+    }
+    .cards:has(.project-shot) .card {
+        width: calc(50% - 12px);
+    }
+}
+.cards .card .project-shot {
+    display: block;
+    margin: 0;
+    border-radius: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 8 / 5;
+    object-fit: cover;
+}
+.cards .card:has(.project-shot):hover {
+    outline: 1px solid var(--primary-color);
+    background: var(--bg-2);
+}
+.cards .card:has(.project-shot):hover .card-title {
+    color: var(--primary-color);
+}
+.cards .card:has(.project-shot):hover .card-description {
+    color: var(--text-color);
+}
+.cards .card:has(.project-shot):hover::before {
+    content: none;
+}
+.cards .card:has(.project-shot) .card-info {
+    padding-block-start: 18px;
+}
+.cards .card:has(.project-shot) .card-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+.cards .card .project-icon {
+    margin: 0;
+    width: 32px;
+    height: 32px;
+}
+.project-note {
+    color: var(--meta-color);
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* Projects page: the tags on each card */
+.cards .card .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin: 0.9em 0 0;
+    padding: 0;
+    list-style: none;
+}
+.cards .card .project-tags li {
+    margin: 0;
+    border: 1px solid var(--divider-color);
+    border-radius: 1rem;
+    background: var(--bg-0);
+    padding: 0 10px;
+    color: var(--text-color);
+    font-size: 0.75rem;
+}
+
+/* Front page (templates/index.html) */
+.home-intro {
+    margin-block: 1rem 0;
+}
+.home-intro p {
+    margin: 0;
+    font-size: 1.4rem;
+    line-height: 1.5;
+}
+.home section {
+    margin-block-start: 3rem;
+}
+.home-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 0 0 1rem;
+    border-bottom: 1px solid var(--divider-color);
+    padding-bottom: 0.4rem;
+    font-size: 1.3rem;
+}
+.home-heading a {
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+.home-posts,
+.home-projects {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.home-posts li {
+    margin: 0 0 1.4rem;
+}
+.home-posts .home-post-title {
+    font-weight: 550;
+    font-size: 1.1rem;
+}
+.home-posts .home-post-date {
+    margin-inline-start: 0.6rem;
+    color: var(--meta-color);
+    font-size: 0.85rem;
+}
+.home-posts p {
+    margin: 0.2rem 0 0;
+}
+.home-projects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.home-projects li {
+    margin: 0;
+}
+.home-projects a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 0.8rem;
+    background: var(--bg-2);
+    border: 1px solid transparent;
+    padding: 8px 16px 8px 10px;
+}
+.home-projects a:hover {
+    border-color: var(--primary-color);
+    background: var(--bg-2);
+    color: var(--primary-color);
+}
+.home-projects img {
+    margin: 0;
+    width: 40px;
+    height: 40px;
+}

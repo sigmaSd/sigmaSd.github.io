@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Bandito: download (teal) and upload (orange) traffic, with download peaks flattened by a limit bar. -->
+<svg width="128" height="128" viewBox="11 12 106 106" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2d405a"/>
+      <stop offset="1" stop-color="#1a2535"/>
+    </linearGradient>
+    <linearGradient id="down" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7ee6eb"/>
+      <stop offset="1" stop-color="#1fa7b0"/>
+    </linearGradient>
+    <linearGradient id="up" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6693f"/>
+      <stop offset="1" stop-color="#ffb36b"/>
+    </linearGradient>
+    <clipPath id="inside">
+      <rect x="12" y="12" width="104" height="100" rx="22"/>
+    </clipPath>
+  </defs>
+
+  <!-- tile with a darker bottom edge -->
+  <rect x="12" y="18" width="104" height="100" rx="22" fill="#111824"/>
+  <rect x="12" y="12" width="104" height="100" rx="22" fill="url(#face)"/>
+
+  <g clip-path="url(#inside)">
+    <!-- faint grid -->
+    <path d="M12 97.5H116" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+    <!-- middle line -->
+    <rect x="12" y="64" width="104" height="2" fill="#ffffff" fill-opacity="0.16"/>
+
+    <!-- download: bursts up, its peak cut flat by the limit -->
+    <path fill="url(#down)" d="M12 64 L22 64 C28 64 30 51 35 50 C40 49 42 58 47 57 C52 56 54 41 57 39 L58 38 L84 38 C87 38 89 52 94 52 C99 52 101 46 106 47 C110 48 112 55 116 56 L116 64 Z"/>
+    <path fill="none" stroke="#c8fbfd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.9" d="M12 64 L22 64 C28 64 30 51 35 50 C40 49 42 58 47 57 C52 56 54 41 57 39 L58 38 M84 38 C87 38 89 52 94 52 C99 52 101 46 106 47 C110 48 112 55 116 56"/>
+
+    <!-- upload: a smaller mirror below the line -->
+    <path fill="url(#up)" d="M12 66 L22 66 C27 66 29 76 34 77 C39 78 41 71 46 72 C51 73 53 86 59 87 C65 88 67 76 72 76 C77 76 79 82 85 82 C91 82 93 74 98 75 C103 76 106 81 110 81 C113 81 115 77 116 76 L116 66 Z"/>
+  </g>
+
+  <!-- the limit: a bar holding the download peak down -->
+  <rect x="20" y="31.5" width="88" height="6.5" rx="3.25" fill="#0c121b" fill-opacity="0.35"/>
+  <rect x="20" y="30" width="88" height="6.5" rx="3.25" fill="#ffffff"/>
+  <circle cx="71" cy="33.25" r="7.5" fill="#ffffff"/>
+  <circle cx="71" cy="33.25" r="3.2" fill="#3584e4"/>
+</svg>
