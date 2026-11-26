@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="side" x1="12" x2="116" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c0bfbc"/>
+      <stop offset="0.04" stop-color="#deddda"/>
+      <stop offset="0.08" stop-color="#c0bfbc"/>
+      <stop offset="0.92" stop-color="#c0bfbc"/>
+      <stop offset="0.96" stop-color="#deddda"/>
+      <stop offset="1" stop-color="#c0bfbc"/>
+    </linearGradient>
+  </defs>
+  <!-- card -->
+  <rect fill="url(#side)" x="12" y="16" width="104" height="100" rx="8"/>
+  <rect fill="#f6f5f4" x="12" y="12" width="104" height="100" rx="8"/>
+  <!-- QR code -->
+  <path fill="#3d3846" fill-rule="evenodd" d="M32,26 h16 a6,6 0 0 1 6,6 v16 a6,6 0 0 1 -6,6 h-16 a6,6 0 0 1 -6,-6 v-16 a6,6 0 0 1 6,-6 z M34,32 a2,2 0 0 0 -2,2 v12 a2,2 0 0 0 2,2 h12 a2,2 0 0 0 2,-2 v-12 a2,2 0 0 0 -2,-2 z"/>
+  <rect fill="#3d3846" x="36" y="36" width="8" height="8" rx="2"/>
+  <path fill="#3d3846" fill-rule="evenodd" d="M76,26 h16 a6,6 0 0 1 6,6 v16 a6,6 0 0 1 -6,6 h-16 a6,6 0 0 1 -6,-6 v-16 a6,6 0 0 1 6,-6 z M78,32 a2,2 0 0 0 -2,2 v12 a2,2 0 0 0 2,2 h12 a2,2 0 0 0 2,-2 v-12 a2,2 0 0 0 -2,-2 z"/>
+  <rect fill="#3d3846" x="80" y="36" width="8" height="8" rx="2"/>
+  <path fill="#3d3846" fill-rule="evenodd" d="M32,70 h16 a6,6 0 0 1 6,6 v16 a6,6 0 0 1 -6,6 h-16 a6,6 0 0 1 -6,-6 v-16 a6,6 0 0 1 6,-6 z M34,76 a2,2 0 0 0 -2,2 v12 a2,2 0 0 0 2,2 h12 a2,2 0 0 0 2,-2 v-12 a2,2 0 0 0 -2,-2 z"/>
+  <rect fill="#3d3846" x="36" y="80" width="8" height="8" rx="2"/>
+  <rect fill="#3d3846" x="58" y="26" width="8" height="8" rx="2"/>
+  <rect fill="#3d3846" x="58" y="44" width="8" height="8" rx="2"/>
+  <rect fill="#3d3846" x="26" y="58" width="8" height="8" rx="2"/>
+  <rect fill="#3d3846" x="44" y="58" width="8" height="8" rx="2"/>
+  <!-- send / receive badge -->
+  <circle fill="#1a5fb4" cx="88" cy="92" r="24"/>
+  <circle fill="#3584e4" cx="88" cy="88" r="24"/>
+  <path fill="#ffffff" d="M80,73 l9,10 h-6 v16 a1,1 0 0 1 -1,1 h-4 a1,1 0 0 1 -1,-1 v-16 h-6 z"/>
+  <path fill="#ffffff" d="M96,103 l9,-10 h-6 v-16 a1,1 0 0 0 -1,-1 h-4 a1,1 0 0 0 -1,1 v16 h-6 z"/>
+</svg>

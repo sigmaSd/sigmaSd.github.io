@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"
+  viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#286e70" />
+      <stop offset="1" stop-color="#153941" />
+    </linearGradient>
+  </defs>
+  <rect x="10" y="14" width="108" height="106" rx="26" fill="#0e272e" />
+  <rect x="10" y="8" width="108" height="106" rx="26" fill="url(#tile)" />
+  <rect x="11" y="9" width="106" height="104" rx="25" fill="none"
+    stroke="#bcece2" stroke-opacity=".23" stroke-width="2" />
+  <circle cx="58" cy="66" r="36" fill="#101f28" stroke="#75b9b2"
+    stroke-width="3" />
+  <circle cx="58" cy="66" r="28" fill="none" stroke="#325660"
+    stroke-width="2.5" />
+  <circle cx="58" cy="66" r="21" fill="none" stroke="#325660"
+    stroke-width="2.5" />
+  <circle cx="58" cy="66" r="12" fill="#a5e0d0" />
+  <circle cx="58" cy="66" r="3.5" fill="#101f28" />
+  <path d="m76 53 29-29m-15 0h15v15" fill="none" stroke="#183c42"
+    stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="m76 53 29-29m-15 0h15v15" fill="none" stroke="#ffbb75"
+    stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
